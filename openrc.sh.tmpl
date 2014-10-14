@@ -1,0 +1,8 @@
+export OS_AUTH_URL={{ config.endpoint_proto }}://{{ config.vip_public_fqdn }}:5000/v2.0
+export OS_AUTH_V3_URL={{ config.endpoint_proto }}://{{ config.vip_public_fqdn }}:5000/v3
+export OS_REGION_NAME="{{ config.region }}"
+export OS_USERNAME=admin
+export OS_TENANT_NAME={{ config.ks_admin_tenant }}
+export OS_PASSWORD={{ config.ks_admin_password }}
+export HORIZON_URL={{ config.endpoint_proto }}://{{ config.vip_public_fqdn }}/horizon/
+export HORIZON_LOGIN_URL={{ config.endpoint_proto }}://{{ config.vip_public_fqdn }}/horizon/auth/login/
