@@ -35,6 +35,19 @@ debug: {{ config.debug | default('false') }}
 log_facility: {{ config.log_facility | default('LOG_LOCAL0') }}
 use_syslog: {{ config.use_syslog | default('true') }}
 
+{% if config.rhn_registration %}
+rhn_registration:
+{% for server, params in config.rhn_registration.iteritems() %}
+  {{ server }}:
+  {% for key, value in params.iteritems() %}
+    {{ key }}: {{ value }}
+  {% endfor %}
+{% endfor %}
+{% else %}
+rhn_registration: false
+{% endif %}
+
+motd_title: {{ config.motd_title | default('Welcome on %{::hostname}') }}
 site_domain: {{ config.domain }}
 region: {{ config.region }}
 dns_ips: {{ config.dns_ips }}
@@ -191,6 +204,16 @@ rabbit_hosts:
 {% endif %}
 rabbit_password: {{ config.rabbit_password | default('rabbitpassword') }}
 rabbit_cluster_node_type: {{ config.cluster_node_type | default('disc') }}
+rabbit_port: {{ config.rabbit_port | default('5672') }}
+rabbit_ip: {{ config.rabbit_ip | default('"%{::ipaddress}"') }}
+rabbit: {{ config.rabbit | default('false') }}
+{% if config.rabbit_bind_options %}
+rabbit_bind_options:
+{% for bind_option in config.rabbit_bind_options %} - {{ bind_option }}
+{% endfor %}
+{% else %}
+rabbit_bind_options: "%{hiera('haproxy_default_bind_options')}"
+{% endif %}
 
 # Memcache
 {% if config.memcache_servers %}
@@ -689,8 +712,8 @@ neutron_flat_networks:
 
 neutron_manage_haproxy_pkg: {{ config.neutron_manage_haproxy_pkg | default('false') }}
 
+neutron_plugin: {{ config.neutron_plugin | default('ml2') }}
 neutron_driver: {{ config.neutron_driver | default('ml2_ovs') }}
-neutron_ml2_enabled: {{ config.neutron_ml2_enabled | default('true') }}
 neutron_veth_mtu: {{ config.neutron_veth_mtu | default('1500') }}
 neutron_dnsmasq_dns_server: {{ config.neutron_dnsmasq_dns_server | default('false') }}
 
@@ -712,6 +735,7 @@ neutron_external_provider_net: {{ config.neutron_external_provider_net | default
 
 # Neutron N1KV Settings
 neutron_n1kv_vsm_ip: {{ config.neutron_n1kv_vsm_ip | default('127.0.0.1') }}
+neutron_n1kv_vsm_password: {{ config.neutron_n1kv_vsm_password | default('secrete') }}
 neutron_n1kv_vsm_domain_id: {{ config.neutron_n1kv_vsm_domain_id | default('1000') }}
 neutron_n1kv_source: {{ config.neutron_n1kv_source | default('') }}
 neutron_n1kv_version: {{ config.neutron_n1kv_version | default('present') }}
