@@ -322,18 +322,12 @@ cloud::network::verbose: "%{hiera('neutron_verbose')}"
 cloud::network::debug: "%{hiera('neutron_debug')}"
 cloud::network::rabbit_hosts: "%{hiera('rabbit_hosts')}"
 cloud::network::rabbit_password: "%{hiera('rabbit_password')}"
-cloud::network::tunnel_eth: "%{hiera('internal_netif_ip')}"
 cloud::network::api_eth: "%{hiera('api_eth')}"
 cloud::network::provider_vlan_ranges: "%{hiera('neutron_provider_vlan_ranges')}"
-cloud::network::provider_bridge_mappings: "%{hiera('neutron_provider_bridge_mappings')}"
 cloud::network::use_syslog: "%{hiera('neutron_use_syslog')}"
 cloud::network::log_facility: "%{hiera('neutron_log_facility')}"
 cloud::network::dhcp_lease_duration: "%{hiera('neutron_dhcp_lease_duration')}"
 cloud::network::flat_networks: "%{hiera('neutron_flat_networks')}"
-cloud::network::external_int: "%{hiera('neutron_external_int')}"
-cloud::network::external_bridge: "%{hiera('neutron_external_bridge')}"
-cloud::network::manage_ext_network: "%{hiera('neutron_manage_external_network')}"
-cloud::network::tunnel_types: "%{hiera('neutron_tunnel_types')}"
 cloud::network::tenant_network_types: "%{hiera('neutron_tenant_network_types')}"
 cloud::network::type_drivers: "%{hiera('neutron_type_drivers')}"
 cloud::network::ml2_enabled: "%{hiera('neutron_ml2_enabled')}"
@@ -643,14 +637,112 @@ cloud::monitoring::server::sensu::uchiwa_ip: "%{hiera('sensu_uchiwa_ip')}"
 # cloud::database::dbaas::rabbit_hosts: "%{hiera('rabbit_hosts')}"
 # cloud::database::dbaas::rabbit_password: "%{hiera('rabbit_password')}"
 # cloud::database::dbaas::nova_admin_password: "%{hiera('ks_trove_password')}"
+# cloud::database::dbaas::trove_db_user:
+# cloud::database::dbaas::nova_admin_username:
+# cloud::database::dbaas::nova_admin_tenant_name:
 # 
 # cloud::database::dbaas::api::ks_trove_password: "%{hiera('ks_trove_password')}"
 # cloud::database::dbaas::api::api_eth: "%{hiera('api_eth')}"
 # cloud::database::dbaas::api::ks_keystone_internal_host: "%{hiera('ks_keystone_internal_host')}"
 # cloud::database::dbaas::api::ks_keystone_internal_proto: "%{hiera('endpoint_proto')}"
+# cloud::database::dbaas::api::verbose:
+# cloud::database::dbaas::api::debug:
+# cloud::database::dbaas::api::use_syslog:
+# cloud::database::dbaas::api::ks_trove_public_port:
+# cloud::database::dbaas::api::ks_keystone_internal_port:
 # 
 # cloud::database::dbaas::conductor::ks_keystone_internal_host: "%{hiera('ks_keystone_internal_host')}"
 # cloud::database::dbaas::conductor::ks_keystone_internal_proto: "%{hiera('endpoint_proto')}"
+# cloud::database::dbaas::conductor::ks_keystone_internal_port:
+# cloud::database::dbaas::conductor::verbose:
+# cloud::database::dbaas::conductor::debug:
+# cloud::database::dbaas::conductor::use_syslog:
 # 
 # cloud::database::dbaas::taskmanager::ks_keystone_internal_host: "%{hiera('ks_keystone_internal_host')}"
 # cloud::database::dbaas::taskmanager::ks_keystone_internal_proto: "%{hiera('endpoint_proto')}"
+# cloud::database::dbaas::taskmanager::ks_keystone_internal_port:
+# cloud::database::dbaas::taskmanager::debug:
+# cloud::database::dbaas::taskmanager::verbose:
+# cloud::database::dbaas::taskmanager::use_syslog:
+
+#
+#
+# DEPRECATED
+#
+# This is a list of deprecated parameters since their class
+# are deprecated in puppet-openstack-cloud but kept around for backward compatibility
+# They are put here so the sync_parameter script doesn't complain
+#
+#
+
+# cloud::image
+
+# cloud::image::glance_db_host:
+# cloud::image::glance_db_user:
+# cloud::image::glance_db_password:
+# cloud::image::ks_keystone_internal_host:
+# cloud::image::ks_glance_internal_host:
+# cloud::image::ks_glance_api_internal_port:
+# cloud::image::ks_glance_registry_internal_port:
+# cloud::image::ks_glance_password:
+# cloud::image::rabbit_password:
+# cloud::image::rabbit_host:
+# cloud::image::api_eth:
+# cloud::image::openstack_vip:
+# cloud::image::glance_rbd_pool:
+# cloud::image::glance_rbd_user:
+# cloud::image::verbose:
+# cloud::image::debug:
+# cloud::image::log_facility:
+# cloud::image::use_syslog:
+
+# cloud::compute
+
+# cloud::compute::scheduler::scheduler_default_filters:
+# cloud::compute::controller::ks_keystone_internal_host:
+# cloud::compute::controller::ks_nova_password:
+# cloud::compute::controller::neutron_metadata_proxy_shared_secret:
+# cloud::compute::controller::api_eth:
+# cloud::compute::controller::spice_port:
+# cloud::compute::controller::ks_nova_public_port:
+# cloud::compute::controller::ks_ec2_public_port:
+# cloud::compute::controller::ks_metadata_public_port:
+
+# cloud::telemetry
+
+# cloud::telemetry::server::ks_keystone_internal_host:
+# cloud::telemetry::server::ks_keystone_internal_proto:
+# cloud::telemetry::server::ks_ceilometer_internal_port:
+# cloud::telemetry::server::ks_ceilometer_password:
+# cloud::telemetry::server::api_eth:
+# cloud::telemetry::server::mongo_nodes:
+
+# cloud::volume
+
+# cloud::volume::controller::ks_cinder_internal_port:
+# cloud::volume::controller::ks_cinder_password:
+# cloud::volume::controller::ks_keystone_internal_host:
+# cloud::volume::controller::ks_keystone_internal_proto:
+# cloud::volume::controller::ks_glance_internal_host:
+# cloud::volume::controller::ks_glance_api_internal_port:
+# cloud::volume::controller::api_eth:
+# cloud::volume::controller::default_volume_type:
+# cloud::volume::controller::volume_multi_backend:
+
+# cloud::volume::storage::glance_api_version:
+# cloud::volume::scheduler::volume_multi_backend:
+# cloud::volume::api::volume_multi_backend:
+
+# cloud::loadbalancer
+
+# cloud::loadbalancer::keepalived_interface:
+# cloud::loadbalancer::keepalived_ipvs:
+
+# cloud::network
+
+# cloud::network::external_int:
+# cloud::network::external_bridge:
+# cloud::network::manage_ext_network:
+# cloud::network::tunnel_types:
+# cloud::network::tunnel_eth:
+# cloud::network::provider_bridge_mappings:
