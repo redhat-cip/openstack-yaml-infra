@@ -1,0 +1,169 @@
+infra: 3nodes
+hosts:
+  install-server:
+    profile: install-server
+    ip: 10.151.0.48
+    config:
+      cloud::logging::agent::syslog_enable: false
+      kibana3::manage_ws: false
+  openstack1:
+    profile: openstack-full
+    ip: 10.151.68.54
+    config:
+      cloud::storage::rbd::osd::public_address: "%{hiera('public_netif_ip')}"
+      cloud::storage::rbd::osd::cluster_address: "%{hiera('internal_netif_ip')}"
+      cloud::storage::rbd::public_network: "%{hiera('ceph_public_network')}"
+      cloud::storage::rbd::cluster_network: "%{hiera('ceph_cluster_network')}"
+      cloud::storage::rbd::osd::devices: "%{hiera('ceph_osd_devices')}"
+      cloud::loadbalancer::keepalived_state: BACKUP
+      cloud::loadbalancer::keepalived_priority: 49
+      cloud::storage::rbd::pools::setup_pools: true
+      cloud::storage::rbd::key::enabled: true
+      cloud::object::storage::swift_zone: 1
+  openstack2:
+    profile: openstack-full
+    ip: 10.151.0.55
+    config:
+      cloud::storage::rbd::osd::public_address: "%{hiera('public_netif_ip')}"
+      cloud::storage::rbd::osd::cluster_address: "%{hiera('internal_netif_ip')}"
+      cloud::storage::rbd::public_network: "%{hiera('ceph_public_network')}"
+      cloud::storage::rbd::cluster_network: "%{hiera('ceph_cluster_network')}"
+      cloud::storage::rbd::osd::devices: "%{hiera('ceph_osd_devices')}"
+      cloud::loadbalancer::keepalived_state: BACKUP
+      cloud::loadbalancer::keepalived_priority: 49
+      cloud::object::storage::swift_zone: 2
+  openstack3:
+    profile: openstack-full
+    ip: 10.151.0.56
+    config:
+      cloud::storage::rbd::osd::public_address: "%{hiera('public_netif_ip')}"
+      cloud::storage::rbd::osd::cluster_address: "%{hiera('internal_netif_ip')}"
+      cloud::storage::rbd::public_network: "%{hiera('ceph_public_network')}"
+      cloud::storage::rbd::cluster_network: "%{hiera('ceph_cluster_network')}"
+      cloud::storage::rbd::osd::devices: "%{hiera('ceph_osd_devices')}"
+      cloud::loadbalancer::keepalived_state: MASTER
+      cloud::loadbalancer::keepalived_priority: 50
+      cloud::object::storage::swift_zone: 3
+
+config:
+  domain: ring.enovance.com
+  user: jenkins
+  puppet_master: install-server
+  parallel_steps: 2|4|5
+  region: enovance
+  dns_ips: 94.143.114.197
+  vip_public_fqdn: openstack-vip.ring.enovance.com
+  vip_public_ip: 10.151.0.253
+  vip_admin_ip: 10.151.0.253
+  vip_admin_fqdn: openstack-vip.ring.enovance.com
+  vip_internal_fqdn: openstack-vip.ring.enovance.com
+  endpoint_proto: https
+
+  public_network: 10.151.0.0/24
+  internal_network: 10.151.0.0/24
+  admin_network: 10.151.0.0/24
+  storage_network: 10.151.0.0/24
+  
+  ntp_servers:
+    - 0.debian.pool.ntp.org
+    - 1.debian.pool.ntp.org
+    - 2.debian.pool.ntp.org
+    - 3.debian.pool.ntp.org
+
+  root_password: secrete
+  
+  public_netif: eth0
+  internal_netif: eth0
+  admin_netif: eth0
+  storage_netif: eth0
+  lb_public_netif: eth0
+  lb_internal_netif: eth0
+  external_netif: eth1
+
+  public_netif_ip: "%{::ipaddress_eth0}"
+  internal_netif_ip: "%{::ipaddress_eth0}"
+  admin_netif_ip: "%{::ipaddress_eth0}"
+  storage_netif_ip: "%{::ipaddress_eth0}"
+
+  keystone_db_user: keystone
+  keystone_db_password: secrete
+  ks_admin_email: dev@enovance.com
+  ks_admin_password: secrete
+  ks_admin_tenant: admin
+  ks_admin_token: secrete
+
+  swift_api: true
+  ks_swift_dispersion_password: secrete
+  ks_swift_password: secrete
+  swift_hash_suffix: ni2aef8ich3oo
+  replicas: 3
+  statsd_host: 127.0.0.1
+  swift_zone:
+    openstack1: 1
+    openstack2: 2
+    openstack3: 3
+
+  mysql_root_password: secrete
+  mysql_sys_maint_user: sys-maint
+  mysql_sys_maint_password: secrete
+  galera_clustercheck_dbuser: clustercheck
+  galera_clustercheck_dbpassword: clusterpassword!
+  galera_master_name: openstack1
+
+  db_allowed_hosts:
+    - openstack%
+    - 10.151.0.%
+
+  haproxy_auth: root:secrete
+
+  secret_key: secrete
+
+  rabbit_password: secrete
+  rabbit_host: 10.151.0.54
+  rabbit_hosts:
+    - 10.151.0.54:5672
+    - 10.151.0.55:5672
+    - 10.151.0.56:5672
+
+  ks_neutron_password: secrete
+  neutron_db_password: secrete
+  ks_neutron_admin_proto: https
+  neutron_type_drivers: gre
+  neutron_mechanism_drivers: openvswitch
+  neutron_tunnel_id_ranges: 1:10000
+  neutron_firewall_driver: neutron.agent.linux.iptables_firewall.OVSHybridIptablesFirewallDriver
+  neutron_metadata_proxy_shared_secret: secrete
+      
+  ks_nova_password: secrete
+  nova_db_password: secrete
+  nova_ssh_public_key: ssh-rsa XXXXX nova@openstack
+  nova_ssh_private_key: |
+    -----BEGIN RSA PRIVATE KEY-----
+XXXX
+    -----END RSA PRIVATE KEY-----
+
+  glance_db_password: secrete
+  ks_glance_password: secrete
+
+  ceilometer_secret: secrete
+  ks_ceilometer_password: secrete
+
+  cinder_db_password: secrete
+  ks_cinder_password: secrete
+
+  heat_db_password: secrete
+  ks_heat_password: secrete
+  heat_auth_encryption_key: secrete
+  ceph_osd_devices:
+    - sdb
+    - sdc
+    - sdd
+  ceph_fsid: XXXX
+  ceph_mon_secret: secrete
+  cinder_rbd_pool: volumes
+  cinder_rbd_user: cinder
+
+  libvirt_type: kvm
+
+  syslog_server: install-server
+  syslog_port: 514
