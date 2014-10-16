@@ -15,6 +15,15 @@ classes:
 {% endfor %}
 
 #
+# cloud
+#
+cloud::rhn_registration: "%{hiera('rhn_registration')}"
+cloud::root_password: "%{hiera('root_password')}"
+cloud::dns_ips: "%{hiera('dns_ips')}"
+cloud::site_domain: "%{hiera('site_domain')}"
+cloud::motd_title: "%{hiera('motd_title')}"
+
+#
 # cloud::cache
 #
 cloud::cache::listen_ip: "%{hiera('internal_netif_ip')}"
@@ -181,6 +190,7 @@ cloud::identity::ks_swift_public_port: "%{hiera('swift_port')}"
 cloud::identity::ks_trove_internal_host: "%{hiera('ks_trove_internal_host')}"
 cloud::identity::ks_trove_admin_host: "%{hiera('ks_trove_admin_host')}"
 cloud::identity::ks_trove_password: "%{hiera('ks_trove_password')}"
+cloud::identity::ks_trove_public_port: "%{hiera('trove_port')}"
 cloud::identity::ks_trove_public_host: "%{hiera('ks_trove_public_host')}"
 cloud::identity::ks_trove_admin_proto: "%{hiera('ks_trove_admin_proto')}"
 cloud::identity::ks_trove_internal_proto: "%{hiera('ks_trove_internal_proto')}"
@@ -256,6 +266,7 @@ cloud::loadbalancer::trove_api: "%{hiera('trove_api')}"
 cloud::loadbalancer::horizon: "%{hiera('horizon')}"
 cloud::loadbalancer::horizon_ssl: "%{hiera('horizon_ssl')}"
 cloud::loadbalancer::spice: "%{hiera('spice')}"
+cloud::loadbalancer::rabbitmq: "%{hiera('rabbit')}"
 cloud::loadbalancer::haproxy_auth: "%{hiera('haproxy_auth')}"
 cloud::loadbalancer::keepalived_auth_type:  "%{hiera('keepalived_auth_type')}"
 cloud::loadbalancer::keepalived_auth_pass:  "%{hiera('keepalived_auth_pass')}"
@@ -278,6 +289,7 @@ cloud::loadbalancer::keystone_bind_options: "%{hiera('keystone_bind_options')}"
 cloud::loadbalancer::keystone_admin_bind_options: "%{hiera('keystone_admin_bind_options')}"
 cloud::loadbalancer::metadata_bind_options: "%{hiera('nova_metadata_bind_options')}"
 cloud::loadbalancer::neutron_bind_options: "%{hiera('neutron_bind_options')}"
+cloud::loadbalancer::rabbitmq_bind_options: "%{hiera('rabbit_bind_options')}"
 cloud::loadbalancer::nova_bind_options: "%{hiera('nova_bind_options')}"
 cloud::loadbalancer::trove_bind_options: "%{hiera('trove_bind_options')}"
 cloud::loadbalancer::swift_bind_options: "%{hiera('swift_bind_options')}"
@@ -300,6 +312,7 @@ cloud::loadbalancer::ks_neutron_public_port: "%{hiera('neutron_port')}"
 cloud::loadbalancer::ks_nova_public_port: "%{hiera('nova_port')}"
 cloud::loadbalancer::ks_swift_public_port: "%{hiera('swift_port')}"
 cloud::loadbalancer::ks_trove_public_port: "%{hiera('trove_port')}"
+cloud::loadbalancer::rabbitmq_port: "%{hiera('rabbit_port')}"
 cloud::loadbalancer::horizon_port: "%{hiera('horizon_port')}"
 cloud::loadbalancer::horizon_ssl_port: "%{hiera('horizon_ssl_port')}"
 cloud::loadbalancer::spice_port: "%{hiera('spice_port')}"
@@ -314,6 +327,10 @@ cloud::loadbalancer::galera_slave: "%{hiera('galera_slave')}"
 cloud::messaging::cluster_node_type: "%{hiera('rabbit_cluster_node_type')}"
 cloud::messaging::rabbit_names: "%{hiera('rabbit_names')}"
 cloud::messaging::rabbit_password: "%{hiera('rabbit_password')}"
+cloud::messaging::haproxy_binding: "%{hiera('rabbit')}"
+cloud::messaging::rabbitmq_ip: "%{hiera('rabbit_ip')}"
+cloud::messaging::rabbitmq_port: "%{hiera('rabbit_port')}"
+
 
 #
 # cloud::network
@@ -330,7 +347,17 @@ cloud::network::dhcp_lease_duration: "%{hiera('neutron_dhcp_lease_duration')}"
 cloud::network::flat_networks: "%{hiera('neutron_flat_networks')}"
 cloud::network::tenant_network_types: "%{hiera('neutron_tenant_network_types')}"
 cloud::network::type_drivers: "%{hiera('neutron_type_drivers')}"
-cloud::network::ml2_enabled: "%{hiera('neutron_ml2_enabled')}"
+cloud::network::plugin: "%{hiera('neutron_plugin')}"
+cloud::network::n1kv_vsm_ip: "%{hiera('neutron_n1kv_vsm_ip')}"
+cloud::network::n1kv_vsm_password: "%{hiera('neutron_n1kv_vsm_password')}"
+cloud::network::neutron_db_host: "%{hiera('neutron_db_host')}"
+cloud::network::neutron_db_user: "%{hiera('neutron_db_user')}"
+cloud::network::neutron_db_password: "%{hiera('neutron_db_password')}"
+cloud::network::ks_keystone_admin_host: "%{hiera('ks_keystone_admin_host')}"
+cloud::network::ks_keystone_admin_proto: "%{hiera('ks_keystone_admin_proto')}"
+cloud::network::ks_keystone_admin_port: "%{hiera('keystone_admin_port')}"
+cloud::network::ks_keystone_admin_password: "%{hiera('ks_admin_password')}"
+
 
 cloud::network::l3::external_int: "%{hiera('neutron_external_int')}"
 cloud::network::l3::ext_provider_net: "%{hiera('neutron_external_provider_net')}"
@@ -371,6 +398,7 @@ cloud::network::controller::nova_admin_username: "%{hiera('nova_admin_username')
 cloud::network::controller::nova_admin_tenant_name:  "%{hiera('nova_admin_tenant_name')}"
 cloud::network::controller::nova_admin_password:  "%{hiera('ks_nova_password')}"
 cloud::network::controller::nova_region_name: "%{hiera('region')}"
+cloud::network::controller::manage_ext_network: "%{hiera('neutron_manage_external_network')}"
 
 cloud::network::vswitch::driver:  "%{hiera('neutron_driver')}"
 cloud::network::vswitch::manage_ext_network:  "%{hiera('neutron_manage_external_network')}"
@@ -415,7 +443,7 @@ cloud::object::ringbuilder::swift_rsync_max_connections: "%{hiera('swift_rsync_m
 
 cloud::object::storage::storage_eth: "%{hiera('api_eth')}"
 # Need to be set per node
-#cloud::object::storage::swift_zone: "%{hiera('swift_zone')}"
+#cloud::object::storage::swift_zone:
 cloud::object::storage::object_port: "%{hiera('object_port')}"
 cloud::object::storage::container_port: "%{hiera('container_port')}"
 cloud::object::storage::account_port: "%{hiera('account_port')}"
@@ -493,7 +521,7 @@ cloud::telemetry::api::ks_ceilometer_password: "%{hiera('ks_ceilometer_password'
 cloud::telemetry::api::api_eth: "%{hiera('api_eth')}"
 cloud::telemetry::api::mongo_nodes: "%{hiera('mongo_nodes')}"
 
-cloud::telemetry::centralagent::enable: "%{hiera('ceilometer_centralagent_enabled')}"
+cloud::telemetry::centralagent::enabled: "%{hiera('ceilometer_centralagent_enabled')}"
 
 cloud::telemetry::collector::mongo_nodes: "%{hiera('mongo_nodes')}"
 cloud::telemetry::collector::replicaset_enabled: "%{hiera('replicatset_enabled')}"
@@ -601,7 +629,11 @@ cloud::storage::rbd::osd::cluster_address: "%{hiera('ceph_osd_cluster_address')}
 cloud::storage::rbd::monitor::id: "%{hiera('ceph_monitor_id')}"
 cloud::storage::rbd::monitor::mon_addr: "%{hiera('internal_netif_ip')}"
 cloud::storage::rbd::monitor::monitor_secret: "%{hiera('ceph_mon_secret')}"
+# Need to be set per node
+# cloud::storage::rbd::key::enabled:
 
+# Need to be set per node
+# cloud::storage::rbd::pools::setup_pools:
 cloud::storage::rbd::pools::glance_rbd_user: "%{hiera('glance_rbd_user')}"
 cloud::storage::rbd::pools::glance_rbd_pool: "%{hiera('glance_rbd_pool')}"
 cloud::storage::rbd::pools::cinder_rbd_user: "%{hiera('cinder_rbd_user')}"
