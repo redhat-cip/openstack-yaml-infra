@@ -629,6 +629,7 @@ cloud::storage::rbd::osd::cluster_address: "%{hiera('ceph_osd_cluster_address')}
 cloud::storage::rbd::monitor::id: "%{hiera('ceph_monitor_id')}"
 cloud::storage::rbd::monitor::mon_addr: "%{hiera('internal_netif_ip')}"
 cloud::storage::rbd::monitor::monitor_secret: "%{hiera('ceph_mon_secret')}"
+cloud::storage::rbd::monitor::admin_secret: "%{hiera('ceph_adm_secret')}"
 # Need to be set per node
 # cloud::storage::rbd::key::enabled:
 
