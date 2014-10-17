@@ -86,8 +86,8 @@ api_eth: {{ config.api_eth | default('"%{hiera(\'internal_netif_ip\')}"') }}
 storage_eth: {{ config.storage_eth | default('"%{hiera(\'storage_netif_ip\')}"') }}
 
 # Keepalived
-keepalived_auth_type: {{ config.keepalived_auth_type | default('') }}
-keepalived_auth_pass: {{ config.keepalived_auth_pass | default('') }}
+keepalived_auth_type: {{ config.keepalived_auth_type | default('false') }}
+keepalived_auth_pass: {{ config.keepalived_auth_pass | default('false') }}
 keepalived_vrrp_interface: {{ config.keepalived_vrrp_interface | default('false') }}
 keepalived_state: {{ config.keepalived_state | default('BACKUP') }}
 keepalived_priority: {{ config.keepalived_priority | default('50') }}
