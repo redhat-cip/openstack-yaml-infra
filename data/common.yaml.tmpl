@@ -246,9 +246,9 @@ horizon_port: {{ config.horizon_port | default('80') }}
 horizon_ssl_port: {{ config.horizon_ssl_port | default('443') }}
 horizon_servername: {{ config.horizon_servername | default('"%{hiera(\'vip_internal_fqdn\')}"') }}
 horizon_listen_ssl: {{ config.horizon_listen_ssl | default('false') }}
-horizon_cert: {{ config.horizon_horizon_cert | default('') }}
-horizon_key: {{ config.horizon_horizon_key | default('') }}
-horizon_ca: {{ config.horizon_horizon_ca | default('') }}
+horizon_cert: {{ config.horizon_cert | default('') }}
+horizon_key: {{ config.horizon_key | default('') }}
+horizon_ca: {{ config.horizon_ca | default('') }}
 horizon_ssl_forward: {{ config.horizon_ssl_forward | default('false') }}
 horizon_listen_ssl: {{ config.horizon_listen_ssl | default('false') }}
 horizon_endpoint_type: {{ config.horizon_endpoint_type | default('"%{hiera(\'endpoint_type\')}"') }}
