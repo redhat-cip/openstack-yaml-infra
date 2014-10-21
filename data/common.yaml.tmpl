@@ -240,7 +240,7 @@ horizon_ssl_bind_options: {{ config.horizon_ssl_bind_options | default ('"%{hier
 
 secret_key: {{ config.secret_key | default('secrete') }}
 
-horizon: {{ config.horizon | default('"%{hiera(\'vip_internal_ip\')}"') }}
+horizon: {{ config.horizon | default('true') }}
 horizon_ssl: {{ config.horizon_ssl | default('false') }}
 horizon_port: {{ config.horizon_port | default('80') }}
 horizon_ssl_port: {{ config.horizon_ssl_port | default('443') }}
@@ -268,7 +268,7 @@ cinder_debug: {{ config.cinder_debug | default('"%{hiera(\'debug\')}"') }}
 cinder_use_syslog: {{ config.cinder_use_syslog | default('"%{hiera(\'use_syslog\')}"') }}
 cinder_log_facility: {{ config.cinder_log_facility | default('"%{hiera(\'log_facility\')}"') }}
 
-cinder_api: {{ config.cinder_api | default('"%{hiera(\'vip_internal_ip\')}"') }}
+cinder_api: {{ config.cinder_api | default('true') }}
 {% if config.cinder_bind_options %}
 cinder_bind_options:
 {% for bind_option in config.cinder_bind_options %} - {{ bind_option }}
@@ -329,9 +329,9 @@ heat_debug: {{ config.heat_debug | default('"%{hiera(\'debug\')}"') }}
 heat_use_syslog: {{ config.heat_use_syslog | default('"%{hiera(\'use_syslog\')}"') }}
 heat_log_facility: {{ config.heat_log_facility | default('"%{hiera(\'log_facility\')}"') }}
 
-heat_api: {{ config.heat_api | default('"%{hiera(\'vip_internal_ip\')}"') }}
-heat_cfn_api: {{ config.heat_cfn_api | default('"%{hiera(\'vip_internal_ip\')}"') }}
-heat_cloudwatch_api: {{ config.heat_cloudwatch_api | default('"%{hiera(\'vip_internal_ip\')}"') }}
+heat_api: {{ config.heat_api | default('true') }}
+heat_cfn_api: {{ config.heat_cfn_api | default('true') }}
+heat_cloudwatch_api: {{ config.heat_cloudwatch_api | default('true') }}
 {% if config.heat_api_bind_options %}
 heat_api_bind_options:
 {% for bind_option in config.heat_api_bind_options %} - {{ bind_option }}
@@ -396,8 +396,8 @@ glance_registry_debug: {{ config.glance_registry_debug | default('"%{hiera(\'deb
 glance_registry_use_syslog: {{ config.glance_registry_use_syslog | default('"%{hiera(\'use_syslog\')}"') }}
 glance_registry_log_facility: {{ config.glance_registry_log_facility | default('"%{hiera(\'log_facility\')}"') }}
 
-glance_api: {{ config.glance_api | default('"%{hiera(\'vip_internal_ip\')}"') }}
-glance_registry: {{ config.glance_registry | default('"%{hiera(\'vip_internal_ip\')}"') }}
+glance_api: {{ config.glance_api | default('true') }}
+glance_registry: {{ config.glance_registry | default('true') }}
 glance_api_bind_options: {{ config.glance_api_bind_options | default('"%{hiera(\'haproxy_default_bind_options\')}"') }}
 glance_registry_bind_options: {{ config.glance_registry_bind_options | default('"%{hiera(\'haproxy_default_bind_options\')}"') }}
 {% if config.glance_api_bind_options %}
@@ -458,7 +458,7 @@ ceilometer_debug: {{ config.ceilometer_debug | default('"%{hiera(\'debug\')}"') 
 ceilometer_use_syslog: {{ config.ceilometer_use_syslog | default('"%{hiera(\'use_syslog\')}"') }}
 ceilometer_log_facility: {{ config.ceilometer_log_facility | default('"%{hiera(\'log_facility\')}"') }}
 
-ceilometer_api: {{ config.ceilometer_api | default('"%{hiera(\'vip_internal_ip\')}"') }}
+ceilometer_api: {{ config.ceilometer_api | default('true') }}
 ceilometer_centralagent_enabled: {{ config.ceilometer_centralagent_enabled | default('true') }}
 {% if config.ceilometer_bind_options %}
 ceilometer_bind_options:
@@ -510,8 +510,8 @@ backup_ceph_pool: {{ config.backup_ceph_pool | default('backup') }}
 backup_ceph_user: {{ config.backup_ceph_user | default('cinder') }}
 
 # Keystone
-keystone_api: {{ config.keystone_api | default('"%{hiera(\'vip_internal_ip\')}"') }}
-keystone_admin_api: {{ config.keystone_admin_api | default('"%{hiera(\'vip_internal_ip\')}"') }}
+keystone_api: {{ config.keystone_api | default('true') }}
+keystone_admin_api: {{ config.keystone_admin_api | default('true') }}
 {% if config.keystone_bind_options %}
 keystone_bind_options:
 {% for bind_option in config.keystone_bind_options %} - {{ bind_option }}
@@ -519,12 +519,12 @@ keystone_bind_options:
 {% else %}
 keystone_bind_options: "%{hiera('haproxy_default_bind_options')}"
 {% endif %}
-{% if config.keystone_adming_bind_options %}
-keystone_adming_bind_options:
-{% for bind_option in config.keystone_adming_bind_options %} - {{ bind_option }}
+{% if config.keystone_admin_bind_options %}
+keystone_admin_bind_options:
+{% for bind_option in config.keystone_admin_bind_options %} - {{ bind_option }}
 {% endfor %}
 {% else %}
-keystone_adming_bind_options: "%{hiera('haproxy_default_bind_options')}"
+keystone_admin_bind_options: "%{hiera('haproxy_default_bind_options')}"
 {% endif %}
 
 keystone_verbose: {{ config.keystone_verbose | default('"%{hiera(\'verbose\')}"') }}
@@ -569,10 +569,10 @@ nova_log_facility: {{ config.nova_log_facility | default('"%{hiera(\'log_facilit
 
 nova_shell: {{ config.nova_shell | default('/bin/bash') }}
 
-nova_api: {{ config.nova_api | default('"%{hiera(\'vip_internal_ip\')}"') }}
-nova_ec2_api: {{ config.nova_ec2_api | default('"%{hiera(\'vip_internal_ip\')}"') }}
-nova_metadata_api: {{ config.nova_metadata_api | default('"%{hiera(\'vip_internal_ip\')}"') }}
-spice: {{ config.spice | default('"%{hiera(\'vip_internal_ip\')}"') }}
+nova_api: {{ config.nova_api | default('true') }}
+nova_ec2_api: {{ config.nova_ec2_api | default('true') }}
+nova_metadata_api: {{ config.nova_metadata_api | default('true') }}
+spice: {{ config.spice | default('true') }}
 
 {% if config.nova_bind_options %}
 nova_bind_options:
@@ -666,7 +666,7 @@ neutron_debug: {{ config.neutron_debug | default('"%{hiera(\'debug\')}"') }}
 neutron_use_syslog: {{ config.neutron_use_syslog | default('"%{hiera(\'use_syslog\')}"') }}
 neutron_log_facility: {{ config.neutron_log_facility | default('"%{hiera(\'log_facility\')}"') }}
 
-neutron_api: {{ config.neutron_api | default('"%{hiera(\'vip_internal_ip\')}"') }}
+neutron_api: {{ config.neutron_api | default('true') }}
 {% if config.neutron_bind_options %}
 neutron_bind_options:
 {% for bind_option in config.neutron_bind_options %} - {{ bind_option }}
@@ -768,7 +768,7 @@ neutron_vteps_in_same_subnet: {{ config.neutron_vteps_in_same_subnet | default('
 
 # Trove
 trove_enabled: {{ config.trove_enabled | default('false') }}
-trove_api: {{ config.trove_api | default('"%{hiera(\'vip_internal_ip\')}"') }}
+trove_api: {{ config.trove_api | default('false') }}
 {% if config.trove_bind_options %}
 trove_bind_options:
 {% for bind_option in config.trove_bind_options %} - {{ bind_option }}
@@ -805,7 +805,7 @@ trove_region: {{ config.trove_region | default('"%{hiera(\'region\')}"') }}
 swift_enabled: {{ config.swift_enabled | default('true') }}
 swift_ringbuilder_enabled: {{ config.swift_ringbuilder_enabled | default('false') }}
 
-swift_api: {{ config.swift_api | default('"%{hiera(\'vip_internal_ip\')}"') }}
+swift_api: {{ config.swift_api | default('true') }}
 {% if config.swift_bind_options %}
 swift_bind_options:
 {% for bind_option in config.swift_bind_options %} - {{ bind_option }}
