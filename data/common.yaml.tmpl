@@ -419,6 +419,10 @@ glance_backend: {{ config.glance_backend | default('rbd') }}
 glance_rbd_pool: {{ config.glance_rbd_pool | default('images') }}
 glance_rbd_user: {{ config.glance_rbd_user | default('glance') }}
 
+glance_nfs_device: {{ config.glance_nfs_device | default('false') }}
+glance_nfs_options: {{ config.glance_nfs_options | default('defaults') }}
+glance_api_pipeline: {{ config.glance_api_pipeline | default('keystone') }}
+
 glance_filesystem_store_datadir: {{ config.glance_filesystem_store_datadir | default('/var/lib/glance/images/') }}
 
 glance_api_port: {{ config.glance_api_port | default('9292') }}
