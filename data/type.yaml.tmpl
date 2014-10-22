@@ -230,6 +230,9 @@ cloud::image::api::log_facility: "%{hiera('glance_api_log_facility')}"
 cloud::image::api::use_syslog: "%{hiera('glance_api_use_syslog')}"
 cloud::image::api::backend: "%{hiera('glance_backend')}"
 cloud::image::api::filesystem_store_datadir: "%{hiera('glance_filesystem_store_datadir')}"
+cloud::image::api::nfs_device: "%{hiera('glance_nfs_device')}"
+cloud::image::api::nfs_options: "%{hiera('glance_nfs_options')}"
+cloud::image::api::pipeline: "%{hiera('glance_api_pipeline')}"
 
 cloud::image::registry::glance_db_host: "%{hiera('glance_db_host')}"
 cloud::image::registry::glance_db_user: "%{hiera('glance_db_user')}"
@@ -356,7 +359,7 @@ cloud::network::neutron_db_password: "%{hiera('neutron_db_password')}"
 cloud::network::ks_keystone_admin_host: "%{hiera('ks_keystone_admin_host')}"
 cloud::network::ks_keystone_admin_proto: "%{hiera('ks_keystone_admin_proto')}"
 cloud::network::ks_keystone_admin_port: "%{hiera('keystone_admin_port')}"
-cloud::network::ks_keystone_admin_password: "%{hiera('ks_admin_password')}"
+cloud::network::ks_neutron_password: "%{hiera('ks_neutron_password')}"
 
 
 cloud::network::l3::external_int: "%{hiera('neutron_external_int')}"
