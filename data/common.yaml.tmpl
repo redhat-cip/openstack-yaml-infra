@@ -866,6 +866,15 @@ swift_identity_roles_addons:
 # Monitoring
 {% if config.sensu_checks %}
 sensu_checks:
+  check_disk:
+    command: /usr/lib64/nagios/plugins/check_disk -w 20% -c 10% -W 20% -K 10% -p /
+    subscribers: base
+  check_load:
+    command: /usr/lib64/nagios/plugins/check_load -w 24,22,20 -c 48,48,48
+    subscribers: base
+  check_swap:
+    command: /usr/lib64/nagios/plugins/check_swap -a -w80% -c60%
+    subscribers: base
 {% for check, desc in config.sensu_checks.iteritems() %}
   {{ check }}:
   {% for key, value in desc.iteritems() %}
