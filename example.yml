@@ -1,4 +1,19 @@
 infra: 3nodes
+profiles:
+  install-server:
+    steps:
+      1:
+        roles:
+          - cloud::logging::server
+          - cloud::monitoring::server::sensu
+  openstack-full:
+    steps:
+      1:
+        roles:
+          - cloud::logging::agent
+      3:
+        roles:
+          - cloud::monitoring::agent::sensu
 hosts:
   install-server:
     profile: install-server
