@@ -6,11 +6,6 @@ profiles:
   install-server:
     arity: 1
     edeploy: install-server
-    steps:
-      1:
-        roles:
-          - cloud::logging::server
-          - cloud::monitoring::server::sensu
   openstack-full:
     arity: 3
     edeploy: openstack-full
@@ -23,7 +18,6 @@ profiles:
           - cloud::cache
           - cloud::storage::rbd::monitor
           - cloud::storage::rbd::key
-          - cloud::logging::agent
       2:
         roles:
           - cloud::loadbalancer
@@ -34,7 +28,6 @@ profiles:
         roles:
           - cloud::identity
           - cloud::storage::rbd::pools
-          - cloud::monitoring::agent::sensu
       4:
         roles:
           - cloud::compute::api
@@ -107,7 +100,3 @@ serverspec:
   cloud::object::controller: object_proxy
   cloud::object::storage: object_storage
   cloud::spof: spof
-  cloud::logging::agent: logging_agent
-  cloud::logging::server: logging_server
-  cloud::monitoring::agent: monitoring_agent
-  cloud::monitoring::server: monitoring_server
