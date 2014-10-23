@@ -261,6 +261,7 @@ horizon_allowed_hosts:
 horizon_allowed_hosts:
   - "%{hiera(\'vip_internal_ip\')}"
 {% endif %}
+horizon_vhost_extra_params: {{ config.horizon_vhost_extra_params | default({}) }}
 
 # Cinder
 cinder_verbose: {{ config.cinder_verbose | default('"%{hiera(\'verbose\')}"') }}
