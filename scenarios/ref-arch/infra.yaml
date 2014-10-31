@@ -3,10 +3,17 @@ profiles:
   install-server:
     arity: 1
     edeploy: install-server
+    steps:
+      1:
+        roles:
+          - cloud
   load-balancer:
     arity: 2+n
     edeploy: openstack-full
     steps:
+      1:
+        roles:
+          - cloud
       2:
         roles:
           - cloud::loadbalancer
@@ -32,6 +39,7 @@ profiles:
     steps:
       1:
         roles:
+          - cloud
           - cloud::database::sql
           - cloud::database::nosql
           - cloud::messaging
@@ -98,6 +106,9 @@ profiles:
     arity: 1+n
     edeploy: openstack-full
     steps:
+      1:
+        roles:
+          - cloud
       4:
         roles:
           - cloud::compute::hypervisor
@@ -121,6 +132,9 @@ profiles:
     arity: 3+2n
     edeploy: openstack-full
     steps:
+      1:
+        roles:
+          - cloud
       2:
         roles:
           - cloud::storage::rbd::osd

@@ -6,12 +6,17 @@ profiles:
   install-server:
     arity: 1
     edeploy: install-server
+    steps:
+      1:
+        roles:
+          - cloud
   openstack-full:
     arity: 3
     edeploy: openstack-full
     steps:
       1:
         roles:
+          - cloud
           - cloud::database::sql
           - cloud::database::nosql
           - cloud::messaging
