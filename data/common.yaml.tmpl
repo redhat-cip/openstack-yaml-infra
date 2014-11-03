@@ -169,7 +169,7 @@ rabbit_hosts:
 rabbit_password: {{ config.rabbit_password | default('rabbitpassword') }}
 rabbit_cluster_node_type: {{ config.cluster_node_type | default('disc') }}
 rabbit_port: {{ config.rabbit_port | default('5672') }}
-rabbit_ip: {{ config.rabbit_ip | default('"%{::ipaddress}"') }}
+rabbit_ip: '{{ config.rabbit_ip | default('"%{::ipaddress}"') }}'
 rabbit: {{ config.rabbit | default('false') }}
 rabbit_bind_options: {{ config.rabbit_bind_options | default('"%{hiera(\'haproxy_default_bind_options\')}"') }}
 
