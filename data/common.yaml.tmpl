@@ -214,6 +214,7 @@ horizon_allowed_hosts:
   - "%{hiera(\'vip_internal_ip\')}"
 {% endif %}
 horizon_vhost_extra_params: {{ config.horizon_vhost_extra_params | default({}) }}
+horizon_neutron_extra_options: {{ config.horizon_neutron_extra_options | default({}) }}
 
 # Cinder
 cinder_verbose: {{ config.cinder_verbose | default('"%{hiera(\'verbose\')}"') }}
@@ -425,6 +426,7 @@ keystone_db_password: {{ config.keystone_db_password | default('keystonepassword
 ks_admin_email: {{ config.ks_admin_email | default('no-reply@keystone.openstack') }}
 ks_admin_password: {{ config.ks_admin_password | default('adminpassword') }}
 ks_admin_token: {{ config.ks_admin_token | default('') }}
+ks_admin_roles: {{ config.ks_admin_roles | default(['admin', 'heat_stack_owner']) }}
 ks_admin_tenant: {{ config.ks_admin_tenant | default('admin') }}
 
 keystone_port: {{ config.keystone_port | default('5000') }}

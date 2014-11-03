@@ -105,6 +105,7 @@ cloud::dashboard::ssl_forward: "%{hiera('horizon_ssl_forward')}"
 cloud::dashboard::os_endpoint_type: "%{hiera('horizon_endpoint_type')}"
 cloud::dashboard::allowed_hosts: "%{hiera('horizon_allowed_hosts')}"
 cloud::dashboard::vhost_extra_params: "%{hiera('horizon_vhost_extra_params')}"
+cloud::dashboard::neutron_extra_options: "%{hiera('horizon_neutron_extra_options')}"
 
 #
 # cloud::identity
@@ -119,6 +120,7 @@ cloud::identity::memcache_servers: "%{hiera('memcache_servers')}"
 cloud::identity::ks_admin_email: "%{hiera('ks_admin_email')}"
 cloud::identity::ks_admin_password: "%{hiera('ks_admin_password')}"
 cloud::identity::ks_admin_tenant: "%{hiera('ks_admin_tenant')}"
+cloud::identity::ks_admin_roles: "%{hiera('ks_admin_roles')}"
 cloud::identity::ks_admin_token: "%{hiera('ks_admin_token')}"
 cloud::identity::ks_ceilometer_admin_host: "%{hiera('ks_ceilometer_admin_host')}"
 cloud::identity::ks_ceilometer_internal_host: "%{hiera('ks_ceilometer_internal_host')}"
