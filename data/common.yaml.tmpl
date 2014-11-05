@@ -765,3 +765,8 @@ rsyslog::client::server: {{ config.syslog_server }}
 
 # HAproxy
 haproxy_auth: {{ config.haproxy_auth | default('admin:changeme') }}
+
+# This is needed for initial bootstrap
+# before step1 is even generated
+classes:
+ - cloud
