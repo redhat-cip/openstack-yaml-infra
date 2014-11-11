@@ -7,7 +7,11 @@ ntp::servers: "%{hiera('ntp_servers')}"
 root_password: {{ config.root_password }}
 
 # Set of common configuration value
-#
+
+# SELinux
+selinux: {{ config.selinux | default('permissive') }}
+selinux_booleans: {{ config.selinux_booleans | default([]) }}
+selinux_modules: {{ config.selinux_modules | default([]) }}
 
 # Endpoints Protocols & Types
 
