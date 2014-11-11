@@ -757,7 +757,8 @@ logging_logrotate_rule: {}
 {% endif %}
 
 # Rsyslog
-rsyslog::client::log_remote: true
+rsyslog::client::log_remote: {{ config.syslog_log_remote | default('true') }}
+rsyslog::client::log_local: {{ config.syslog_log_local | default('true') }}
 rsyslog::client::remote_type: udp
 rsyslog::client::remote_forward_format: RSYSLOG_TraditionalForwardFormat
 rsyslog::client::port: {{ config.syslog_port }}
