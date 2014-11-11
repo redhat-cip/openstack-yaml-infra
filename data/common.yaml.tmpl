@@ -10,6 +10,7 @@ root_password: {{ config.root_password }}
 
 # SELinux
 selinux: {{ config.selinux | default('permissive') }}
+selinux_directory: {{ config.selinux_directory }}
 selinux_booleans: {{ config.selinux_booleans | default([]) }}
 selinux_modules: {{ config.selinux_modules | default([]) }}
 
