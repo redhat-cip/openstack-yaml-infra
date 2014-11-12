@@ -3,8 +3,8 @@
 {% if profiles[hosts[hname]['profile']]['min_step'] %}
 {% if profiles[hosts[hname]['profile']]['min_step'] <= step %}
 {{ hname }}.{{ config.domain }}:
-{% if hosts[hname].ip %}
-  :server_ip: {{ hosts[hname].ip }}
+{% if hosts[hname].cmdb.ip or hosts[hname].ip %}
+  :server_ip: {{ hosts[hname].cmdb.ip or hosts[hname].ip }}
 {% endif %}
   :hostname: {{ hname }}
   :roles:

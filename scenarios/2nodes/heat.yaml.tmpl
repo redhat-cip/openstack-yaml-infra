@@ -101,7 +101,7 @@ resources:
         - ip_address: {{ config.vip_admin_ip }}{% endif %}
       fixed_ips:
         - subnet_id: { get_resource: private_subnet }
-          ip_address: {{ hosts[hname].ip }}
+          ip_address: {{ hosts[hname].cmdb.ip or hosts[hname].ip }}
       security_groups: [{ get_resource: mysecgroup }]
 
   {{ hname }}:

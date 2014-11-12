@@ -8,6 +8,6 @@ ff02::1 ip6-allnodes
 ff02::2 ip6-allrouters
 
 {% for hname in hosts %}
-{{ hosts[hname].ip }} {{ hname }}.{{ config.domain  }} {{ hname }}{% endfor %}
+{{ hosts[hname].cmdb.ip or hosts[hname].ip }} {{ hname }}.{{ config.domain  }} {{ hname }}{% endfor %}
 {% if config.vip_public_fqdn and config.vip_public_ip %}{{ config.vip_public_ip }}   {{ config.vip_public_fqdn }}{% endif %}
 {% if config.vip_admin_fqdn and config.vip_admin_fqdn != config.vip_public_fqdn and config.vip_admin_ip %}{{ config.vip_admin_ip }}   {{ config.vip_admin_fqdn }}{% endif %}
