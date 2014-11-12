@@ -163,8 +163,8 @@ galera_bind_options: {{ config.galera_bind_options | default('"%{hiera(\'haproxy
 # rabbit_hosts: defined in site.pp
 rabbit_names: {{ config.rabbit_names | default('"%{hiera(\'mgmt_names\')}"') }}
 rabbit_host: {{ config.rabbit_host }}
-{% if config.rabbit_hosts %}
 rabbit_hosts:
+{% if config.rabbit_hosts %}
 {% for host in config.rabbit_hosts %}  - {{ host }}
 {% endfor %}
 {% else %}
