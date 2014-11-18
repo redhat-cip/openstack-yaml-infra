@@ -204,15 +204,8 @@ horizon_ca: {{ config.horizon_ca | default('') }}
 horizon_ssl_forward: {{ config.horizon_ssl_forward | default('false') }}
 horizon_listen_ssl: {{ config.horizon_listen_ssl | default('false') }}
 horizon_endpoint_type: {{ config.horizon_endpoint_type | default('"%{hiera(\'endpoint_type\')}"') }}
-{% if config.horizon_allowed_hosts %}
 horizon_allowed_hosts:
-  - "%{hiera(\'vip_internal_ip\')}"
-{% for allowed_host in config.horizon_allowed_hosts %}  - {{ allowed_host }}
-{% endfor %}
-{% else %}
-horizon_allowed_hosts:
-  - "%{hiera(\'vip_internal_ip\')}"
-{% endif %}
+  - "%{hiera('vip_public_fqdn')}"
 horizon_vhost_extra_params: {{ config.horizon_vhost_extra_params | default({}) }}
 
 # Cinder
