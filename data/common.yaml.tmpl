@@ -202,7 +202,6 @@ horizon_cert: {{ config.horizon_cert | default('') }}
 horizon_key: {{ config.horizon_key | default('') }}
 horizon_ca: {{ config.horizon_ca | default('') }}
 horizon_ssl_forward: {{ config.horizon_ssl_forward | default('false') }}
-horizon_listen_ssl: {{ config.horizon_listen_ssl | default('false') }}
 horizon_endpoint_type: {{ config.horizon_endpoint_type | default('"%{hiera(\'endpoint_type\')}"') }}
 horizon_allowed_hosts:
   - "%{hiera('vip_public_fqdn')}"
@@ -310,8 +309,6 @@ glance_api: {{ config.glance_api | default('true') }}
 glance_registry: {{ config.glance_registry | default('true') }}
 glance_api_bind_options: {{ config.glance_api_bind_options | default('"%{hiera(\'haproxy_default_bind_options\')}"') }}
 glance_registry_bind_options: {{ config.glance_registry_bind_options | default('"%{hiera(\'haproxy_default_bind_options\')}"') }}
-glance_api_bind_options: {{ config.glance_api_bind_options | default('"%{hiera(\'haproxy_default_bind_options\')}"') }}
-glance_registry_bind_options: {{ config.glance_registry_bind_options | default('"%{hiera(\'haproxy_default_bind_options\')}"') }}
 
 glance_backend: {{ config.glance_backend | default('rbd') }}
 glance_rbd_pool: {{ config.glance_rbd_pool | default('images') }}
@@ -368,8 +365,6 @@ ks_ceilometer_internal_proto: {{ config.ceilometer_internal_proto | default('"%{
 ks_ceilometer_public_host: {{ config.ceilometer_public_host | default('"%{hiera(\'vip_public_fqdn\')}"') }}
 ks_ceilometer_public_proto: {{ config.ceilometer_public_proto | default('"%{hiera(\'endpoint_public_protocol\')}"') }}
 ks_ceilometer_password: {{ config.ks_ceilometer_password | default('ceilometerpassword') }}
-
-ceilometer_endpoint_type: {{ config.ceilometer_endpoint_type | default('"%{hiera(\'endpoint_type\')}"') }}
 
 ceilometer_secret: {{ config.ceilometer_secret | default('ceilometersecret') }}
 
@@ -450,8 +445,6 @@ nova_bind_options: {{ config.nova_bind_options | default('"%{hiera(\'haproxy_def
 nova_metadata_bind_options: {{ config.nova_metadata_bind_options | default('"%{hiera(\'haproxy_default_bind_options\')}"') }}
 nova_ec2_bind_options: {{ config.nova_ec2_bind_options | default('"%{hiera(\'haproxy_default_bind_options\')}"') }}
 spice_bind_options: {{ config.spice_bind_options | default('"%{hiera(\'haproxy_default_bind_options\')}"') }}
-
-nova_endpoint_type: {{ config.nova_endpoint_type | default('"%{hiera(\'endpoint_type\')}"') }}
 
 nova_port: {{ config.nova_port | default('8774') }}
 nova_ec2_port: {{ config.nova_ec2_port | default('8773') }}
