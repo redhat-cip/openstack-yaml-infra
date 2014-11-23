@@ -45,7 +45,7 @@ rhn_registration:
 {% for server, params in config.rhn_registration.iteritems() %}
   {{ server }}:
   {% for key, value in params.iteritems() %}
-    {{ key }}: {{ value }}
+    {{ key }}: '{{ value }}'
   {% endfor %}
 {% endfor %}
 {% else %}
@@ -254,7 +254,7 @@ volume_cinder_backends:
   {% for type, spec in desc.iteritems() %}
     {{ type }}:
     {% for key, value in spec.iteritems() %}
-      {{ key }}: {{ value }}
+      {{ key }}: '{{ value }}'
     {% endfor %}
   {% endfor %}
 {% endfor %}
@@ -570,7 +570,7 @@ neutron_uplink_profile:
 {% for check, desc in config.neutron_uplink_profile.iteritems() %}
   {{ check }}:
   {% for key, value in desc.iteritems() %}
-    {{ key }}: {{ value }}
+    {{ key }}: '{{ value }}'
   {% endfor %}
 {% endfor %}
 {% else %}
@@ -581,7 +581,7 @@ neutron_vtep_config:
 {% for check, desc in config.neutron_vtep_config.iteritems() %}
   {{ check }}:
   {% for key, value in desc.iteritems() %}
-    {{ key }}: {{ value }}
+    {{ key }}: '{{ value }}'
   {% endfor %}
 {% endfor %}
 {% else %}
@@ -645,7 +645,7 @@ swift_device_config_hash:
 {% for check, desc in config.swift_device_config_hash.iteritems() %}
   {{ check }}:
   {% for key, value in desc.iteritems() %}
-    {{ key }}: {{ value }}
+    {{ key }}: '{{ value }}'
   {% endfor %}
 {% endfor %}
 {% else %}
@@ -667,7 +667,7 @@ sensu_checks:
 {% for check, desc in config.sensu_checks.iteritems() %}
   {{ check }}:
   {% for key, value in desc.iteritems() %}
-    {{ key }}: {{ value }}
+    {{ key }}: '{{ value }}'
   {% endfor %}
 {% endfor %}
 {% else %}
@@ -678,7 +678,7 @@ sensu_handlers:
 {% for check, desc in config.sensu_handlers.iteritems() %}
   {{ check }}:
   {% for key, value in desc.iteritems() %}
-    {{ key }}: {{ value }}
+    {{ key }}: '{{ value }}'
   {% endfor %}
 {% endfor %}
 {% else %}
@@ -689,7 +689,7 @@ sensu_plugins:
 {% for check, desc in config.sensu_plugins.iteritems() %}
   {{ check }}:
   {% for key, value in desc.iteritems() %}
-    {{ key }}: {{ value }}
+    {{ key }}: '{{ value }}'
   {% endfor %}
 {% endfor %}
 {% else %}
@@ -707,7 +707,7 @@ logging_matches:
 {% for check, desc in config.logging_matches.iteritems() %}
   {{ check }}:
   {% for key, value in desc.iteritems() %}
-    {{ key }}: {{ value }}
+    {{ key }}: '{{ value }}'
   {% endfor %}
 {% endfor %}
 {% else %}
@@ -718,7 +718,7 @@ logging_sources:
 {% for check, desc in config.logging_sources.iteritems() %}
   {{ check }}:
   {% for key, value in desc.iteritems() %}
-    {{ key }}: {{ value }}
+    {{ key }}: '{{ value }}'
   {% endfor %}
 {% endfor %}
 {% else %}
@@ -729,7 +729,7 @@ logging_plugins:
 {% for check, desc in config.logging_plugins.iteritems() %}
   {{ check }}:
   {% for key, value in desc.iteritems() %}
-    {{ key }}: {{ value }}
+    {{ key }}: '{{ value }}'
   {% endfor %}
 {% endfor %}
 {% else %}
@@ -740,7 +740,7 @@ logging_logrotate_rule:
 {% for check, desc in config.logging_logrotate_rule.iteritems() %}
   {{ check }}:
   {% for key, value in desc.iteritems() %}
-    {{ key }}: {{ value }}
+    {{ key }}: '{{ value }}'
   {% endfor %}
 {% endfor %}
 {% else %}
