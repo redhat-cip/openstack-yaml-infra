@@ -1,0 +1,3 @@
+This scenario should be used if you want to deploy:
+* 3 controllers with storage and loadbalancer
+* 1+n computes
