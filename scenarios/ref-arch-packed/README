@@ -1,0 +1,5 @@
+This infra tries to pack the reference architecture to co-locate:
+
+• load-balancers with controllers
+
+• compute and storage (ceph osds) nodes
