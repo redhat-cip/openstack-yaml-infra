@@ -1,0 +1,5 @@
+This scenario should be used if you want to deploy:
+* 3 controllers with loadbalancer
+* 3 networkers
+* 1+n computes
+* no ceph (or external one)
