@@ -14,6 +14,15 @@ selinux_directory: {{ config.selinux_directory }}
 selinux_booleans: {{ config.selinux_booleans | default([]) }}
 selinux_modules: {{ config.selinux_modules | default([]) }}
 
+# Firewalling
+manage_firewall: {{ config.manage_firewall | default('false') }}
+firewall_rules: {{ config.firewall_rules | default({}) }}
+purge_firewall_rules: {{ config.purge_firewall_rules | default('false') }}
+firewall_pre_extras: {{ config.firewall_pre_extras | default({}) }}
+firewall_post_extras: {{ config.firewall_post_extras | default({}) }}
+firewall_common_extras: {{ config.firewall_common_extras | default({}) }}
+firewall_debug: {{ config.firewall_debug | default('false') }}
+
 # Endpoints Protocols & Types
 
 # DEPRECATED: @@VERSION@@
