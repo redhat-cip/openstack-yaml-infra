@@ -91,10 +91,10 @@ admin_netif: {{ config.admin_netif | default('"%{hiera(\'vip_public_netif\')}"')
 storage_netif: {{ config.storage_netif | default('"%{hiera(\'vip_public_netif\')}"') }}
 external_netif: {{ config.external_netif | default('"%{hiera(\'vip_public_netif\')}"') }}
 
-public_netif_ip: {{ config.public_netif_ip }}
-internal_netif_ip: {{ config.internal_netif_ip  | default('"%{hiera(\'vip_public_netif_ip\')}"') }}
-admin_netif_ip: {{ config.admin_netif_ip  | default('"%{hiera(\'vip_public_netif_ip\')}"') }}
-storage_netif_ip: {{ config.storage_netif_ip  | default('"%{hiera(\'vip_public_netif_ip\')}"') }}
+public_netif_ip: '{{ config.public_netif_ip }}'
+internal_netif_ip: '{{ config.internal_netif_ip  | default('"%{hiera(\'vip_public_netif_ip\')}"') }}'
+admin_netif_ip: '{{ config.admin_netif_ip  | default('"%{hiera(\'vip_public_netif_ip\')}"') }}'
+storage_netif_ip: '{{ config.storage_netif_ip  | default('"%{hiera(\'vip_public_netif_ip\')}"') }}'
 
 api_eth: {{ config.api_eth | default('"%{hiera(\'internal_netif_ip\')}"') }}
 storage_eth: {{ config.storage_eth | default('"%{hiera(\'storage_netif_ip\')}"') }}
