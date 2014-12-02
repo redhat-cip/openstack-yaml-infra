@@ -475,6 +475,8 @@ ks_nova_internal_proto: {{ config.nova_internal_proto | default('"%{hiera(\'endp
 ks_nova_public_host: {{ config.nova_public_host | default('"%{hiera(\'vip_public_fqdn\')}"') }}
 ks_nova_public_proto: {{ config.nova_public_proto | default('"%{hiera(\'endpoint_public_protocol\')}"') }}
 ks_nova_password: {{ config.ks_nova_password | default('novapassword') }}
+ks_spice_public_host: {{ config.spice_public_host | default('"%{hiera(\'vip_public_fqdn\')}"') }}
+ks_spice_public_proto: {{ config.spice_public_proto | default('"%{hiera(\'endpoint_public_protocol\')}"') }}
 
 nova_db_allowed_hosts: {{ config.nova_db_allowed_hosts | default('"%{hiera(\'db_allowed_hosts\')}"') }}
 nova_db_host: {{ config.nova_db_host | default('"%{hiera(\'galera_ip\')}"') }}
