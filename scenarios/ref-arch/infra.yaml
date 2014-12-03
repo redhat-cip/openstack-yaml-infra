@@ -181,3 +181,19 @@ serverspec:
   cloud::object::controller: object_proxy
   cloud::object::storage: object_storage
   cloud::spof: spof
+
+anchors:
+  cloud::database::sql: mysql
+  cloud::messaging: rabbitmq
+  cloud::cache: memcached
+  cloud::storage::rbd::monitor: ceph-mon
+  cloud::identity: keystone
+  cloud::network::dhcp: neutron-dhcp-agent
+  cloud::loadbalancer: haproxy
+  cloud::storage::rbd::osd: ceph-osd
+  cloud::compute::hypervisor: nova-compute
+  cloud::compute::api: nova-api
+  cloud::dashboard: horizon
+  cloud::object::controller: swift-proxy
+  cloud::object::storage: swift-storage
+  cloud::spof: pacemaker
