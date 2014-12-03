@@ -594,6 +594,9 @@ cloud::volume::api::api_eth: "%{hiera('internal_netif_ip')}"
 cloud::volume::api::ks_glance_internal_proto: "%{hiera('ks_glance_api_internal_proto')}"
 cloud::volume::api::default_volume_type: "%{hiera('volume_default_volume_type')}"
 cloud::volume::api::firewall_settings: "%{hiera('firewall_common_extras')}"
+cloud::volume::api::volume_multi_backend: "%{hiera('cinder_multi_backend')}"
+
+cloud::volume::scheduler::volume_multi_backend: "%{hiera('cinder_multi_backend')}"
 
 cloud::volume::backup::backup_ceph_pool: "%{hiera('backup_ceph_pool')}"
 cloud::volume::backup::backup_ceph_user: "%{hiera('backup_ceph_user')}"
@@ -811,8 +814,6 @@ cloud::monitoring::server::sensu::uchiwa_ip: "%{hiera('sensu_uchiwa_ip')}"
 # cloud::volume::controller::volume_multi_backend:
 # cloud::volume::controller::firewall_settings:
 # cloud::volume::storage::glance_api_version:
-# cloud::volume::scheduler::volume_multi_backend:
-# cloud::volume::api::volume_multi_backend:
 
 # cloud::loadbalancer
 

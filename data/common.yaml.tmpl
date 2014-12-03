@@ -256,6 +256,7 @@ cinder_db_user: {{ config.cinder_db_user | default('cinder') }}
 cinder_db_password: {{ config.cinder_db_password | default('cinderpassword') }}
 
 cinder_endpoint_type: {{ config.cinder_endpoint_type | default('"%{hiera(\'endpoint_type\')}"') }}
+cinder_multi_backend: {{ config.cinder_multi_backend | default('true') }}
 {% if config.volume_cinder_backends %}
 volume_cinder_backends:
 {% for backend, desc in config.volume_cinder_backends.iteritems() %}
