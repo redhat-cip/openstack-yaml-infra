@@ -72,7 +72,7 @@ config:
   vip_admin_ip: 10.151.0.253
   vip_admin_fqdn: openstack-vip.ring.enovance.com
   vip_internal_fqdn: openstack-vip.ring.enovance.com
-  endpoint_proto: https
+  endpoint_protocol: https
 
   public_network: 10.151.0.0/24
   internal_network: 10.151.0.0/24
