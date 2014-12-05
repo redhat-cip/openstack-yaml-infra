@@ -25,8 +25,6 @@ firewall_debug: {{ config.firewall_debug | default('false') }}
 
 # Endpoints Protocols & Types
 
-# DEPRECATED: @@VERSION@@
-endpoint_proto: {{ config.endpoint_proto | default('https') }}
 endpoint_protocol: {{ config.endpoint_protocol | default('https') }}
 endpoint_public_protocol: {{ config.endpoint_public_protocol | default('"%{hiera(\'endpoint_protocol\')}"') }}
 endpoint_internal_protocol: {{ config.endpoint_internal_protocol | default('"%{hiera(\'endpoint_protocol\')}"') }}
@@ -665,8 +663,10 @@ swift_device_config_hash: {}
 {% endif %}
 
 swift_fstype: {{ config.swift_fstype | default('xfs') }}
-# DEPRECATED @@VERSIONS@@
+# BEGIN DEPRECATED @@VERSIONS@@
 replicas: {{ config.replicas | default('3') }}
+# END
+
 swift_replicas: {{ config.swift_replicas | default('3') }}
 swift_rsyncd_ipaddress: {{ config.swift_rsyncd_ipaddress | default('"%{hiera(\'internal_netif_ip\')}"')}}
 statsd_host: {{ config.statsd_host | default('"%{hiera(\'internal_netif_ip\')}"') }}
