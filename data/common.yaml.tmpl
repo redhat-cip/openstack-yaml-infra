@@ -71,6 +71,7 @@ ntp_servers:
 {% endif %}
 
 vip_public_ip: {{ config.vip_public_ip }}
+vip_monitor_ip: {{ config.vip_monitor_ip  | default('"%{hiera(\'vip_public_ip\')}"') }}
 vip_admin_ip: {{ config.vip_admin_ip  | default('"%{hiera(\'vip_public_ip\')}"') }}
 vip_internal_ip: {{ config.vip_internal_ip | default('"%{hiera(\'vip_public_ip\')}"') }}
 
