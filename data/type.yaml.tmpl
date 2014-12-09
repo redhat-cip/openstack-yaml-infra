@@ -402,7 +402,7 @@ cloud::network::lbaas::debug: "%{hiera('neutron_debug')}"
 
 cloud::network::dhcp::veth_mtu: "%{hiera('neutron_veth_mtu')}"
 cloud::network::dhcp::debug: "%{hiera('neutron_debug')}"
-cloud::network::dhcp::dnsmasq_dns_server: "%{hiera('neutron_dnsmasq_dns_server')}"
+cloud::network::dhcp::dnsmasq_dns_servers: "%{hiera('neutron_dnsmasq_dns_servers')}"
 cloud::network::dhcp::firewall_settings: "%{hiera('firewall_common_extras')}"
 
 cloud::network::controller::flat_networks: "%{hiera('neutron_flat_networks')}"

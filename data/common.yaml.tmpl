@@ -556,7 +556,7 @@ neutron_manage_haproxy_pkg: {{ config.neutron_manage_haproxy_pkg | default('fals
 neutron_plugin: {{ config.neutron_plugin | default('ml2') }}
 neutron_driver: {{ config.neutron_driver | default('ml2_ovs') }}
 neutron_veth_mtu: {{ config.neutron_veth_mtu | default('1500') }}
-neutron_dnsmasq_dns_server: {{ config.neutron_dnsmasq_dns_server | default('false') }}
+neutron_dnsmasq_dns_servers: {{ config.neutron_dnsmasq_dns_servers | default('false') }}
 
 neutron_metadata_enabled: {{ config.neutron_metadata_enabled | default('true') }}
 neutron_external_int: {{ config.neutron_external_int | default('"%{hiera(\'external_netif\')}"') }}
