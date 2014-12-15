@@ -7,8 +7,8 @@ profiles:
       1:
         roles:
           - cloud
-          - cloud::install:puppetdb
-          - cloud::install:puppetmaster
+          - cloud::install::puppetdb
+          - cloud::install::puppetmaster
   openstack-full:
     arity: 3
     edeploy: openstack-full
