@@ -3,6 +3,11 @@ profiles:
   install-server:
     arity: 1
     edeploy: install-server
+      1:
+        roles:
+          - cloud
+          - cloud::install::puppetdb
+          - cloud::install::puppetmaster
   controller:
     arity: 3+2n
     edeploy: openstack-full
@@ -126,3 +131,5 @@ serverspec:
   cloud::compute::api: controller
   cloud::dashboard: dashboard
   cloud::spof: spof
+  cloud::install::puppetdb: puppetdb
+  cloud::install::puppetmaster: puppetmaster
