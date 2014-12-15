@@ -279,6 +279,19 @@ cloud::image::registry::use_syslog: "%{hiera('glance_registry_use_syslog')}"
 cloud::image::registry::firewall_settings: "%{hiera('firewall_common_extras')}"
 
 #
+# cloud::install
+#
+cloud::install::puppetmaster::puppetmaster_package_name: "%{hiera('puppetmaster_package_name')}"
+cloud::install::puppetmaster::puppetmaster_service_name: "%{hiera('puppetmaster_service_name')}"
+cloud::install::puppetmaster::main_configuration: "%{hiera('puppetmaster_main_configuration')}"
+cloud::install::puppetmaster::agent_configuration: "%{hiera('puppetmaster_agent_configuration')}"
+cloud::install::puppetmaster::master_configuration: "%{hiera('puppetmaster_master_configuration')}"
+cloud::install::puppetmaster::puppetmaster_vhost_configuration: "%{hiera('puppetmaster_vhost_configuration')}"
+cloud::install::puppetmaster::puppetconf_path: "%{hiera('puppetmaster_puppetconf_path')}"
+cloud::install::puppetmaster::puppetdb_enable: "%{hiera('puppetdb_enable')}"
+cloud::install::puppetmaster::autosign_domains: "%{hiera('autosign_domains')}"
+
+#
 # cloud::loadbalancer
 #
 cloud::loadbalancer::swift_api: "%{hiera('swift_api')}"

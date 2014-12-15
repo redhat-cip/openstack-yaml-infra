@@ -760,6 +760,68 @@ logging_logrotate_rule:
 logging_logrotate_rule: {}
 {% endif %}
 
+# PuppetMaster
+autosign_domains: { config.autosign_domains | default('*') }
+puppetdb_enable: { config.puppetdb_enable | default('true') }
+puppetmaster_puppetconf_path: { config.puppetmaster_puppetconf_path | default('/etc/puppet/puppet.conf') }
+puppetmaster_package_name: { config.puppetmaster_package_name }
+puppetmaster_service_name: { config.puppetmaster_service_name }
+{% if config.puppetmaster_main_configuration %}
+puppetmaster_main_configuration :
+{% for check, desc in config.puppetmaster_main_configuration.iteritems() %}
+  {{ check }}:
+  {% for key, value in desc.iteritems() %}
+    {{ key }}: {{ value }}
+  {% endfor %}
+{% endfor %}
+{% else %}
+puppetmaster_main_configuration: {}
+{% endif %}
+{% if config.puppetmaster_agent_configuration %}
+puppetmaster_agent_configuration :
+{% for check, desc in config.puppetmaster_agent_configuration.iteritems() %}
+  {{ check }}:
+  {% for key, value in desc.iteritems() %}
+    {{ key }}: {{ value }}
+  {% endfor %}
+{% endfor %}
+{% else %}
+puppetmaster_agent_configuration: {}
+{% endif %}
+{% if config.puppetmaster_master_configuration %}
+puppetmaster_master_configuration :
+{% for check, desc in config.puppetmaster_master_configuration.iteritems() %}
+  {{ check }}:
+  {% for key, value in desc.iteritems() %}
+    {{ key }}: {{ value }}
+  {% endfor %}
+{% endfor %}
+{% else %}
+puppetmaster_master_configuration: {}
+{% endif %}
+{% if config.puppetmaster_master_configuration %}
+puppetmaster_master_configuration :
+{% for check, desc in config.puppetmaster_master_configuration.iteritems() %}
+  {{ check }}:
+  {% for key, value in desc.iteritems() %}
+    {{ key }}: {{ value }}
+  {% endfor %}
+{% endfor %}
+{% else %}
+puppetmaster_master_configuration: {}
+{% endif %}
+{% if config.puppetmaster_vhost_configuration %}
+puppetmaster_vhost_configuration :
+{% for check, desc in config.puppetmaster_vhost_configuration.iteritems() %}
+  {{ check }}:
+  {% for key, value in desc.iteritems() %}
+    {{ key }}: {{ value }}
+  {% endfor %}
+{% endfor %}
+{% else %}
+puppetmaster_vhost_configuration: {}
+{% endif %}
+
 # Rsyslog
 rsyslog::client::log_remote: {{ config.syslog_log_remote | default('true') }}
 rsyslog::client::log_local: {{ config.syslog_log_local | default('true') }}
