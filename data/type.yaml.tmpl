@@ -281,8 +281,8 @@ cloud::image::registry::firewall_settings: "%{hiera('firewall_common_extras')}"
 #
 # cloud::install
 #
-cloud::install::puppetmaster::puppetmaster_package_name: "%{hiera('puppetmaster_package_name')}"
-cloud::install::puppetmaster::puppetmaster_service_name: "%{hiera('puppetmaster_service_name')}"
+#cloud::install::puppetmaster::puppetmaster_package_name: "%{hiera('puppetmaster_package_name')}"
+#cloud::install::puppetmaster::puppetmaster_service_name: "%{hiera('puppetmaster_service_name')}"
 cloud::install::puppetmaster::main_configuration: "%{hiera('puppetmaster_main_configuration')}"
 cloud::install::puppetmaster::agent_configuration: "%{hiera('puppetmaster_agent_configuration')}"
 cloud::install::puppetmaster::master_configuration: "%{hiera('puppetmaster_master_configuration')}"
