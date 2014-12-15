@@ -761,11 +761,11 @@ logging_logrotate_rule: {}
 {% endif %}
 
 # PuppetMaster
-autosign_domains: { config.autosign_domains | default('*') }
-puppetdb_enable: { config.puppetdb_enable | default('true') }
-puppetmaster_puppetconf_path: { config.puppetmaster_puppetconf_path | default('/etc/puppet/puppet.conf') }
-puppetmaster_package_name: { config.puppetmaster_package_name }
-puppetmaster_service_name: { config.puppetmaster_service_name }
+autosign_domains: {{ config.autosign_domains | default(['*']) }}
+puppetdb_enable: {{ config.puppetdb_enable | default('true') }}
+puppetmaster_puppetconf_path: {{ config.puppetmaster_puppetconf_path | default('/etc/puppet/puppet.conf') }}
+puppetmaster_package_name: {{ config.puppetmaster_package_name }}
+puppetmaster_service_name: {{ config.puppetmaster_service_name }}
 {% if config.puppetmaster_main_configuration %}
 puppetmaster_main_configuration :
 {% for check, desc in config.puppetmaster_main_configuration.iteritems() %}
