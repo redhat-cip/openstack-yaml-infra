@@ -3,6 +3,7 @@ profiles:
   install-server:
     arity: 1
     edeploy: install-server
+    steps:
       1:
         roles:
           - cloud
