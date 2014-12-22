@@ -821,10 +821,10 @@ puppetmaster_vhost_configuration :
 puppetmaster_vhost_configuration: {}
 {% endif %}
 {% if config.passenger_root %}
-passenger_root: {{ config.passenger_root }}
+apache::mod::passenger::passenger_root: {{ config.passenger_root }}
 {% endif %}
 {% if config.passenger_mod_lib_path %}
-passenger_mod_lib_path: {{ config.passenger_mod_lib_path }}
+apache::mod::passenger::mod_lib_path: {{ config.passenger_mod_lib_path }}
 {% endif %}
 
 # Rsyslog
