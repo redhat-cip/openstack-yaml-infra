@@ -820,6 +820,12 @@ puppetmaster_vhost_configuration :
 {% else %}
 puppetmaster_vhost_configuration: {}
 {% endif %}
+{% if config.passenger_root %}
+passenger_root: {{ config.passenger_root }}
+{% endif %}
+{% if config.passenger_mod_lib_path %}
+passenger_mod_lib_path: {{ config.passenger_mod_lib_path }}
+{% endif %}
 
 # Rsyslog
 rsyslog::client::log_remote: {{ config.syslog_log_remote | default('true') }}
