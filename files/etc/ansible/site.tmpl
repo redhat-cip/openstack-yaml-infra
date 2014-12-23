@@ -1,0 +1,16 @@
+---
+# file: site.yml
+
+- hosts: all
+  user: jenkins
+  sudo: true
+  vars_files:
+    - [ "vars/{{ ansible_distribution }}" ]
+
+{% for prof in profiles %}
+- hosts: {{ prof }}
+  serial: 1
+  roles:
+    - {{ prof }}
+
+{% endfor %}
