@@ -309,7 +309,9 @@ glance_api_verbose: {{ config.glance_api_verbose | default('"%{hiera(\'verbose\'
 glance_api_debug: {{ config.glance_api_debug | default('"%{hiera(\'debug\')}"') }}
 glance_api_use_syslog: {{ config.glance_api_use_syslog | default('"%{hiera(\'use_syslog\')}"') }}
 glance_api_log_facility: {{ config.glance_api_log_facility | default('"%{hiera(\'log_facility\')}"') }}
+{% if config.glance_api_policies %}
 glance_api_policies: {{ config.glance_api_policies }}
+{% endif %}
 
 glance_registry_verbose: {{ config.glance_registry_verbose | default('"%{hiera(\'verbose\')}"') }}
 glance_registry_debug: {{ config.glance_registry_debug | default('"%{hiera(\'debug\')}"') }}
