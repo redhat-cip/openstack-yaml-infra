@@ -262,9 +262,7 @@ cloud::image::api::nfs_device: "%{hiera('glance_nfs_device')}"
 cloud::image::api::nfs_options: "%{hiera('glance_nfs_options')}"
 cloud::image::api::pipeline: "%{hiera('glance_api_pipeline')}"
 cloud::image::api::firewall_settings: "%{hiera('firewall_common_extras')}"
-{% if config.glance_api_policies %}
 cloud::image::api::api_policies: "%{hiera('glance_api_policies')}"
-{% endif %}
 
 cloud::image::registry::glance_db_host: "%{hiera('glance_db_host')}"
 cloud::image::registry::glance_db_user: "%{hiera('glance_db_user')}"
