@@ -837,8 +837,11 @@ puppetmaster_vhost_configuration: {}
 {% if config.passenger_root %}
 apache::mod::passenger::passenger_root: {{ config.passenger_root }}
 {% endif %}
-{% if config.passenger_mod_lib_path %}
-apache::mod::passenger::mod_lib_path: {{ config.passenger_mod_lib_path }}
+{% if config.passenger_ruby %}
+apache::mod::passenger::passenger_ruby: {{ config.passenger_ruby }}
+{% endif %}
+{% if config.passenger_mod_path %}
+apache::mod::passenger::mod_path: {{ config.passenger_mod_path }}
 {% endif %}
 
 # Rsyslog
