@@ -3,6 +3,8 @@
 {% if prof == profile %}
 {% if profiles[profile]['steps'] %}
 classes:
+  - cloud
+  - cloud::install::puppetdb::config
 {% for step_num in profiles[profile]['steps'] %}
 {% if step_num <= step %}
 {% for role in profiles[profile]['steps'][step_num]['roles'] %}
@@ -289,63 +291,6 @@ cloud::image::registry::debug: "%{hiera('glance_registry_debug')}"
 cloud::image::registry::log_facility: "%{hiera('glance_registry_log_facility')}"
 cloud::image::registry::use_syslog: "%{hiera('glance_registry_use_syslog')}"
 cloud::image::registry::firewall_settings: "%{hiera('firewall_common_extras')}"
-
-#
-# cloud::install
-#
-#cloud::install::puppetmaster::puppetmaster_package_name: "%{hiera('puppetmaster_package_name')}"
-#cloud::install::puppetmaster::puppetmaster_service_name: "%{hiera('puppetmaster_service_name')}"
-cloud::install::puppetmaster::main_configuration: "%{hiera('puppetmaster_main_configuration')}"
-cloud::install::puppetmaster::agent_configuration: "%{hiera('puppetmaster_agent_configuration')}"
-cloud::install::puppetmaster::master_configuration: "%{hiera('puppetmaster_master_configuration')}"
-cloud::install::puppetmaster::puppetmaster_vhost_configuration: "%{hiera('puppetmaster_vhost_configuration')}"
-cloud::install::puppetmaster::puppetconf_path: "%{hiera('puppetmaster_puppetconf_path')}"
-cloud::install::puppetmaster::puppetdb_enable: "%{hiera('puppetdb_enable')}"
-cloud::install::puppetmaster::autosign_domains: "%{hiera('autosign_domains')}"
-cloud::install::puppetmaster::autosign_domains:
-  - '*'
-cloud::install::puppetmaster::master_configuration:
-  ssl_client_header:
-    setting: ssl_client_header
-    value: SSL_CLIENT_S_DN
-  ssl_client_verify_header:
-    setting: ssl_client_verify_header
-    value: SSL_CLIENT_VERIFY
-cloud::install::puppetmaster::agent_configuration:
-  certname:
-    setting: certname
-    value: "%{::fqdn}"
-  server:
-    setting: server
-    value: "%{::fqdn}"
-cloud::install::puppetmaster::puppetmaster_vhost_configuration:
-  puppetmasterd:
-   docroot: '/usr/share/puppet/rack/puppetmasterd/public'
-   port: 8140
-   ssl: true
-   ssl_protocol: 'ALL -SSLv2 -SSLv3'
-   ssl_cipher: 'ALL:!aNULL:!eNULL:!DES:!3DES:!IDEA:!SEED:!DSS:!PSK:!RC4:!MD5:+HIGH:+MEDIUM:!LOW:!SSLv2:!EXP'
-   ssl_honorcipherorder: 'On'
-   ssl_cert: "/var/lib/puppet/ssl/certs/%{::fqdn}.pem"
-   ssl_key: "/var/lib/puppet/ssl/private_keys/%{::fqdn}.pem"
-   ssl_chain: "/var/lib/puppet/ssl/certs/ca.pem"
-   ssl_ca: "/var/lib/puppet/ssl/certs/ca.pem"
-   ssl_verify_client: optional
-   ssl_verify_depth: 1
-   ssl_options:
-     - +StdEnvVars
-     - +ExportCertData
-   request_headers:
-     - 'unset X-Forwarded-For'
-     - "set X-SSL-Subject %%{}{SSL_CLIENT_S_DN}e"
-     - "set X-Client-DN %%{}{SSL_CLIENT_S_DN}e"
-     - "set X-Client-Verify %%{}{SSL_CLIENT_VERIFY}e"
-   rack_base_uris: '/'
-   add_default_charset: 'UTF-8'
-puppetdb::master::config::puppetdb_server: "%{::fqdn}"
-puppetdb::master::config::manage_report_processor: true
-puppetdb::master::config::enable_reports: true
-puppetdb::master::config::strict_validation: false
 
 #
 # cloud::loadbalancer
