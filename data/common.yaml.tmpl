@@ -158,7 +158,6 @@ galera_clustercheck_dbuser: {{ config.galera_clustercheck_dbuser | default ('clu
 galera_clustercheck_dbpassword: {{ config.galera_clustercheck_dbpassword | default ('clustercheckpassword') }}
 galera_gcache: {{ config.galera_gcache | default('1G') }}
 galera_slave: {{ config.galera_slave | default('false') }}
-service_provider: {{ config.service_provider | default('sysv') }}
 galera_bind_options: {{ config.galera_bind_options | default('"%{hiera(\'haproxy_default_bind_options\')}"') }}
 
 # Messaging

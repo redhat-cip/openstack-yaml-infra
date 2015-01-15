@@ -645,7 +645,6 @@ cloud::volume::nova_endpoint_type: "%{hiera('nova_endpoint_type')}"
 # cloud::database
 #
 cloud::database::sql::api_eth: "%{hiera('internal_netif_ip')}"
-cloud::database::sql::service_provider: "%{hiera('service_provider')}"
 cloud::database::sql::galera_master_name: "%{hiera('galera_master_name')}"
 cloud::database::sql::galera_internal_ips: "%{hiera('galera_internal_ips')}"
 cloud::database::sql::galera_gcache: "%{hiera('galera_gcache')}"
@@ -786,77 +785,6 @@ cloud::monitoring::server::sensu::uchiwa_ip: "%{hiera('sensu_uchiwa_ip')}"
 # They are put here so the sync_parameter script doesn't complain
 #
 #
-
-# cloud::image
-
-# cloud::image::glance_db_host:
-# cloud::image::glance_db_user:
-# cloud::image::glance_db_password:
-# cloud::image::ks_keystone_internal_host:
-# cloud::image::ks_glance_internal_host:
-# cloud::image::ks_glance_api_internal_port:
-# cloud::image::ks_glance_registry_internal_port:
-# cloud::image::ks_glance_password:
-# cloud::image::rabbit_password:
-# cloud::image::rabbit_host:
-# cloud::image::api_eth:
-# cloud::image::openstack_vip:
-# cloud::image::glance_rbd_pool:
-# cloud::image::glance_rbd_user:
-# cloud::image::verbose:
-# cloud::image::debug:
-# cloud::image::log_facility:
-# cloud::image::use_syslog:
-
-# cloud::compute
-
-# cloud::compute::scheduler::scheduler_default_filters:
-# cloud::compute::controller::ks_keystone_internal_host:
-# cloud::compute::controller::ks_nova_password:
-# cloud::compute::controller::neutron_metadata_proxy_shared_secret:
-# cloud::compute::controller::api_eth:
-# cloud::compute::controller::spice_port:
-# cloud::compute::controller::ks_nova_public_port:
-# cloud::compute::controller::ks_ec2_public_port:
-# cloud::compute::controller::ks_metadata_public_port:
-
-# cloud::telemetry
-
-# cloud::telemetry::server::ks_keystone_internal_host:
-# cloud::telemetry::server::ks_keystone_internal_proto:
-# cloud::telemetry::server::ks_ceilometer_internal_port:
-# cloud::telemetry::server::ks_ceilometer_password:
-# cloud::telemetry::server::api_eth:
-# cloud::telemetry::server::mongo_nodes:
-
-# cloud::volume
-
-# cloud::volume::controller::ks_cinder_internal_port:
-# cloud::volume::controller::ks_cinder_password:
-# cloud::volume::controller::ks_keystone_internal_host:
-# cloud::volume::controller::ks_keystone_internal_proto:
-# cloud::volume::controller::ks_glance_internal_host:
-# cloud::volume::controller::ks_glance_api_internal_port:
-# cloud::volume::controller::api_eth:
-# cloud::volume::controller::default_volume_type:
-# cloud::volume::controller::volume_multi_backend:
-# cloud::volume::controller::firewall_settings:
-# cloud::volume::storage::glance_api_version:
-
-# cloud::loadbalancer
-
-# cloud::loadbalancer::keepalived_interface:
-# cloud::loadbalancer::keepalived_ipvs:
-
-# cloud::network
-
-# cloud::network::external_int:
-# cloud::network::external_bridge:
-# cloud::network::manage_ext_network:
-# cloud::network::tunnel_types:
-# cloud::network::tunnel_eth:
-# cloud::network::provider_bridge_mappings:
-
 # Need to be ignored
 # cloud::firewall::pre::firewall_settings:
 # cloud::firewall::post::log:
