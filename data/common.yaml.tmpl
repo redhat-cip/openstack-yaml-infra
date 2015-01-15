@@ -217,6 +217,7 @@ horizon_vhost_extra_params: {{ config.horizon_vhost_extra_params | default({}) }
 horizon_neutron_extra_options: {{ config.horizon_neutron_extra_options | default({}) }}
 
 # Cinder
+cinder_enabled: {{ config.cinder_enabled | default('true') }}
 cinder_verbose: {{ config.cinder_verbose | default('"%{hiera(\'verbose\')}"') }}
 cinder_debug: {{ config.cinder_debug | default('"%{hiera(\'debug\')}"') }}
 cinder_use_syslog: {{ config.cinder_use_syslog | default('"%{hiera(\'use_syslog\')}"') }}
@@ -475,6 +476,8 @@ nova_port: {{ config.nova_port | default('8774') }}
 nova_ec2_port: {{ config.nova_ec2_port | default('8773') }}
 nova_metadata_port: {{ config.nova_metadata_port | default('8775') }}
 spice_port: {{ config.spice_port | default('6082') }}
+novnc_port: {{ config.novnc_port | default('6080') }}
+nova_console: {{ config.nova_console | default('spice') }}
 spice_secure: {{ config.spice_secure | default('false') }}
 
 ks_nova_admin_host: {{ config.nova_admin_host | default('"%{hiera(\'vip_admin_fqdn\')}"') }}
@@ -577,6 +580,26 @@ neutron_tunnel_types: {{ config.neutron_tunnel_types | default(['gre']) }}
 neutron_tenant_network_types: {{ config.neutron_tenant_network_types  | default(['gre']) }}
 neutron_type_drivers: {{ config.neutron_type_drivers | default(['gre','vlan','flat']) }}
 neutron_external_provider_net: {{ config.neutron_external_provider_net | default('false') }}
+neutron_l3_ha_enabled: {{ config.neutron_l3_ha_enabled | default('false') }}
+neutron_l3_ha_vrrp_auth_type: {{ config.neutron_l3_ha_vrrp_auth_type | default('PASS') }}
+neutron_l3_ha_vrrp_auth_password: {{ config.neutron_l3_ha_vrrp_auth_password | default('secrete') }}
+neutron_l3_allow_automatic_l3agent_failover: {{ config.neutron_l3_allow_automatic_l3agent_failover | default('false') }}
+neutron_l3_agent_mode: {{ config.neutron_l3_agent_mode | default('legacy') }}
+enable_distributed_routing: {{ config.enable_distributed_routing | default('false') }}
+
+{% if config.neutron_mechanism_drivers %}
+neutron_mechanism_drivers: {{ config.neutron_mechanism_drivers }}
+{% endif %}
+
+{% if config.neutron_tunnel_id_ranges %}
+neutron_tunnel_id_ranges: {{ config.neutron_tunnel_id_ranges }}
+{% endif %}
+
+{% if config.neutron_vni_ranges %}
+neutron_vni_ranges: {{ config.neutron_vni_ranges }}
+{% endif %}
+
+neutron_l3_ha: {{ config.neutron_mechanism_drivers }}
 
 # Neutron N1KV Settings
 neutron_n1kv_vsm_ip: {{ config.neutron_n1kv_vsm_ip | default('127.0.0.1') }}
@@ -610,6 +633,13 @@ neutron_vtep_config: {}
 neutron_node_type: {{ config.neutron_node_type | default('compute') }}
 neutron_vteps_in_same_subnet: {{ config.neutron_vteps_in_same_subnet | default('false') }}
 
+# Redis
+redis_port: {{ config.redis_port | default('6379') }}
+
+# novnc
+novnc: {{ config.novnc | default('false') }}
+novnc_bind_options: {{ config.novnc_bind_options | default('"%{hiera(\'haproxy_default_bind_options\')}"') }}
+novnc_port: {{ config.novnc_port | default('6080') }}
 
 # Trove
 trove_enabled: {{ config.trove_enabled | default('false') }}
