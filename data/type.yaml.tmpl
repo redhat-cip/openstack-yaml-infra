@@ -111,6 +111,8 @@ cloud::compute::consoleproxy::novnc_port: "%{hiera('novnc_port')}"
 cloud::compute::consoleproxy::secure: "%{hiera('spice_secure')}"
 cloud::compute::consoleproxy::firewall_settings: "%{hiera('firewall_common_extras')}"
 
+cloud::compute::scheduler::scheduler_default_filters: "%{hiera('nova_scheduler_default_filters')}"
+
 #
 # cloud::dashboard
 #

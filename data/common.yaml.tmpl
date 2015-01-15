@@ -454,6 +454,7 @@ ks_token_expiration: {{ config.ks_token_expiration | default('3600') }}
 ks_token_driver: {{ config.ks_token_driver | default('keystone.token.backends.sql.Token') }}
 
 # Nova
+nova_scheduler_default_filters: {{ config.nova_scheduler_default_filters | default('false') }}
 nova_verbose: {{ config.nova_verbose | default('"%{hiera(\'verbose\')}"') }}
 nova_debug: {{ config.nova_debug | default('"%{hiera(\'debug\')}"') }}
 nova_use_syslog: {{ config.nova_use_syslog | default('"%{hiera(\'use_syslog\')}"') }}
