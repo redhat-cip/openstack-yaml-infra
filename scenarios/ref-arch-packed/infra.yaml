@@ -17,10 +17,10 @@ profiles:
       1:
         roles:
           - cloud
-          - cloud::database::sql
+          - cloud::database::sql::mysql
           - cloud::database::nosql
           - cloud::messaging
-          - cloud::cache
+          - cloud::database::nosql::memcached
           - cloud::storage::rbd::monitor
           - cloud::storage::rbd::key
       2:
@@ -121,9 +121,9 @@ ordered_profiles:
   - compute-storage
 
 serverspec:
-  cloud::database::sql: database
+  cloud::database::sql::mysql: database
   cloud::messaging: messaging
-  cloud::cache: cache
+  cloud::database::nosql::memcached: cache
   cloud::storage::rbd::monitor: storage_controller
   cloud::identity: identity
   cloud::network::dhcp: network

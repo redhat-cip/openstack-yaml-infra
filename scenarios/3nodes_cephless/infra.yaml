@@ -15,10 +15,10 @@ profiles:
     steps:
       1:
         roles:
-          - cloud::database::sql
+          - cloud::database::sql::mysql
           - cloud::database::nosql
           - cloud::messaging
-          - cloud::cache
+          - cloud::database::nosql::memcached
       2:
         roles:
           - cloud::loadbalancer
@@ -85,9 +85,9 @@ ordered_profiles:
   - openstack-full
 
 serverspec:
-  cloud::database::sql: database
+  cloud::database::sql::mysql: database
   cloud::messaging: messaging
-  cloud::cache: cache
+  cloud::database::nosql::memcached: cache
   cloud::identity: identity
   cloud::network::dhcp: network
   cloud::loadbalancer: lb
