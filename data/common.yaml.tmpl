@@ -392,6 +392,9 @@ ks_ceilometer_password: {{ config.ks_ceilometer_password | default('ceilometerpa
 
 ceilometer_secret: {{ config.ceilometer_secret | default('ceilometersecret') }}
 
+{% if config.ceilometer_coordination_url %}
+ceilometer_coordination_url: {{ config.ceilometer_coordination_url }}
+{% endif %}
 
 # Ceph
 ceph_public_network: "%{hiera('public_network')}"
