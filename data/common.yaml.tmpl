@@ -592,6 +592,11 @@ enable_distributed_routing: {{ config.enable_distributed_routing | default('fals
 
 {% if config.neutron_mechanism_drivers %}
 neutron_mechanism_drivers: {{ config.neutron_mechanism_drivers }}
+{% else %}
+neutron_mechanism_drivers:
+  - linuxbridge
+  - openvswitch
+  - l2population
 {% endif %}
 
 {% if config.neutron_tunnel_id_ranges %}
@@ -601,8 +606,6 @@ neutron_tunnel_id_ranges: {{ config.neutron_tunnel_id_ranges }}
 {% if config.neutron_vni_ranges %}
 neutron_vni_ranges: {{ config.neutron_vni_ranges }}
 {% endif %}
-
-neutron_l3_ha: {{ config.neutron_mechanism_drivers }}
 
 # Neutron N1KV Settings
 neutron_n1kv_vsm_ip: {{ config.neutron_n1kv_vsm_ip | default('127.0.0.1') }}
