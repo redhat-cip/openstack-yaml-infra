@@ -334,6 +334,10 @@ glance_registry: {{ config.glance_registry | default('true') }}
 glance_api_bind_options: {{ config.glance_api_bind_options | default('"%{hiera(\'haproxy_default_bind_options\')}"') }}
 glance_registry_bind_options: {{ config.glance_registry_bind_options | default('"%{hiera(\'haproxy_default_bind_options\')}"') }}
 
+{% if config.glance_known_stores %}
+glance_known_stores: {{ config.glance_known_stores }}
+{% endif %}
+
 glance_backend: {{ config.glance_backend | default('rbd') }}
 glance_rbd_pool: {{ config.glance_rbd_pool | default('images') }}
 glance_rbd_user: {{ config.glance_rbd_user | default('glance') }}
