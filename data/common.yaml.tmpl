@@ -592,11 +592,6 @@ enable_distributed_routing: {{ config.enable_distributed_routing | default('fals
 
 {% if config.neutron_mechanism_drivers %}
 neutron_mechanism_drivers: {{ config.neutron_mechanism_drivers }}
-{% else %}
-neutron_mechanism_drivers:
-  - linuxbridge
-  - openvswitch
-  - l2population
 {% endif %}
 
 {% if config.neutron_tunnel_id_ranges %}
