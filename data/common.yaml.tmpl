@@ -336,6 +336,9 @@ glance_registry_bind_options: {{ config.glance_registry_bind_options | default('
 
 {% if config.glance_known_stores %}
 glance_known_stores: {{ config.glance_known_stores }}
+{% else %}
+glance_known_stores:
+  - rbd
 {% endif %}
 
 glance_backend: {{ config.glance_backend | default('rbd') }}
