@@ -687,10 +687,10 @@ cloud::database::sql::mysql::galera_clustercheck_dbpassword: "%{hiera('galera_cl
 cloud::database::sql::mysql::galera_clustercheck_ipaddress: "%{hiera('galera_clustercheck_ipaddress')}"
 cloud::database::sql::mysql::firewall_settings: "%{hiera('firewall_common_extras')}"
 
-cloud::database::nosql::bind_ip: "%{hiera('internal_netif_ip')}"
-cloud::database::nosql::nojournal: "%{hiera('mongo_nojournal')}"
-cloud::database::nosql::replset_members: "%{hiera('mongo_replset_members')}"
-cloud::database::nosql::firewall_settings: "%{hiera('firewall_common_extras')}"
+cloud::database::nosql::mongodb::bind_ip: "%{hiera('internal_netif_ip')}"
+cloud::database::nosql::mongodb::nojournal: "%{hiera('mongo_nojournal')}"
+cloud::database::nosql::mongodb::replset_members: "%{hiera('mongo_replset_members')}"
+cloud::database::nosql::mongodb::firewall_settings: "%{hiera('firewall_common_extras')}"
 
 cloud::database::dbaas::nova_admin_password: "%{hiera('ks_nova_password')}"
 cloud::database::dbaas::api::ks_trove_password: "%{hiera('ks_trove_password')}"
