@@ -9,6 +9,7 @@ profiles:
           - cloud
           - cloud::install::puppetdb
           - cloud::install::puppetmaster
+          - cloud::database::nosql::redis
   controller:
     arity: 3+2n
     edeploy: openstack-full

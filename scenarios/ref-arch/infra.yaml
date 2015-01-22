@@ -9,6 +9,7 @@ profiles:
           - cloud
           - cloud::install::puppetdb
           - cloud::install::puppetmaster
+          - cloud::database::nosql::redis::server
   load-balancer:
     arity: 2+n
     edeploy: openstack-full
@@ -172,6 +173,7 @@ serverspec:
   cloud::database::sql::mysql: database
   cloud::messaging: messaging
   cloud::database::nosql::memcached: cache
+  cloud::database::nosql::redis::server: redis_server
   cloud::storage::rbd::monitor: storage_controller
   cloud::identity: identity
   cloud::network::dhcp: network
