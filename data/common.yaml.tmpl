@@ -147,6 +147,10 @@ mongo_replset_members:
 replicatset_enabled: {{ config.replicatset_enabled | default('true') }}
 mongodb_version: {{ config.mongodb_version | default('2.4.0') }}
 
+# Redis
+redis_port: {{ config.redis_port | default('6379') }}
+sentinel_port: {{ config.sentinel_port | default('26379') }}
+
 
 # MySQL
 galera_ip: {{ config.galera_ip | default('"%{hiera(\'vip_internal_ip\')}"') }}
@@ -641,9 +645,6 @@ neutron_vtep_config: {}
 {% endif %}
 neutron_node_type: {{ config.neutron_node_type | default('compute') }}
 neutron_vteps_in_same_subnet: {{ config.neutron_vteps_in_same_subnet | default('false') }}
-
-# Redis
-redis_port: {{ config.redis_port | default('6379') }}
 
 # novnc
 novnc: {{ config.novnc | default('false') }}

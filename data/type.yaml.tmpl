@@ -46,8 +46,10 @@ cloud::firewall::post::debug: "%{hiera('firewall_debug')}"
 #
 cloud::database::nosql::memcached::listen_ip: "%{hiera('internal_netif_ip')}"
 cloud::database::nosql::memcached::firewall_settings: "%{hiera('firewall_common_extras')}"
-cloud::database::nosql::redis::port: "%{hiera('redis_port')}"
-cloud::database::nosql::redis::firewall_settings: "%{hiera('firewall_common_extras')}"
+cloud::database::nosql::redis::server::port: "%{hiera('redis_port')}"
+cloud::database::nosql::redis::server::firewall_settings: "%{hiera('firewall_common_extras')}"
+cloud::database::nosql::redis::sentinel::port: "%{hiera('sentinel_port')}"
+cloud::database::nosql::redis::sentinel::firewall_settings: "%{hiera('firewall_common_extras')}"
 
 #
 # cloud::compute
