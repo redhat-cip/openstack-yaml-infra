@@ -145,6 +145,7 @@ mongo_replset_members:
   - "%{::hostname}"
 {% endif %}
 replicatset_enabled: {{ config.replicatset_enabled | default('true') }}
+mongodb_version: {{ config.mongodb_version | default('2.4.0') }}
 
 
 # MySQL

@@ -691,6 +691,7 @@ cloud::database::nosql::mongodb::bind_ip: "%{hiera('internal_netif_ip')}"
 cloud::database::nosql::mongodb::nojournal: "%{hiera('mongo_nojournal')}"
 cloud::database::nosql::mongodb::replset_members: "%{hiera('mongo_replset_members')}"
 cloud::database::nosql::mongodb::firewall_settings: "%{hiera('firewall_common_extras')}"
+cloud::database::nosql::mongodb::mongodb_version: "%{hiera('mongodb_version')}"
 
 cloud::database::dbaas::nova_admin_password: "%{hiera('ks_nova_password')}"
 cloud::database::dbaas::api::ks_trove_password: "%{hiera('ks_trove_password')}"
