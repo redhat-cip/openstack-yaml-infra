@@ -480,7 +480,7 @@ nova_shell: {{ config.nova_shell | default('/bin/bash') }}
 nova_api: {{ config.nova_api | default('true') }}
 nova_ec2_api: {{ config.nova_ec2_api | default('true') }}
 nova_metadata_api: {{ config.nova_metadata_api | default('true') }}
-spice: {{ config.spice | default('true') }}
+spice: {{ config.spice | default('false') }}
 
 nova_bind_options: {{ config.nova_bind_options | default('"%{hiera(\'haproxy_default_bind_options\')}"') }}
 nova_metadata_bind_options: {{ config.nova_metadata_bind_options | default('"%{hiera(\'haproxy_default_bind_options\')}"') }}
@@ -492,7 +492,7 @@ nova_ec2_port: {{ config.nova_ec2_port | default('8773') }}
 nova_metadata_port: {{ config.nova_metadata_port | default('8775') }}
 spice_port: {{ config.spice_port | default('6082') }}
 novnc_port: {{ config.novnc_port | default('6080') }}
-nova_console: {{ config.nova_console | default('spice') }}
+nova_console: {{ config.nova_console | default('novnc') }}
 spice_secure: {{ config.spice_secure | default('false') }}
 
 ks_nova_admin_host: {{ config.nova_admin_host | default('"%{hiera(\'vip_admin_fqdn\')}"') }}
@@ -647,7 +647,7 @@ neutron_node_type: {{ config.neutron_node_type | default('compute') }}
 neutron_vteps_in_same_subnet: {{ config.neutron_vteps_in_same_subnet | default('false') }}
 
 # novnc
-novnc: {{ config.novnc | default('false') }}
+novnc: {{ config.novnc | default('true') }}
 novnc_bind_options: {{ config.novnc_bind_options | default('"%{hiera(\'haproxy_default_bind_options\')}"') }}
 novnc_port: {{ config.novnc_port | default('6080') }}
 
