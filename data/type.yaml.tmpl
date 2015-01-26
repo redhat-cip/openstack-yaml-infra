@@ -782,26 +782,6 @@ cloud::logging::agent::sources: "%{hiera('logging_sources')}"
 cloud::logging::agent::matches: "%{hiera('logging_matches')}"
 cloud::logging::agent::plugins: "%{hiera('logging_plugins')}"
 cloud::logging::agent::logrotate_rule: "%{hiera('logging_logrotate_rule')}"
-cloud::logging::agent::sources:
-  syslog:
-    configfile: syslog
-    type: syslog
-    tag: system.syslog
-    config:
-      port: 5140
-      bind: 0.0.0.0
-      with_priority:
-cloud::logging::agent::matches:
-  elasticsearch:
-    configfile: elasticsearch
-    pattern: "**"
-    type: elasticsearch
-    config:
-      logstash_format: true
-      index_name: fluentd
-      type_name: fluentd
-      port: 9200
-      host: "%{::ipaddress}"
 
 fluentd::version: '2'
 
