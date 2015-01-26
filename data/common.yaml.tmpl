@@ -760,7 +760,7 @@ sensu_plugins: {}
 sensu_rabbitmq_user: {{ config.sensu_rabbitmq_user | default('sensu') }}
 sensu_rabbitmq_password: {{ config.sensu_rabbitmq_password | default('rabbitpassword') }}
 sensu_rabbitmq_vhost: {{ config.sensu_rabbitmq_vhost | default ('/sensu') }}
-sensu_uchiwa_ip: {{ config.sensu_uchiwa_ip | default('127.0.0.01') }}
+sensu_uchiwa_ip: {{ config.sensu_uchiwa_ip | default('127.0.0.1') }}
 
 # Logging
 logging_syslog_enable: {{ config.logging_syslog_enable | default('true') }}

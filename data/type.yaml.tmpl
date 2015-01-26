@@ -302,6 +302,50 @@ cloud::install::puppetmaster::puppetmaster_vhost_configuration: "%{hiera('puppet
 cloud::install::puppetmaster::puppetconf_path: "%{hiera('puppetmaster_puppetconf_path')}"
 cloud::install::puppetmaster::puppetdb_enable: "%{hiera('puppetdb_enable')}"
 cloud::install::puppetmaster::autosign_domains: "%{hiera('autosign_domains')}"
+cloud::install::puppetmaster::autosign_domains:
+  - '*'
+cloud::install::puppetmaster::master_configuration:
+  ssl_client_header:
+    setting: ssl_client_header
+    value: SSL_CLIENT_S_DN
+  ssl_client_verify_header:
+    setting: ssl_client_verify_header
+    value: SSL_CLIENT_VERIFY
+cloud::install::puppetmaster::agent_configuration:
+  certname:
+    setting: certname
+    value: "%{::fqdn}"
+  server:
+    setting: server
+    value: "%{::fqdn}"
+cloud::install::puppetmaster::puppetmaster_vhost_configuration:
+  puppetmasterd:
+   docroot: '/usr/share/puppet/rack/puppetmasterd/public'
+   port: 8140
+   ssl: true
+   ssl_protocol: 'ALL -SSLv2 -SSLv3'
+   ssl_cipher: 'ALL:!aNULL:!eNULL:!DES:!3DES:!IDEA:!SEED:!DSS:!PSK:!RC4:!MD5:+HIGH:+MEDIUM:!LOW:!SSLv2:!EXP'
+   ssl_honorcipherorder: 'On'
+   ssl_cert: "/var/lib/puppet/ssl/certs/%{::fqdn}.pem"
+   ssl_key: "/var/lib/puppet/ssl/private_keys/%{::fqdn}.pem"
+   ssl_chain: "/var/lib/puppet/ssl/certs/ca.pem"
+   ssl_ca: "/var/lib/puppet/ssl/certs/ca.pem"
+   ssl_verify_client: optional
+   ssl_verify_depth: 1
+   ssl_options:
+     - +StdEnvVars
+     - +ExportCertData
+   request_headers:
+     - 'unset X-Forwarded-For'
+     - "set X-SSL-Subject %%{}{SSL_CLIENT_S_DN}e"
+     - "set X-Client-DN %%{}{SSL_CLIENT_S_DN}e"
+     - "set X-Client-Verify %%{}{SSL_CLIENT_VERIFY}e"
+   rack_base_uris: '/'
+   add_default_charset: 'UTF-8'
+puppetdb::master::config::puppetdb_server: "%{::fqdn}"
+puppetdb::master::config::manage_report_processor: true
+puppetdb::master::config::enable_reports: true
+puppetdb::master::config::strict_validation: false
 
 #
 # cloud::loadbalancer
@@ -738,6 +782,35 @@ cloud::logging::agent::sources: "%{hiera('logging_sources')}"
 cloud::logging::agent::matches: "%{hiera('logging_matches')}"
 cloud::logging::agent::plugins: "%{hiera('logging_plugins')}"
 cloud::logging::agent::logrotate_rule: "%{hiera('logging_logrotate_rule')}"
+cloud::logging::agent::sources:
+  syslog:
+    configfile: syslog
+    type: syslog
+    tag: system.syslog
+    config:
+      port: 5140
+      bind: 0.0.0.0
+      with_priority:
+cloud::logging::agent::matches:
+  elasticsearch:
+    configfile: elasticsearch
+    pattern: "**"
+    type: elasticsearch
+    config:
+      logstash_format: true
+      index_name: fluentd
+      type_name: fluentd
+      port: 9200
+      host: "%{::ipaddress}"
+
+fluentd::version: '2'
+
+kibana3::ws_servername: "%{::fqdn}"
+kibana3::ws_port: '8300'
+kibana3::manage_git_repository: false
+kibana3::manage_ws: false
+kibana3::config_es_server: "%{::ipaddress}"
+kibana3::config_kibana_index: fluentd
 
 #
 # cloud::monitoring
@@ -749,6 +822,16 @@ cloud::monitoring::server::sensu::rabbitmq_user: "%{hiera('sensu_rabbitmq_user')
 cloud::monitoring::server::sensu::rabbitmq_password: "%{hiera('sensu_rabbitmq_password')}"
 cloud::monitoring::server::sensu::rabbitmq_vhost: "%{hiera('sensu_rabbitmq_vhost')}"
 cloud::monitoring::server::sensu::uchiwa_ip: "%{hiera('sensu_uchiwa_ip')}"
+
+uchiwa::install_repo: false
+uchiwa::user: admin
+uchiwa::pass: password
+uchiwa::host: "%{::ipaddress}"
+
+sensu::rabbitmq_password: "%{hiera('sensu_rabbitmq_password')}"
+sensu::rabbitmq_host: "%{hiera('rabbit_host')}"
+sensu::rabbitmq_vhost: "%{hiera('sensu_rabbitmq_vhost')}"
+sensu::install_repo: false
 
 # Experimental
 # cloud::database::dbaas::trove_db_host: "%{hiera('trove_db_host')}"
