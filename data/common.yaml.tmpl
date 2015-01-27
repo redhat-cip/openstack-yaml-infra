@@ -812,6 +812,13 @@ logging_logrotate_rule:
 {% else %}
 logging_logrotate_rule: {}
 {% endif %}
+kibana_servername: {{ config.kibana_servername | default('"%{::fqdn}"') }}
+kibana_port: {{ config.kibana_port | default('8300') }}
+kibana_manage_git_repository: {{ config.kibana_manage_git_repository | default('false') }}
+kibana_manage_ws: {{ config.kibana_manage_ws | default('true') }}
+kibana_config_es_server: {{ config.kibana_config_es_server | default('"%{::ipaddress}"') }}
+kibana_config_index: {{ config.kibana_config_index | default('fluentd') }}
+fluentd_version: {{ config.fluentd_version | default('2') }}
 
 # PuppetMaster
 autosign_domains: {{ config.autosign_domains | default(['*']) }}
