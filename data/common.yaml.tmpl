@@ -760,7 +760,11 @@ sensu_plugins: {}
 sensu_rabbitmq_user: {{ config.sensu_rabbitmq_user | default('sensu') }}
 sensu_rabbitmq_password: {{ config.sensu_rabbitmq_password | default('rabbitpassword') }}
 sensu_rabbitmq_vhost: {{ config.sensu_rabbitmq_vhost | default ('/sensu') }}
-sensu_uchiwa_ip: {{ config.sensu_uchiwa_ip | default('127.0.0.1') }}
+sensu_install_repo: {{ config.sensu_install_repo | default('false') }}
+sensu_uchiwa_ip: {{ config.sensu_uchiwa_ip | default('"%{::ipaddress}"') }}
+sensu_uchiwa_user: {{ config.sensu_uchiwa_user | default('admin') }}
+sensu_uchiwa_password: {{ config.sensu_uchiwa_password | default('password') }}
+sensu_uchiwa_install_repo: {{ config.sensu_uchiwa_install_repo | default('false') }}
 
 # Logging
 logging_syslog_enable: {{ config.logging_syslog_enable | default('true') }}

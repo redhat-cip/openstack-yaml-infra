@@ -802,16 +802,13 @@ cloud::monitoring::server::sensu::rabbitmq_user: "%{hiera('sensu_rabbitmq_user')
 cloud::monitoring::server::sensu::rabbitmq_password: "%{hiera('sensu_rabbitmq_password')}"
 cloud::monitoring::server::sensu::rabbitmq_vhost: "%{hiera('sensu_rabbitmq_vhost')}"
 cloud::monitoring::server::sensu::uchiwa_ip: "%{hiera('sensu_uchiwa_ip')}"
-
-uchiwa::install_repo: false
-uchiwa::user: admin
-uchiwa::pass: password
-uchiwa::host: "%{::ipaddress}"
-
+uchiwa::install_repo: "%{hiera('sensu_uchiwa_install_repo')}"
+uchiwa::user: "%{hiera('sensu_uchiwa_user')}"
+uchiwa::pass:"%{hiera('sensu_uchiwa_password')}"
 sensu::rabbitmq_password: "%{hiera('sensu_rabbitmq_password')}"
 sensu::rabbitmq_host: "%{hiera('rabbit_host')}"
 sensu::rabbitmq_vhost: "%{hiera('sensu_rabbitmq_vhost')}"
-sensu::install_repo: false
+sensu::install_repo: "%{hiera('sensu_install_repo')}"
 
 # Experimental
 # cloud::database::dbaas::trove_db_host: "%{hiera('trove_db_host')}"
