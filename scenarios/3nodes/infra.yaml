@@ -12,6 +12,8 @@ profiles:
           - cloud
           - cloud::install::puppetdb
           - cloud::install::puppetmaster
+      2:
+        roles:
           - cloud::database::nosql::redis::server
   openstack-full:
     arity: 3
@@ -22,21 +24,23 @@ profiles:
           - cloud
           - cloud::database::sql::mysql
           - cloud::database::nosql::mongodb
-          - cloud::messaging
-          - cloud::database::nosql::memcached
-          - cloud::storage::rbd::monitor
           - cloud::storage::rbd::key
       2:
         roles:
+          - cloud::messaging
+          - cloud::database::nosql::memcached
+          - cloud::storage::rbd::monitor
           - cloud::loadbalancer
           - cloud::storage::rbd::osd
           - cloud::dashboard
           - cloud::object::storage
       3:
         roles:
-          - cloud::identity
           - cloud::storage::rbd::pools
       4:
+        roles:
+          - cloud::identity
+      5:
         roles:
           - cloud::compute::api
           - cloud::compute::cert
@@ -66,8 +70,6 @@ profiles:
           - cloud::object::controller
           - cloud::object::ringbuilder
           - cloud::spof
-      5:
-        roles:
           - cloud::network::dhcp
           - cloud::network::metadata
           - cloud::network::lbaas
