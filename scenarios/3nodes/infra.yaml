@@ -10,8 +10,6 @@ profiles:
       1:
         roles:
           - cloud
-      2:
-        roles:
           - cloud::install::puppetdb
           - cloud::install::puppetmaster
           - cloud::database::nosql::redis::server
@@ -22,25 +20,23 @@ profiles:
       1:
         roles:
           - cloud
-      2:
-        roles:
           - cloud::database::sql::mysql
           - cloud::database::nosql::mongodb
           - cloud::messaging
           - cloud::database::nosql::memcached
           - cloud::storage::rbd::monitor
           - cloud::storage::rbd::key
-      3:
+      2:
         roles:
           - cloud::loadbalancer
           - cloud::storage::rbd::osd
           - cloud::dashboard
           - cloud::object::storage
-      4:
+      3:
         roles:
           - cloud::identity
           - cloud::storage::rbd::pools
-      5:
+      4:
         roles:
           - cloud::compute::api
           - cloud::compute::cert
@@ -70,6 +66,8 @@ profiles:
           - cloud::object::controller
           - cloud::object::ringbuilder
           - cloud::spof
+      5:
+        roles:
           - cloud::network::dhcp
           - cloud::network::metadata
           - cloud::network::lbaas
