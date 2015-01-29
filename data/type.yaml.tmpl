@@ -679,11 +679,15 @@ cloud::database::sql::mysql::galera_clustercheck_dbpassword: "%{hiera('galera_cl
 cloud::database::sql::mysql::galera_clustercheck_ipaddress: "%{hiera('galera_clustercheck_ipaddress')}"
 cloud::database::sql::mysql::firewall_settings: "%{hiera('firewall_common_extras')}"
 
-cloud::database::nosql::mongodb::bind_ip: "%{hiera('internal_netif_ip')}"
-cloud::database::nosql::mongodb::nojournal: "%{hiera('mongo_nojournal')}"
-cloud::database::nosql::mongodb::replset_members: "%{hiera('mongo_replset_members')}"
-cloud::database::nosql::mongodb::firewall_settings: "%{hiera('firewall_common_extras')}"
-cloud::database::nosql::mongodb::mongodb_version: "%{hiera('mongodb_version')}"
+cloud::database::nosql::mongodb::mongod::enable: "%{hiera('mongod_enable')}"
+cloud::database::nosql::mongodb::mongod::replset: "%{hiera('mongod_replset')}"
+cloud::database::nosql::mongodb::mongod::mongod_port: "%{hiera('mongod_fw_port')}"
+cloud::database::nosql::mongodb::mongod::firewall_settings: "%{hiera('firewall_common_extras')}"
+
+cloud::database::nosql::mongodb::mongos::enable: "%{hiera('mongos_enable')}"
+cloud::database::nosql::mongodb::mongos::shards: "%{hiera('mongos_shards')}"
+cloud::database::nosql::mongodb::mongos::mongos_port: "%{hiera('mongos_fw_port')}"
+cloud::database::nosql::mongodb::mongos::firewall_settings: "%{hiera('firewall_common_extras')}"
 
 cloud::database::dbaas::nova_admin_password: "%{hiera('ks_nova_password')}"
 cloud::database::dbaas::api::ks_trove_password: "%{hiera('ks_trove_password')}"
