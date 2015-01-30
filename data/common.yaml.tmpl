@@ -820,78 +820,6 @@ kibana_config_es_server: {{ config.kibana_config_es_server | default('"%{::ipadd
 kibana_config_index: {{ config.kibana_config_index | default('fluentd') }}
 fluentd_version: {{ config.fluentd_version | default('2') }}
 
-# PuppetMaster
-autosign_domains: {{ config.autosign_domains | default(['*']) }}
-puppetdb_enable: {{ config.puppetdb_enable | default('true') }}
-puppetmaster_puppetconf_path: {{ config.puppetmaster_puppetconf_path | default('/etc/puppet/puppet.conf') }}
-{% if config.puppetmaster_package_name %}
-puppetmaster_package_name: {{ config.puppetmaster_package_name }}
-{% endif %}
-{% if config.puppetmaster_service_name %}
-puppetmaster_service_name: {{ config.puppetmaster_service_name }}
-{% endif %}
-{% if config.puppetmaster_main_configuration %}
-puppetmaster_main_configuration :
-{% for check, desc in config.puppetmaster_main_configuration.iteritems() %}
-  {{ check }}:
-  {% for key, value in desc.iteritems() %}
-    {{ key }}: {{ value }}
-  {% endfor %}
-{% endfor %}
-{% else %}
-puppetmaster_main_configuration: {}
-{% endif %}
-{% if config.puppetmaster_agent_configuration %}
-puppetmaster_agent_configuration :
-{% for check, desc in config.puppetmaster_agent_configuration.iteritems() %}
-  {{ check }}:
-  {% for key, value in desc.iteritems() %}
-    {{ key }}: {{ value }}
-  {% endfor %}
-{% endfor %}
-{% else %}
-puppetmaster_agent_configuration: {}
-{% endif %}
-{% if config.puppetmaster_master_configuration %}
-puppetmaster_master_configuration :
-{% for check, desc in config.puppetmaster_master_configuration.iteritems() %}
-  {{ check }}:
-  {% for key, value in desc.iteritems() %}
-    {{ key }}: {{ value }}
-  {% endfor %}
-{% endfor %}
-{% else %}
-puppetmaster_master_configuration: {}
-{% endif %}
-{% if config.puppetmaster_master_configuration %}
-puppetmaster_master_configuration :
-{% for check, desc in config.puppetmaster_master_configuration.iteritems() %}
-  {{ check }}:
-  {% for key, value in desc.iteritems() %}
-    {{ key }}: {{ value }}
-  {% endfor %}
-{% endfor %}
-{% else %}
-puppetmaster_master_configuration: {}
-{% endif %}
-{% if config.puppetmaster_vhost_configuration %}
-puppetmaster_vhost_configuration :
-{% for check, desc in config.puppetmaster_vhost_configuration.iteritems() %}
-  {{ check }}:
-  {% for key, value in desc.iteritems() %}
-    {{ key }}: {{ value }}
-  {% endfor %}
-{% endfor %}
-{% else %}
-puppetmaster_vhost_configuration: {}
-{% endif %}
-{% if config.passenger_root %}
-apache::mod::passenger::passenger_root: {{ config.passenger_root }}
-{% endif %}
-{% if config.passenger_mod_lib_path %}
-apache::mod::passenger::mod_lib_path: {{ config.passenger_mod_lib_path }}
-{% endif %}
-
 # Rsyslog
 rsyslog::client::log_remote: {{ config.syslog_log_remote | default('true') }}
 rsyslog::client::log_local: {{ config.syslog_log_local | default('true') }}
@@ -900,10 +828,31 @@ rsyslog::client::remote_forward_format: RSYSLOG_TraditionalForwardFormat
 rsyslog::client::port: {{ config.syslog_port }}
 rsyslog::client::server: {{ config.syslog_server }}
 
+# PuppetDB
+puppetdb::disable_ssl: true
+{% if config.puppetdb_server %}
+puppetdb::master::config::puppetdb_server: {{ config.puppetdb_server }}
+{% else %}
+{% for hname in hosts %}
+{% if hosts[hname].profile == 'install-server' %}
+puppetdb::master::config::puppetdb_server: {{ hname }}
+{% endif %}
+{% endfor %}
+{% endif %}
+puppetdb::master::config::manage_report_processor: true
+puppetdb::master::config::restart_puppet: false
+puppetdb::master::config::enable_reports: true
+puppetdb::master::config::strict_validation: false
+puppetdb::master::config::puppet_conf_section: main
+puppetdb::master::config::puppetdb_port: 8081
+puppetdb::master::routes::routes:
+  apply:
+    catalog:
+      terminus: compiler
+      cache: puppetdb
+    facts:
+      terminus: facter
+      cache: puppetdb_apply
+
 # HAproxy
 haproxy_auth: {{ config.haproxy_auth | default('admin:changeme') }}
-
-# This is needed for initial bootstrap
-# before step1 is even generated
-classes:
- - cloud

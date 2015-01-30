@@ -6,10 +6,10 @@ profiles:
     steps:
       1:
         roles:
-          - cloud
-          - cloud::install::puppetdb
-          - cloud::install::puppetmaster
           - cloud::database::nosql::redis
+          - cloud::install::puppetdb::server
+    serverspec_config:
+      puppetdb_server: puppetdb_server
   controller:
     arity: 3+2n
     edeploy: openstack-full
@@ -66,11 +66,12 @@ profiles:
       neutron_firewall_driver: neutron_firewall_driver
       syslog_server: syslog_server
       syslog_port: syslog_port
+      puppetdb_server: puppetdb_server
   networker:
     arity: 3+2n
     edeploy: openstack-full
     steps:
-       5:
+      5:
         roles:
           - cloud::network::dhcp
           - cloud::network::metadata
@@ -92,6 +93,7 @@ profiles:
       neutron_firewall_driver: neutron_firewall_driver
       syslog_server: syslog_server
       syslog_port: syslog_port
+      puppetdb_server: puppetdb_server
   compute:
     arity: 1+n
     edeploy: openstack-full
@@ -115,6 +117,7 @@ profiles:
       neutron_firewall_driver: neutron_firewall_driver
       syslog_server: syslog_server
       syslog_port: syslog_port
+      puppetdb_server: puppetdb_server
 
 ordered_profiles:
   - install-server
@@ -133,5 +136,5 @@ serverspec:
   cloud::compute::api: controller
   cloud::dashboard: dashboard
   cloud::spof: spof
-  cloud::install::puppetdb: puppetdb
-  cloud::install::puppetmaster: puppetmaster
+  cloud::install::puppetdb::server: puppetdb_server
+  cloud::install::puppetdb::config: puppetdb_config
