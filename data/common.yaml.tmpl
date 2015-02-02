@@ -812,14 +812,21 @@ logging_logrotate_rule:
 {% else %}
 logging_logrotate_rule: {}
 {% endif %}
-kibana_servername: {{ config.kibana_servername | default('"%{::fqdn}"') }}
-kibana_port: {{ config.kibana_port | default('8300') }}
-kibana_manage_git_repository: {{ config.kibana_manage_git_repository | default('false') }}
-kibana_manage_ws: {{ config.kibana_manage_ws | default('true') }}
-kibana_config_es_server: {{ config.kibana_config_es_server | default('"%{::ipaddress}"') }}
-kibana_config_index: {{ config.kibana_config_index | default('fluentd') }}
-fluentd_version: {{ config.fluentd_version | default('2') }}
-
+fluentd::version: {{ config.fluentd_version | default('2') }}
+kibana3::ws_extras:
+  ip: {{ config.kibana_bind_ip | default('"%{hiera(\'internal_netif_ip\')}"') }}
+kibana3::ws_servername: {{ config.kibana_servername | default('"%{hiera(\'vip_public_fqdn\')}"') }}
+kibana3::ws_port: {{ config.kibana_port | default('\'8300\'') }}
+kibana3::manage_git_repository: {{ config.kibana_manage_git_repository | default('false') }}
+kibana3::manage_ws: {{ config.kibana_manage_ws | default('true') }}
+kibana3::config_es_server: {{ config.kibana_es_server | default('"%{hiera(\'vip_internal_ip\')}"') }}
+kibana3::config_kibana_index: {{ config.kibana_es_index | default('fluentd') }}
+kibana_bind_ip: {{ config.kibana_bind_ip | default('"%{hiera(\'internal_netif_ip\')}"') }}
+elasticsearch_port: 9200
+elasticsearch_bind_ip: {{ config.elasticsearch_bind_ip | default('"%{hiera(\'internal_netif_ip\')}"') }}
+elasticsearch::config:
+  'cluster.name': fluentd
+  'network.host': {{ config.elasticsearch_bind_ip | default('"%{hiera(\'internal_netif_ip\')}"') }}
 # Rsyslog
 rsyslog::client::log_remote: {{ config.syslog_log_remote | default('true') }}
 rsyslog::client::log_local: {{ config.syslog_log_local | default('true') }}
@@ -856,3 +863,6 @@ puppetdb::master::routes::routes:
 
 # HAproxy
 haproxy_auth: {{ config.haproxy_auth | default('admin:changeme') }}
+
+# Apache Httpd
+apache::default_vhost: false
