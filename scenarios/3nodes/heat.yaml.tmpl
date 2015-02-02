@@ -145,12 +145,11 @@ resources:
             permissions: 0440
             content: |
               Defaults:jenkins !requiretty
-{% if config.puppetdb_pem  and if hosts[hname].profile == 'install-server' -%}          - path: /etc/ssl/certs/puppetdb.pem
+{% if config.puppetdb_pem and hosts[hname].profile == 'install-server' %}          - path: /etc/ssl/certs/puppetdb.pem
             permissions: 0400
             owner: root:root
             content: |
-              {% config.puppetdb_pem %}
-{% endif -%}
+              {{ config.puppetdb_pem }}{% endif -%}
 
 {% if hosts[hname].profile != 'install-server' -%}
 {% for dev in config.ceph_osd_devices %}
