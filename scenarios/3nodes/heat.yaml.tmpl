@@ -149,7 +149,7 @@ resources:
             permissions: 0400
             owner: root:root
             content: |
-              {{ config.puppetdb_pem }}{% endif -%}
+              {{ config.puppetdb_pem|indent(14) }}{% endif -%}
 
 {% if hosts[hname].profile != 'install-server' -%}
 {% for dev in config.ceph_osd_devices %}
