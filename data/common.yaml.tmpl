@@ -667,7 +667,7 @@ nova_metadata_proto: {{ config.nova_metadata_proto | default('http') }}
 neutron_external_int: {{ config.neutron_external_int | default('"%{hiera(\'external_netif\')}"') }}
 neutron_external_bridge: {{ config.neutron_external_bridge | default('br-pub') }}
 neutron_manage_external_network: {{ config.neutron_manage_external_network | default('false') }}
-neutron_tunnel_eth: {{ config.neutron_tunnel_eth | default('"%{hiera(\'internal_netif_ip\')}"') }}
+neutron_tunnel_eth: '{{ config.neutron_tunnel_eth | default('"%{hiera(\'internal_netif_ip\')}"') }}'
 
 neutron_tunnel_types: {{ config.neutron_tunnel_types | default(['gre']) }}
 neutron_tenant_network_types: {{ config.neutron_tenant_network_types  | default(['gre']) }}
