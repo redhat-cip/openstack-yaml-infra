@@ -314,20 +314,7 @@ glance_api_verbose: {{ config.glance_api_verbose | default('"%{hiera(\'verbose\'
 glance_api_debug: {{ config.glance_api_debug | default('"%{hiera(\'debug\')}"') }}
 glance_api_use_syslog: {{ config.glance_api_use_syslog | default('"%{hiera(\'use_syslog\')}"') }}
 glance_api_log_facility: {{ config.glance_api_log_facility | default('"%{hiera(\'log_facility\')}"') }}
-{% if config.glance_api_policies %}
-glance_api_policies: {{ config.glance_api_policies }}
-{% else %}
-glance_api_policies:
-  delete_image_location:
-    key: delete_image_location
-    value: 'role:admin'
-  get_image_location:
-    key: get_image_location
-    value: 'role:admin'
-  set_image_location:
-    key: set_image_location
-    value: 'role:admin'
-{% endif %}
+glance_api_policies: {{ config.glance_api_policies | default('false') }}
 
 glance_registry_verbose: {{ config.glance_registry_verbose | default('"%{hiera(\'verbose\')}"') }}
 glance_registry_debug: {{ config.glance_registry_debug | default('"%{hiera(\'debug\')}"') }}
