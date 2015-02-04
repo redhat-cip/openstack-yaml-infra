@@ -757,14 +757,30 @@ sensu_plugins:
 {% else %}
 sensu_plugins: {}
 {% endif %}
-sensu_rabbitmq_user: {{ config.sensu_rabbitmq_user | default('sensu') }}
-sensu_rabbitmq_password: {{ config.sensu_rabbitmq_password | default('rabbitpassword') }}
-sensu_rabbitmq_vhost: {{ config.sensu_rabbitmq_vhost | default ('/sensu') }}
-sensu_install_repo: {{ config.sensu_install_repo | default('false') }}
-sensu_uchiwa_ip: {{ config.sensu_uchiwa_ip | default('"%{::ipaddress}"') }}
-sensu_uchiwa_user: {{ config.sensu_uchiwa_user | default('admin') }}
-sensu_uchiwa_password: {{ config.sensu_uchiwa_password | default('password') }}
-sensu_uchiwa_install_repo: {{ config.sensu_uchiwa_install_repo | default('false') }}
+uchiwa::host: {{ config.sensu_uchiwa_ip | default('"%{hiera(\'internal_netif_ip\')}"') }}
+uchiwa::port: {{ config.sensu_uchiwa_port | default('\'3000\'') }}
+uchiwa::user: {{ config.sensu_uchiwa_user | default('admin') }}
+uchiwa::pass: {{ config.sensu_uchiwa_password | default('password') }}
+uchiwa::install_repo: {{ config.sensu_uchiwa_install_repo | default('false') }}
+uchiwa::stats: {{ config.sensu_uchiwa_stats | default('\'10\'') }}
+uchiwa::refresh: {{ config.sensu_uchiwa_stats | default('\'10000\'') }}
+
+sensu::api_bind: {{ config.sensu_api_ip | default('"%{hiera(\'internal_netif_ip\')}"') }}
+sensu::api_host: {{ config.sensu_api_host | default('"%{::hostname}"') }}
+sensu::api_port: {{ config.sensu_api_port | default('\'5555\'') }}
+{% if config.sensu_api_user %}
+sensu::api_user: {{ config.sensu_api_user }}
+{% endif %}
+{% if config.sensu_api_password %}
+sensu::api_password: {{ config.sensu_api_password }}
+{% endif %}
+
+sensu::rabbitmq_user: {{ config.sensu_rabbitmq_user | default('sensu') }}
+sensu::rabbitmq_password: {{ config.sensu_rabbitmq_password | default('rabbitpassword') }}
+sensu::rabbitmq_host: {{ config.sensu_rabbitmq_host | default('"%{hiera(\'rabbit_host\')}"') }}
+sensu::rabbitmq_vhost: {{ config.sensu_rabbitmq_vhost | default ('/sensu') }}
+sensu::install_repo: {{ config.sensu_install_repo | default('false') }}
+
 
 # Logging
 logging_syslog_enable: {{ config.logging_syslog_enable | default('true') }}
