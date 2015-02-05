@@ -134,18 +134,33 @@ spof_multicast_address: {{ config.spof_multicast_address | default('239.1.1.2') 
 spof_cluster_password: {{ config.spof_cluster_password | default('secrete') }}
 
 # MongoDB
-mongo_nodes: {{ config.mongo_nodes | default('"%{hiera(\'mgmt_internal_ips\')}"') }}
-mongo_nojournal: {{ config.mongo_nojournal | default('false') }}
+mongod_enable: {{ config.mongod_enable | default('true') }}
+mongos_enable: {{ config.mongos_enable | default('false') }}
+
+mongod_fw_port: {{ config.mongod_fw_port | default('27017') }}
+mongos_fw_port: {{ config.mongos_fw_port | default('27017') }}
+
+mongod_replset:
+  ceilometer:
+    members:
 {% if config.mongo_replset_members %}
-mongo_replset_members:
-{% for host in config.mongo_replset_members %}  - {{ host }}
+{% for host in config.mongo_replset_members %}      - {{ host }}
 {% endfor %}
 {% else %}
-mongo_replset_members:
-  - "%{::hostname}"
+      - "%{::hostname}"
 {% endif %}
+
+mongos_shards: {{ config.mongos_shards | default({}) }}
+
+mongo_nodes: {{ config.mongo_nodes | default('"%{hiera(\'mgmt_internal_ips\')}"') }}
 replicatset_enabled: {{ config.replicatset_enabled | default('true') }}
-mongodb_version: {{ config.mongodb_version | default('2.4.0') }}
+
+mongodb::globals::version: {{ config.mongodb_version | default('2.6.5-2.el7ost') }}
+mongodb::globals::manage_package_repo: {{ config.mongodb_manage_repo | default('false') }}
+mongodb::server::bind_ip: {{ config.mongod_bindip | default('"%{hiera(\'internal_netif_ip\')}"') }}
+mongodb::server::nojournal: {{ config.mongo_nojournal | default('false') }}
+mongodb::server::replset: {{ config.mongodb_replset | default('ceilometer') }}
+mongodb::server::logpath: {{ config.mongodb_logpath | default('/var/log/mongodb/mongod.log') }}
 
 # Redis
 redis_port: {{ config.redis_port | default('6379') }}

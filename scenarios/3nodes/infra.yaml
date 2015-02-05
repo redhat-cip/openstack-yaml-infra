@@ -20,7 +20,7 @@ profiles:
       1:
         roles:
           - cloud::database::sql::mysql
-          - cloud::database::nosql::mongodb
+          - cloud::database::nosql::mongodb::mongod
           - cloud::messaging
           - cloud::database::nosql::memcached
           - cloud::storage::rbd::monitor
