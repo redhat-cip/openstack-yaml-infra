@@ -830,16 +830,8 @@ puppetdb::master::config::manage_report_processor: true
 puppetdb::master::config::restart_puppet: false
 puppetdb::master::config::enable_reports: true
 puppetdb::master::config::strict_validation: false
-puppetdb::master::config::puppet_conf_section: main
 puppetdb::master::config::puppetdb_port: 8081
-puppetdb::master::routes::routes:
-  apply:
-    catalog:
-      terminus: compiler
-      cache: puppetdb
-    facts:
-      terminus: facter
-      cache: puppetdb_apply
+puppetdb::master::config::masterless: true
 
 # HAproxy
 haproxy_auth: {{ config.haproxy_auth | default('admin:changeme') }}
