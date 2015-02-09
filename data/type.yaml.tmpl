@@ -48,11 +48,21 @@ cloud::firewall::post::debug: "%{hiera('firewall_debug')}"
 #
 cloud::database::nosql::memcached::listen_ip: "%{hiera('internal_netif_ip')}"
 cloud::database::nosql::memcached::firewall_settings: "%{hiera('firewall_common_extras')}"
+
+#
+# cloud::database::nosql::redis
+#
 cloud::database::nosql::redis::server::port: "%{hiera('redis_port')}"
 cloud::database::nosql::redis::server::firewall_settings: "%{hiera('firewall_common_extras')}"
 cloud::database::nosql::redis::sentinel::port: "%{hiera('sentinel_port')}"
 cloud::database::nosql::redis::sentinel::firewall_settings: "%{hiera('firewall_common_extras')}"
 
+#
+# cloud::database::nosql::elasticsearch
+#
+cloud::database::nosql::elasticsearch::listen_port: "%{hiera('elsaticsearch_port')}"
+cloud::database::nosql::elasticsearch::listen_ip: "%{hiera('elasticsearch_bind_ip')}"
+cloud::database::nosql::elasticsearch::firewall_settings: "%{hiera('firewall_common_extras')}"
 #
 # cloud::compute
 #
@@ -727,18 +737,13 @@ cloud::storage::rbd::pools::ceph_fsid: "%{hiera('ceph_fsid')}"
 #
 # cloud::logging
 #
+cloud::logging::server::kibana_port: "%{hiera('kibana3::ws_port')}"
+cloud::logging::server::kibana_bind_ip: "%{hiera('kibana_bind_ip')}"
 cloud::logging::agent::syslog_enable: "%{hiera('logging_syslog_enable')}"
 cloud::logging::agent::sources: "%{hiera('logging_sources')}"
 cloud::logging::agent::matches: "%{hiera('logging_matches')}"
 cloud::logging::agent::plugins: "%{hiera('logging_plugins')}"
 cloud::logging::agent::logrotate_rule: "%{hiera('logging_logrotate_rule')}"
-fluentd::version: "%{hiera('fluentd_version')}"
-kibana3::ws_servername: "%{hiera('kibana_servername')}"
-kibana3::ws_port: "%{hiera('kibana_port')}"
-kibana3::manage_git_repository: "%{hiera('kibana_manage_git_repository')}"
-kibana3::manage_ws: "%{hiera('kibana_manage_ws')}"
-kibana3::config_es_server: "%{hiera('kibana_config_es_server')}"
-kibana3::config_kibana_index: "%{hiera('kibana_config_index')}"
 
 #
 # cloud::monitoring
