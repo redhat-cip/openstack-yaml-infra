@@ -418,10 +418,15 @@ ceph_fsid: {{ config.ceph_fsid | default('') }}
 ceph_mon_secret: {{ config.ceph_mon_secret }}
 {% if config.ceph_osd_devices %}
 ceph_osd_devices:
-{% for disk in config.ceph_osd_devices %}  - {{ disk }}
+{% if config.ceph_osd_devices is mapping %}
+{% for disk in config.ceph_osd_devices %} {{ disk }}:{% if disk.journal is defined %}
+    {{ disk.journal }}
+{% endif %}
 {% endfor %}
 {% else %}
-ceph_osd_devices: []
+{% for disk in config.ceph_osd_devices %} - {{ disk }}
+{% endfor %}
+{% endif %}
 {% endif %}
 ceph_names:
 {% for hname in hosts %}{% if hosts[hname].profile != 'install-server' %}  - {{ hname }}{% endif %}
