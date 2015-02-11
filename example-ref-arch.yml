@@ -1,0 +1,477 @@
+infra: ref-arch
+profiles:
+  install-server:
+    steps:
+      1:
+        roles:
+          - cloud::logging::server
+          - cloud::monitoring::server::sensu
+  controller:
+    steps:
+      1:
+        roles:
+          - cloud::logging::agent
+      3:
+        roles:
+          - cloud::monitoring::agent::sensu
+hosts:
+  install-server:
+    profile: install-server
+    ip: x.x.x.x
+    config:
+      apache::mod::passenger::passenger_root: '/usr/local/share/gems/gems/passenger-4.0.57'
+      apache::mod::passenger::mod_lib_path: '/usr/local/share/gems/gems/passenger-4.0.57/buildout/apache2/'
+      cloud::install::puppetmaster::autosign_domains:
+        - '*'
+      cloud::install::puppetmaster::master_configuration:
+        ssl_client_header:
+          setting: ssl_client_header
+          value: SSL_CLIENT_S_DN
+        ssl_client_verify_header:
+          setting: ssl_client_verify_header
+          value: SSL_CLIENT_VERIFY
+      cloud::install::puppetmaster::agent_configuration:
+        certname:
+          setting: certname
+          value: "%{::fqdn}"
+        server:
+          setting: server
+          value: "%{::fqdn}"
+      cloud::install::puppetmaster::puppetmaster_vhost_configuration:
+        puppetmasterd:
+         docroot: '/usr/share/puppet/rack/puppetmasterd/public'
+         port: 8140
+         ssl: true
+         ssl_protocol: 'ALL -SSLv2 -SSLv3'
+         ssl_cipher: 'ALL:!aNULL:!eNULL:!DES:!3DES:!IDEA:!SEED:!DSS:!PSK:!RC4:!MD5:+HIGH:+MEDIUM:!LOW:!SSLv2:!EXP'
+         ssl_honorcipherorder: 'On'
+         ssl_cert: "/var/lib/puppet/ssl/certs/%{::fqdn}.pem"
+         ssl_key: "/var/lib/puppet/ssl/private_keys/%{::fqdn}.pem"
+         ssl_chain: "/var/lib/puppet/ssl/certs/ca.pem"
+         ssl_ca: "/var/lib/puppet/ssl/certs/ca.pem"
+         ssl_verify_client: optional
+         ssl_verify_depth: 1
+         ssl_options:
+           - +StdEnvVars
+           - +ExportCertData
+         request_headers:
+           - 'unset X-Forwarded-For'
+           - "set X-SSL-Subject %%{}{SSL_CLIENT_S_DN}e"
+           - "set X-Client-DN %%{}{SSL_CLIENT_S_DN}e"
+           - "set X-Client-Verify %%{}{SSL_CLIENT_VERIFY}e"
+         rack_base_uris: '/'
+         add_default_charset: 'UTF-8'
+      puppetdb::master::config::puppetdb_server: "%{::fqdn}"
+      puppetdb::master::config::manage_report_processor: true
+      puppetdb::master::config::enable_reports: true
+      puppetdb::master::config::strict_validation: false
+      cloud::logging::agent::syslog_enable: false
+      fluentd::version: '2'
+      elasticsearch::init_template: elasticsearch.RedHat.erb
+      kibana3::manage_ws: false
+      kibana3::config_es_server: "%{::ipaddress}"
+      kibana3::config_kibana_index: fluentd
+      sensu::server: true
+      sensu::api: true
+      sensu::subscriptions:
+        - base
+        - openstack-api
+      sensu::rabbitmq_password: rabbitpassword
+      sensu::rabbitmq_host: x.x.x.x
+      sensu::rabbitmq_vhost: '/sensu'
+      sensu::install_repo: false
+      uchiwa::install_repo: false
+      uchiwa::user: user
+      uchiwa::pass: password
+      uchiwa::host: "%{::ipaddress}"
+      uchiwa::install_repo: false
+      cloud::monitoring::server::sensu::checks:
+        'check-mem' :
+          command: '/etc/sensu/plugins/check-mem.sh -w 150 -c 100'
+          subscribers: base
+          standalone: false
+        'check_ntp_time' :
+          command: '/usr/lib64/nagios/plugins/check_ntp_time -H 0.rhel.pool.ntp.org -w 0.5 -c 1'
+          subscribers: base
+          standalone: false
+        'check_disk' :
+          command: '/usr/lib64/nagios/plugins/check_disk -w 80 -c 90 --path /'
+          subscribers: base
+          standalone: false
+        'check_dns' :
+          command: '/usr/lib64/nagios/plugins/check_dns -H ospub.somewhere.tld -s 94.143.114.197 -w 0.1 -c 0.2'
+          subscribers: base
+          standalone: false
+        'check_load' :
+          command: '/usr/lib64/nagios/plugins/check_load -w 0.7,0.6,0.5 -c 0.9,0.8,0.7'
+          subscribers: base
+          standalone: false
+        'check_swap' :
+          command: '/usr/lib64/nagios/plugins/check_swap -w 50% -c 25%'
+          subscribers: base
+          standalone: false
+        'cinder-api' :
+          command: 'oschecks-check_cinder_api --os-auth-url https://ospub.somewhere.tld:5000/v2.0 --os-username admin --os-tenant-name admin --os-password secrete'
+          subscribers: openstack-api
+          standalone: false
+        'nova-api' :
+          command: 'oschecks-check_nova_api --os-auth-url https://ospub.somewhere.tld:5000/v2.0 --os-username admin --os-tenant-name admin --os-password secrete'
+          subscribers: openstack-api
+          standalone: false
+        'ceilometer-api' :
+          command: 'oschecks-check_ceilometer_api --os-auth-url https://ospub.somewhere.tld:5000/v2.0 --os-username admin --os-tenant-name admin --os-password secrete'
+          subscribers: openstack-api
+          standalone: false
+        'keystone-api' :
+          command: 'oschecks-check_keystone_api --os-auth-url https://ospub.somewhere.tld:5000/v2.0 --os-username admin --os-tenant-name admin --os-password secrete'
+          subscribers: openstack-api
+          standalone: false
+        'neutron-api' :
+          command: 'oschecks-check_neutron_api --os-auth-url https://ospub.somewhere.tld:5000/v2.0 --os-username admin --os-tenant-name admin --os-password secrete'
+          subscribers: openstack-api
+          standalone: false
+        'glance-api' :
+          command: 'oschecks-check_glance_api --os-auth-url https://ospub.somewhere.tld:5000/v2.0 --os-username admin --os-tenant-name admin --os-password secrete'
+          subscribers: openstack-api
+          standalone: false
+        'ceilometer-collector' :
+          command: 'sudo oschecks-check_amqp ceilometer-collector'
+          subscribers: openstack-amqp
+          standalone: false
+        'ceilometer-agent-notification' :
+          command: 'sudo oschecks-check_amqp ceilometer-agent-notification'
+          subscribers: openstack-amqp
+          standalone: false
+        'ceilometer-alarm-notifier' :
+          command: 'sudo oschecks-check_amqp ceilometer-alarm-notifier'
+          subscribers: openstack-amqp
+          standalone: false
+        'cinder-scheduler' :
+          command: 'sudo oschecks-check_amqp cinder-scheduler'
+          subscribers: openstack-amqp
+          standalone: false
+        'nova-consoleauth' :
+          command: 'sudo oschecks-check_amqp nova-consoleauth'
+          subscribers: openstack-amqp
+          standalone: false
+        'nova-conductor' :
+          command: 'sudo oschecks-check_amqp nova-conductor'
+          subscribers: openstack-amqp
+          standalone: false
+        'nova-scheduler' :
+          command: 'sudo oschecks-check_amqp nova-scheduler'
+          subscribers: openstack-amqp
+          standalone: false
+        'neutron-server' :
+          command: 'sudo oschecks-check_amqp neutron-server'
+          subscribers: openstack-amqp
+          standalone: false
+        'neutron-l3-agent' :
+          command: 'sudo oschecks-check_amqp neutron-l3-agent'
+          subscribers: openstack-amqp
+          standalone: false
+        'neutron-lbaas-agent' :
+          command: 'sudo oschecks-check_amqp neutron-lbaas-agent'
+          subscribers: openstack-amqp
+          standalone: false
+        'neutron-metering-agent' :
+          command: 'sudo oschecks-check_amqp neutron-metering-agent'
+          subscribers: openstack-amqp
+          standalone: false
+        'neutron-dhcp-agent' :
+          command: 'sudo oschecks-check_amqp neutron-dhcp-agent'
+          subscribers: openstack-amqp
+          standalone: false
+        'heat-engine' :
+          command: 'sudo oschecks-check_amqp heat-engine'
+          subscribers: openstack-amqp
+          standalone: false
+        'swift-dispersion' :
+          command: 'sudo oschecks-check_swift_dispersion'
+          subscribers: openstack-swift
+          standalone: false
+        'swift-usage' :
+          command: 'sudo oschecks-check_swift_ring_usage'
+          subscribers: openstack-swift
+          standalone: false
+        'swift-object-servers' :
+          command: 'sudo oschecks-check_swift_object_servers'
+          subscribers: openstack-swift
+          standalone: false
+        'ceph_df' :
+          command: 'sudo oschecks-check_ceph_df'
+          subscribers: ceph
+          standalone: false
+        'ceph_health' :
+          command: 'sudo oschecks-check_ceph_health'
+          subscribers: ceph
+          standalone: false
+      cloud::monitoring::server::sensu::plugins:
+        'https://raw.githubusercontent.com/sensu/sensu-community-plugins/master/plugins/system/check-mem.sh' :
+          type: url
+      cloud::logging::agent::sources:
+        syslog:
+          configfile: syslog
+          type: syslog
+          tag: system.syslog
+          config:
+            port: 5140
+            bind: 0.0.0.0
+            with_priority:
+      cloud::logging::agent::matches:
+        elasticsearch:
+          configfile: elasticsearch
+          pattern: "**"
+          type: elasticsearch
+          config:
+            logstash_format: true
+            index_name: fluentd
+            type_name: fluentd
+            port: 9200
+            host: "%{::ipaddress}"
+
+  lb01:
+    profile: load-balancer
+    ip: x.x.x.x
+    config:      
+      cloud::loadbalancer::keepalived_state: MASTER
+      cloud::loadbalancer::keepalived_public_interface: public
+      cloud::loadbalancer::keepalived_internal_interface: internal
+
+  lb02:
+    profile: load-balancer
+    ip: x.x.x.x
+    config:      
+      cloud::loadbalancer::keepalived_state: BACKUP
+      cloud::loadbalancer::keepalived_public_interface: public
+      cloud::loadbalancer::keepalived_internal_interface: internal
+
+  ctrl01:
+    profile: controller
+    ip: x.x.x.x
+  
+  ctrl02:
+    profile: controller
+    ip: x.x.x.x
+
+  ctrl03:
+    profile: controller
+    ip: x.x.x.x
+    config:
+      cloud::storage::rbd::key::enabled: true
+      cloud::object::ringbuilder::enabled: true
+
+  cmpt01:
+    profile: compute
+    ip: x.x.x.x
+    config:
+      cloud::compute::hypervisor::vm_rbd: true
+      cloud::compute::hypervisor::volume_rbd: true
+  
+  cmpt02:
+    profile: compute
+    ip: x.x.x.x
+    config:
+      cloud::compute::hypervisor::vm_rbd: true
+      cloud::compute::hypervisor::volume_rbd: true
+
+  strg01:
+    profile: storage
+    ip: x.x.x.x
+    config:
+      cloud::object::storage::swift_zone: 1
+      cloud::storage::rbd::pools::setup_pools: true
+      ceph_osd_devices:
+        /dev/sdX:
+          journal: /dev/sdY
+
+  strg02:
+    profile: storage
+    ip: x.x.x.x
+    config:
+      cloud::object::storage::swift_zone: 2
+      ceph_osd_devices:
+        /dev/sdX:
+          journal: /dev/sdY
+
+  strg03:
+    profile: storage
+    ip: x.x.x.x
+    config:
+      cloud::object::storage::swift_zone: 3
+      ceph_osd_devices:
+        /dev/sdX:
+          journal: /dev/sdY
+
+config:
+  current_version: I.1.3.0
+  next_version: J.1.0.0
+  edeploy_master: install-server.somewhere.tld
+  domain: somewhere.tld
+  user: jenkins
+  puppet_master: install-server.somewhere.tld
+  parallel_steps: 2|4|5
+  region: region1
+  dns_ips: x.x.x.x
+  vip_public_fqdn: ospub.somewhere.tld
+  vip_public_ip: x.x.x.x
+  vip_admin_ip: x.x.x.x
+  vip_internal_ip: x.x.x.x
+  keepalived_internal_ipvs: 
+    - x.x.x.x
+  galera_ip: x.x.x.x
+  vip_admin_fqdn: osprv.somewhere.tld
+  vip_internal_fqdn: osprv.somewhere.tld
+  endpoint_protocol: http
+
+  ceilometer_admin_proto: http
+  ceilometer_internal_proto: http
+  ceilometer_public_proto: http
+  mgmt_names: ['ctrl01', 'ctrl02', 'ctrl03']
+  mgmt_internal_ips: ['x.x.x.x', 'x.x.x.x', 'x.x.x.x']
+  spof_cluster_members : 'ctrl01 ctrl02 ctrl03'
+  horizon_allowed_hosts:
+    - osprv.somewhere.tld
+
+  mongo_replset_members:
+    - ctrl01:27017
+    - ctrl02:27017
+    - ctrl03:27017
+
+  public_network: x.x.x.x/x
+  internal_network: x.x.x.x/x
+  admin_network: x.x.x.x/x
+  storage_network: x.x.x.x/x
+  tunnel_network: x.x.x.x/x
+
+  ntp_servers:
+    - 0.x.pool.ntp.org
+    - 1.x.pool.ntp.org
+    - 2.x.pool.ntp.org
+    - 3.x.pool.ntp.org
+
+  root_password: password
+  
+  public_netif: public
+  internal_netif: internal
+  admin_netif: admin
+  storage_netif: storage
+  lb_public_netif: lb_public
+  lb_internal_netif: lb_internal
+  external_netif: external
+  tunnel_netif: tunnel
+
+  public_netif_ip: "%{::ipaddress_public}"
+  internal_netif_ip: "%{::ipaddress_internal}"
+  admin_netif_ip: "%{::ipaddress_admin}"
+  storage_netif_ip: "%{::ipaddress_storage}"
+  tunnel_netif_ip: "%{::ipaddress_tunnel}"
+  external_netif_ip: "%{::ipaddress_external}"
+  lb_public_netif_ip: "%{::ipaddress_lb_public}"
+  lb_internal_netif_ip: "%{::ipaddress_lb_internal}"
+
+  keystone_db_user: user
+  keystone_db_password: password
+  ks_admin_email: keystone@somewhere.tld
+  ks_admin_password: password
+  ks_admin_tenant: admin
+  ks_admin_token: token
+
+  ks_swift_dispersion_password: dispersion_password
+  ks_swift_password: password
+  swift_hash_suffix: hash_suffic
+  swift_ring_container_device: sdX
+  swift_ring_account_device: sdX
+  swift_device_config_hash:
+    sdX:
+      mnt_base_dir: /srv/node
+   
+  mysql_root_password: password
+  mysql_sys_maint_user: sys-maint
+  mysql_sys_maint_password: password
+  galera_clustercheck_dbuser: clustercheckuser
+  galera_clustercheck_dbpassword: password
+  galera_master_name: ctrl01
+
+  db_allowed_hosts:
+    - ctrl%
+    - x.x.x.%
+
+  haproxy_auth: root:password
+
+  secret_key: key
+
+  rabbit_password: password
+  rabbit_host: x.x.x.x
+  rabbit_hosts:
+    - x.x.x.x:5672
+    - x.x.x.x:5672
+    - x.x.x.x:5672
+
+  ks_neutron_password: password
+  neutron_db_password: password
+  ks_neutron_admin_proto: https
+
+  neutron_tenant_network_types:
+    - vxlan
+  neutron_type_drivers:
+    - vxlan
+    - vlan
+  neutron_tunnel_types:
+    - vxlan
+  neutron_provider_bridge_mappings:
+    - network_name:br-pubX
+  neutron_provider_vlan_ranges:
+    - network_name:XXX:XXX
+  neutron_mechanism_drivers: openvswitch
+  neutron_plugin: ml2
+  neutron_tunnel_id_ranges: 1:10000
+  neutron_firewall_driver: neutron.agent.linux.iptables_firewall.OVSHybridIptablesFirewallDriver
+  neutron_metadata_proxy_shared_secret: password
+      
+  ks_nova_password: password
+  nova_db_password: password
+  nova_ssh_public_key: ssh-rsa [...] user@password
+
+  nova_ssh_private_key: |
+    -----BEGIN RSA PRIVATE KEY-----
+    [...]
+    -----END RSA PRIVATE KEY-----
+
+  glance_db_password: password
+  ks_glance_password: password
+
+  ceilometer_secret: password
+  ks_ceilometer_password: password
+
+  cinder_db_password: password
+  ks_cinder_password: password
+
+  trove_db_password: password
+  ks_trove_password: password
+
+  heat_db_password: password
+  ks_heat_password: password
+  heat_auth_encryption_key: password
+     
+  ceph_fsid: uuid
+  ceph_mon_secret: base64_password
+
+  cinder_rbd_pool: volumes
+  cinder_rbd_user: cinder
+
+  volume_default_volume_type: ceph
+  volume_cinder_backends:
+    rbd:
+      ceph:
+        rbd_pool: volumes
+        rbd_user: cinder
+        rbd_secret_uuid: uuid
+
+  libvirt_type: kvm
+  syslog_server: install-server
+  syslog_port: 5140
+
+  passenger_root: /usr/local/share/gems/gems/passenger-4.0.57
+  passenger_mod_lib_path: /usr/local/share/gems/gems/passenger-4.0.57/buildout/apache2/
+
