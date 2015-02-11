@@ -60,7 +60,7 @@ cloud::database::nosql::redis::sentinel::firewall_settings: "%{hiera('firewall_c
 #
 # cloud::database::nosql::elasticsearch
 #
-cloud::database::nosql::elasticsearch::listen_port: "%{hiera('elsaticsearch_port')}"
+cloud::database::nosql::elasticsearch::listen_port: "%{hiera('elasticsearch_port')}"
 cloud::database::nosql::elasticsearch::listen_ip: "%{hiera('elasticsearch_bind_ip')}"
 cloud::database::nosql::elasticsearch::firewall_settings: "%{hiera('firewall_common_extras')}"
 #
