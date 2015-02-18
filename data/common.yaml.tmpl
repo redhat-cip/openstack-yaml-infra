@@ -347,6 +347,7 @@ glance_known_stores: {{ config.glance_known_stores }}
 {% else %}
 glance_known_stores:
   - rbd
+  - http
 {% endif %}
 
 glance_backend: {{ config.glance_backend | default('rbd') }}
