@@ -1,7 +1,7 @@
 heat_template_version: 2013-05-23
 
 description: >
-  Deploy the full OpenStack reference architecture from eNovance
+  Full setup of an OpenStack reference architecture from eNovance
 
 parameters:
   dist:
@@ -127,7 +127,7 @@ resources:
 
         groups:
           - {{ config.remote_user }}
-
+        
         users:
           - default
           - name: {{ config.remote_user }}
@@ -145,6 +145,12 @@ resources:
             permissions: 0440
             content: |
               Defaults:jenkins !requiretty
+{% if config.puppetdb_pem and hosts[hname].profile == 'install-server' %}          - path: /etc/ssl/certs/puppetdb.pem
+            permissions: 0400
+            owner: root:root
+            content: |
+              {{ config.puppetdb_pem|indent(14) }}{% endif -%}
+
 {% if hosts[hname].profile == 'storage' -%}
 {% for dev in config.ceph_osd_devices %}
   {{ hname }}_{{ dev }}:
