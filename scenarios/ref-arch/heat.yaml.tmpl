@@ -89,6 +89,12 @@ resources:
     properties:{% for hname in hosts -%}{% if hosts[hname].profile == 'install-server' %}
       port_id: { get_resource: {{ hname }}_port }
       floating_network_id: {{ floating_network_id }}
+
+  public_ip:
+    type: OS::Neutron::FloatingIP
+    properties:
+      port_id: { get_resource: vip_port }
+      floating_network_id: {{ floating_network_id }}
 {% endif -%}
 {% endfor -%}
 {% endif -%}
@@ -127,7 +133,7 @@ resources:
 
         groups:
           - {{ config.remote_user }}
-        
+
         users:
           - default
           - name: {{ config.remote_user }}
