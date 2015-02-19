@@ -84,13 +84,13 @@ resources:
       router_id: { get_resource: router }
       subnet_id: { get_resource: private_subnet }
 
-  public_ip:
+  install_server_public_ip:
     type: OS::Neutron::FloatingIP
     properties:{% for hname in hosts -%}{% if hosts[hname].profile == 'install-server' %}
       port_id: { get_resource: {{ hname }}_port }
       floating_network_id: {{ floating_network_id }}
 
-  public_ip:
+  vip_public_ip:
     type: OS::Neutron::FloatingIP
     properties:
       port_id: { get_resource: vip_port }
@@ -189,9 +189,12 @@ resources:
 
 {% if floating_network_id %}
 outputs:
-  output_public_ip:
+  output_install_server_public_ip:
     description: Floating IP address of the install server in the public network
-    value: { get_attr: [ public_ip, floating_ip_address ] }
+    value: { get_attr: [ install_server_public_ip, floating_ip_address ] }
+  output_vip_public_ip:
+    description: Floating IP address of the VIP in the public network
+    value: { get_attr: [ vip_public_ip, floating_ip_address ] }
 {% endif %}
 
 # Local variables:
