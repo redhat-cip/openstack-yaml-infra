@@ -3,6 +3,21 @@ root_password: {{ config.root_password }}
 
 # Set of common configuration value
 
+# Sudo
+sudo::purge: false
+sudo::config_file_replace: false
+sudo::configs:
+  'sensu':
+    'content' : "Defaults:sensu !requiretty\nDefaults:sensu secure_path = /usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin\nsensu ALL = NOPASSWD:ALL"
+{% if config.sudo_configs %}
+{% for file, options in config.sudo_configs.iteritems() %}
+  {{ file }}:
+  {% for key, value in options.iteritems() %}
+    {{ key }}: '{{ value }}'
+  {% endfor %}
+{% endfor %}
+{% endif %}
+
 # SELinux
 selinux: {{ config.selinux | default('permissive') }}
 selinux_directory: {{ config.selinux_directory }}
