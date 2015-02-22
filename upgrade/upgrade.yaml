@@ -1,0 +1,4 @@
+cloud::database::nosql::mongodb:
+  step: controller
+  snippet:
+    - mongodb
