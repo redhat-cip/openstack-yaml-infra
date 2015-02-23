@@ -1,2 +1,4 @@
 - name: edeploy upgrade
   edeploy: command=upgrade version={{ distro }}-{{ version }}
+  tag: 5
+
