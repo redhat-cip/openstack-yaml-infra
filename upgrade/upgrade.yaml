@@ -1,4 +1,7 @@
-- name: cloud::database::nosql::mongodb
-  step: controller
+cloud::database::nosql::mongodb:mongod:
   snippet:
     - mongodb
+
+cloud::database::sql::mysql:
+  snippet:
+    - mysql
