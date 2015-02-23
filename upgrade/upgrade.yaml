@@ -1,4 +1,4 @@
-cloud::database::nosql::mongodb:
+- name: cloud::database::nosql::mongodb
   step: controller
   snippet:
     - mongodb
