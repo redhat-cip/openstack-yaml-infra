@@ -1,4 +1,4 @@
 - name: restart mysql
-  service: name=mysql state=restart
+  service: name=mysql state=restarted
   tag: 6
 

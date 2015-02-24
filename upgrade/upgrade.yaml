@@ -1,6 +1,7 @@
 cloud::install::puppetdb::server:
   snippet:
     - puppetdb
+
 cloud::database::nosql::redis::server:
   snippet:
     - redis
