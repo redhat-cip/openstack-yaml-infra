@@ -38,6 +38,7 @@ profiles:
           - cloud::compute::consoleproxy
           - cloud::compute::scheduler
           - cloud::volume::api
+          - cloud::volume::backup
           - cloud::volume::scheduler
           - cloud::volume::storage
           - cloud::image::api

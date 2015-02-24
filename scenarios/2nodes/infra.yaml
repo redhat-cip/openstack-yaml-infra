@@ -49,6 +49,7 @@ profiles:
 #          - cloud::database::dbaas::conductor
 #          - cloud::database::dbaas::taskmanager
           - cloud::volume::api
+          - cloud::volume::backup
           - cloud::volume::scheduler
           - cloud::volume::storage
           - cloud::image::api
