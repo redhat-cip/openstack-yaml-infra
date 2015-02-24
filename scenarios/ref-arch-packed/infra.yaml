@@ -53,6 +53,9 @@ profiles:
           - cloud::object::controller
           - cloud::object::ringbuilder
           - cloud::spof
+          - cloud::database::dbaas::api
+          - cloud::database::dbaas::conductor
+          - cloud::database::dbaas::taskmanager
       5:
         roles:
           - cloud::network::dhcp
