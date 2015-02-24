@@ -1,0 +1,8 @@
+# file: hosts
+
+{% for prof in profiles %}
+
+{{ prof }}:
+  - {% for hname in hosts %}{% if hosts[hname].profile == prof %}
+{{ hname }}.{{ config.domain  }}{% endif %}{% endfor %}
+{% endfor %}
