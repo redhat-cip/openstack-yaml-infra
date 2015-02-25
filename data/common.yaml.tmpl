@@ -248,6 +248,11 @@ horizon_ssl_forward: {{ config.horizon_ssl_forward | default('false') }}
 horizon_endpoint_type: {{ config.horizon_endpoint_type | default('"%{hiera(\'endpoint_type\')}"') }}
 horizon_allowed_hosts:
   - "%{hiera('vip_public_fqdn')}"
+{% if config.horizon_allowed_hosts %}
+{% for allowed_host in config.horizon_allowed_hosts %}
+  - {{ allowed_host }}
+{% endfor %}
+{% endif %}
 horizon_vhost_extra_params: {{ config.horizon_vhost_extra_params | default({}) }}
 horizon_neutron_extra_options: {{ config.horizon_neutron_extra_options | default({}) }}
 
