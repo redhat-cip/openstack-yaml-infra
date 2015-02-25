@@ -4,5 +4,13 @@
 {% for conf in hosts[hname].config %}
 {{ conf }}: {% if hosts[hname].config[conf] is string %}"{% endif %}{{ hosts[hname].config[conf] }}{% if hosts[hname].config[conf] is string %}"{% endif %}
 {% endfor %}
+{% if hosts[hname]['steps'] %}
+classes:
+{% for step_num in hosts[hname]['steps'] %}
+{% for role in hosts[hname]['steps'][step_num]['roles'] %}
+  - {{ role }}
+{% endfor %}
+{% endfor %}
+{% endif %}
 {% endif %}
 {% endfor %}
