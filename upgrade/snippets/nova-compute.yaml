@@ -1,0 +1,4 @@
+- name: restart nova-compute
+  service: name={{ nova_compute }} state=restarted
+  tag: 8
+

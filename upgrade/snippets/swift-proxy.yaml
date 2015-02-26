@@ -1,0 +1,4 @@
+- name: restart swift-proxy
+  service: name={{ swift_proxy }} state=restarted
+  tag: 7
+

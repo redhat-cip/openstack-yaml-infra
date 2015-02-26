@@ -8,14 +8,14 @@ cloud::database::nosql::redis::server:
 
 cloud::loadbalancer:
   snippet:
-    - haproxy
     - keepalived
+    - haproxy
 
 cloud::database::sql::mysql:
   snippet:
     - mysql
 
-cloud::database::nosql::mongodb:mongod:
+cloud::database::nosql::mongodb::mongod:
   snippet:
     - mongodb
 
@@ -33,11 +33,10 @@ cloud::database::nosql::memcached:
 
 cloud::storage::rbd::monitor:
   snippet:
-    - ceph-mon
+    - ceph
 
 cloud::dashboard:
   snippet:
-    - horizon
     - apache
 
 cloud::identity:
@@ -149,7 +148,6 @@ cloud::network::l3:
 
 cloud::compute::hypervisor:
   snippet:
-    - libvirt
     - nova-compute
     - neutron-ovs-agent
     - ceilometer-compute-agent

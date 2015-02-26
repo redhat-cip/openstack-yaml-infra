@@ -1,0 +1,4 @@
+- name: restart heat-api
+  service: name={{ heat_api }} state=restarted
+  tag: 7
+

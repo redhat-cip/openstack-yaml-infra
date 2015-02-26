@@ -1,0 +1,4 @@
+- name: restart neutron-dhcp-agent
+  service: name={{ neutron_dhcp_agent }} state=restarted
+  tag: 8
+

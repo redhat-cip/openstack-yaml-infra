@@ -1,0 +1,4 @@
+- name: restart glance-api
+  service: name={{ glance_api }} state=restarted
+  tag: 7
+

@@ -1,0 +1,4 @@
+- name: restart ceilometer-alarm-evaluator
+  service: name={{ ceilometer_alarm_evaluator }} state=restarted
+  tag: 7
+

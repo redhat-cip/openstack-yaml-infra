@@ -1,0 +1,4 @@
+- name: restart heat-api-cloudwatch
+  service: name={{ heat_api_cloudwatch }} state=restarted
+  tag: 7
+

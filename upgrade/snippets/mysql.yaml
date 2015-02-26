@@ -1,4 +1,7 @@
-- name: restart mysql
-  service: name=mysql state=restarted
-  tag: 6
+# TODO(Emilien): write a script to detect who is the master
+# and then restart the right service
+- name: restart mysql cluster
+  service: name=mysql-bootstrap state=restarted
+  tags: 6
+  when: inventory_hostname == groups['fakehostgroup'][-1]
 

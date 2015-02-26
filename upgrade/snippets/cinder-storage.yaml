@@ -1,0 +1,4 @@
+- name: restart cinder-storage
+  service: name={{ cinder_storage }} state=restarted
+  tag: 7
+

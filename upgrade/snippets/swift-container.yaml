@@ -1,0 +1,4 @@
+- name: restart swift-container
+  service: name={{ swift_container }} state=restarted
+  tag: 7
+
