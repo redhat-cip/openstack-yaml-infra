@@ -25,6 +25,7 @@ export OS_USERNAME=$2
 export OS_TENANT_NAME=$3
 export OS_PASSWORD=$4
 export OS_AUTH_URL=$5
+EXTRA_MIGRATE=
 
 if [ -z "$COMPUTE" ]; then
   echo "You have to provide the compute FQDN as a parameter."
@@ -35,9 +36,12 @@ fi
 VMS=$(nova-manage --nodebug vm list | grep $COMPUTE | awk '{print $1}')
 
 # Migrate all VM on another compute node
+if fgrep "images_type=rbd" /etc/nova/nova.conf; then
+  EXTRA_MIGRATE="--block-migrate"
+fi
 for VM in $VMS; do
   echo "Instance $VM is going to be migrated:"
-  nova live-migration $VM
+  nova live-migration $EXTRA_MIGRATE $VM
 
   # test if the migration worked and the VM is still alive.
   if ! timeout 20 sh -c "while ! nova show $VM | grep status | grep -q ACTIVE; do sleep 1; done"; then
