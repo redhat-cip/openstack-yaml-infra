@@ -1,0 +1,7 @@
+- name: restart PuppetDB service
+  service: name={{ item }} state=restarted
+  with_items:
+    - "{{ webserver }}"
+    - puppetdb
+  tag: 6
+

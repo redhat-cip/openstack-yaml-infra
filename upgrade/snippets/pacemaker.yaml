@@ -1,0 +1,10 @@
+# Pacemaker won't be used anymore after J.1.1.0
+- name: stop ceilometer-agent-central managed by pacemaker
+  command: crm resource stop ceilometer-agent-central
+  tags: before_config
+  when: ansible_distribution == 'Debian' and inventory_hostname == groups['fakehostgroup'][-1]
+
+- name: stop ceilometer-agent-central managed by pacemaker
+  command: pcs resource stop openstack-ceilometer-central
+  tags: before_config
+  when: ansible_distribution == 'RedHat' and inventory_hostname == groups['fakehostgroup'][-1]

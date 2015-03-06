@@ -1,0 +1,4 @@
+- name: restart nova-conductor
+  service: name={{ nova_conductor }} state=restarted
+  tag: 7
+

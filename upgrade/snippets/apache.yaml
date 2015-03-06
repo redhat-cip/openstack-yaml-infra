@@ -1,0 +1,4 @@
+- name: restart apache
+  service: name={{ webserver}} state=restarted
+  tag: 7
+

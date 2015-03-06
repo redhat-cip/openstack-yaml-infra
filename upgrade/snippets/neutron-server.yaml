@@ -1,0 +1,4 @@
+- name: restart neutron-server
+  service: name={{ neutron_server }} state=restarted
+  tag: 7
+

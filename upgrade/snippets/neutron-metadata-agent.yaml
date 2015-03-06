@@ -1,0 +1,4 @@
+- name: restart neutron-metadata-agent
+  service: name={{ neutron_metadata_agent }} state=restarted
+  tag: 8
+

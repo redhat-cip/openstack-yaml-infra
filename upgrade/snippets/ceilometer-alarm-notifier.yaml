@@ -1,0 +1,4 @@
+- name: restart ceilometer-alarm-notifier
+  service: name={{ ceilometer_alarm_notifier }} state=restarted
+  tag: 7
+
