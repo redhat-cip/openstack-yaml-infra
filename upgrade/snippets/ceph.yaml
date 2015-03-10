@@ -1,4 +1,5 @@
 - name: restart ceph
   service: name=ceph state=restarted
   tag: 7
+  when: ansible_distribution == 'RedHat'
 

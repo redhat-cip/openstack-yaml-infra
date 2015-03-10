@@ -1,4 +1,5 @@
 - name: restart keystone
   service: name={{ keystone }} state=restarted
   tag: 7
+  when: ansible_distribution == 'RedHat'
 

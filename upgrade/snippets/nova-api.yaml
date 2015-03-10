@@ -1,4 +1,5 @@
 - name: restart nova-api
   service: name={{ nova_api }} state=restarted
   tag: 7
+  when: ansible_distribution == 'RedHat'
 

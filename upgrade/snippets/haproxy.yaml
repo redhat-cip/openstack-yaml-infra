@@ -1,4 +1,5 @@
 - name: restart haproxy
   service: name=hapoxy state=restarted
   tag: 6
+  when: ansible_distribution == 'RedHat'
 

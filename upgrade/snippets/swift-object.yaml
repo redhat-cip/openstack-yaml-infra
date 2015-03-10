@@ -1,4 +1,5 @@
 - name: restart swift-object
   service: name={{ swift_object }} state=restarted
   tag: 7
+  when: ansible_distribution == 'RedHat'
 

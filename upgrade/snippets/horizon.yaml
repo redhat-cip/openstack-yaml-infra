@@ -1,0 +1,5 @@
+- name: restart horizon dashboard
+  service: name={{ webserver}} state=restarted
+  tag: 7
+  when: ansible_distribution == 'RedHat'
+

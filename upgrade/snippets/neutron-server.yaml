@@ -1,4 +1,5 @@
 - name: restart neutron-server
   service: name={{ neutron_server }} state=restarted
   tag: 7
+  when: ansible_distribution == 'RedHat'
 

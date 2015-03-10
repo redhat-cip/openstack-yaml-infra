@@ -1,4 +1,5 @@
 - name: restart nova-conductor
   service: name={{ nova_conductor }} state=restarted
   tag: 7
+  when: ansible_distribution == 'RedHat'
 

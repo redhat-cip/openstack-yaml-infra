@@ -1,4 +1,5 @@
 - name: restart cinder-scheduler
   service: name={{ cinder_scheduler }} state=restarted
   tag: 7
+  when: ansible_distribution == 'RedHat'
 

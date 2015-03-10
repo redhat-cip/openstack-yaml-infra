@@ -1,4 +1,5 @@
 - name: restart ceilometer-alarm-notifier
   service: name={{ ceilometer_alarm_notifier }} state=restarted
   tag: 7
+  when: ansible_distribution == 'RedHat'
 

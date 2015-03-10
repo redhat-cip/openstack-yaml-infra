@@ -1,4 +1,5 @@
 - name: restart cinder-api
   service: name={{ cinder_api }} state=restarted
   tag: 7
+  when: ansible_distribution == 'RedHat'
 

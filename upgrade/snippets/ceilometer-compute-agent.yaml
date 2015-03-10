@@ -1,4 +1,5 @@
 - name: restart ceilometer-agent-compute
   service: name={{ ceilometer_agent_compute }} state=restarted
   tag: 7
+  when: ansible_distribution == 'RedHat'
 

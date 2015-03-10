@@ -2,6 +2,11 @@ cloud::install::puppetdb::server:
   snippet:
     - puppetdb
 
+cloud::logging::server:
+  snippet:
+    - elasticsearch
+    - apache
+
 cloud::database::nosql::redis::server:
   snippet:
     - redis

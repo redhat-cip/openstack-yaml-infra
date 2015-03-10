@@ -1,4 +1,5 @@
 - name: restart swift-proxy
   service: name={{ swift_proxy }} state=restarted
   tag: 7
+  when: ansible_distribution == 'RedHat'
 

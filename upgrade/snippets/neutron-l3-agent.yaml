@@ -1,4 +1,5 @@
 - name: restart neutron-l3-agent
   service: name={{ neutron_l3_agent }} state=restarted
   tag: 8
+  when: ansible_distribution == 'RedHat'
 
