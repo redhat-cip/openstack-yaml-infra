@@ -34,6 +34,7 @@ cloud::purge_firewall_rules: "%{hiera('purge_firewall_rules')}"
 cloud::firewall_pre_extras: "%{hiera('firewall_pre_extras')}"
 cloud::firewall_post_extras: "%{hiera('firewall_post_extras')}"
 cloud::firewall::post::debug: "%{hiera('firewall_debug')}"
+cloud::limits: "%{hiera('limit_rules')}"
 
 #
 # cloud::selinux (private)

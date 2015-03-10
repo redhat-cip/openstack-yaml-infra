@@ -18,6 +18,9 @@ sudo::configs:
 {% endfor %}
 {% endif %}
 
+# Limits
+limit_rules: {{ config.limit_rules | default({}) }}
+
 # SELinux
 selinux: {{ config.selinux | default('permissive') }}
 selinux_directory: {{ config.selinux_directory }}
