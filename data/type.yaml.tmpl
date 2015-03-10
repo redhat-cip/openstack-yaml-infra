@@ -54,9 +54,12 @@ cloud::database::nosql::memcached::firewall_settings: "%{hiera('firewall_common_
 #
 # cloud::database::nosql::redis
 #
+cloud::database::nosql::redis::server::bind_ip: "%{hiera('redis_bind_ip')}"
 cloud::database::nosql::redis::server::port: "%{hiera('redis_port')}"
 cloud::database::nosql::redis::server::firewall_settings: "%{hiera('firewall_common_extras')}"
 cloud::database::nosql::redis::sentinel::port: "%{hiera('sentinel_port')}"
+cloud::database::nosql::redis::sentinel::haproxy_monitor_ip: "%{hiera('sentinel_haproxy_monitor_ip')}"
+cloud::database::nosql::redis::sentinel::haproxy_monitor_port: "%{hiera('sentinel_haproxy_monitor_port')}"
 cloud::database::nosql::redis::sentinel::firewall_settings: "%{hiera('firewall_common_extras')}"
 
 #
@@ -330,6 +333,7 @@ cloud::loadbalancer::horizon_ssl: "%{hiera('horizon_ssl')}"
 cloud::loadbalancer::spice: "%{hiera('spice')}"
 cloud::loadbalancer::rabbitmq: "%{hiera('rabbit')}"
 cloud::loadbalancer::kibana: "%{hiera('kibana3')}"
+cloud::loadbalancer::redis: "%{hiera('redis')}"
 cloud::loadbalancer::elasticsearch: "%{hiera('elasticsearch')}"
 cloud::loadbalancer::sensu_dashboard: "%{hiera('sensu_dashboard')}"
 cloud::loadbalancer::sensu_api: "%{hiera('sensu_api')}"
@@ -363,6 +367,7 @@ cloud::loadbalancer::spice_bind_options: "%{hiera('spice_bind_options')}"
 cloud::loadbalancer::kibana_bind_options: "%{hiera('kibana3_bind_options')}"
 cloud::loadbalancer::sensu_dashboard_bind_options: "%{hiera('sensu_dashboard_bin_options')}"
 cloud::loadbalancer::sensu_api_bind_options: "%{hiera('sensu_api_bind_options')}"
+cloud::loadbalancer::redis_bind_options: "%{hiera('redis_bind_options')}"
 cloud::loadbalancer::elasticsearch_bind_options: "%{hiera('elasticsearch_bind_options')}"
 cloud::loadbalancer::horizon_bind_options: "%{hiera('horizon_bind_options')}"
 cloud::loadbalancer::horizon_ssl_bind_options: "%{hiera('horizon_ssl_bind_options')}"
@@ -387,6 +392,7 @@ cloud::loadbalancer::horizon_port: "%{hiera('horizon_port')}"
 cloud::loadbalancer::horizon_ssl_port: "%{hiera('horizon_ssl_port')}"
 cloud::loadbalancer::spice_port: "%{hiera('spice_port')}"
 cloud::loadbalancer::kibana_port: "%{hiera('kibana3_port')}"
+cloud::loadbalancer::redis_port: "%{hiera('redis_haproxy_port')}"
 cloud::loadbalancer::elasticsearch_port: "%{hiera('elasticsearch_port')}"
 cloud::loadbalancer::sensu_dashboard_port: "%{hiera('sensu_dashboard_port')}"
 cloud::loadbalancer::sensu_api_port: "%{hiera('sensu_api_port')}"
@@ -786,20 +792,11 @@ cloud::monitoring::server::sensu::rabbitmq_user: "%{hiera('sensu_rabbitmq_user')
 cloud::monitoring::server::sensu::rabbitmq_password: "%{hiera('sensu_rabbitmq_password')}"
 cloud::monitoring::server::sensu::rabbitmq_vhost: "%{hiera('sensu_rabbitmq_vhost')}"
 cloud::monitoring::server::sensu::uchiwa_ip: "%{hiera('sensu_uchiwa_ip')}"
+cloud::monitoring::server::sensu::uchiwa_port:  "%{hiera('sensu_dashboard_port')}"
 cloud::monitoring::server::sensu::manage_rabbitmq_resources: "%{hiera('sensu_manage_rabbitmq_resources')}"
 cloud::monitoring::server::sensu::sensu_api_ip: "%{hiera('sensu_api_ip')}"
 cloud::monitoring::server::sensu::sensu_api_port: "%{hiera('sensu_api_port')}"
-cloud::monitoring::server::sensu::uchiwa_port:  "%{hiera('sensu_dashboard_port')}"
 cloud::monitoring::server::sensu::firewall_settings: "%{hiera('firewall_common_extras')}"
-
-
-uchiwa::install_repo: "%{hiera('sensu_uchiwa_install_repo')}"
-uchiwa::user: "%{hiera('sensu_uchiwa_user')}"
-uchiwa::pass: "%{hiera('sensu_uchiwa_password')}"
-sensu::rabbitmq_password: "%{hiera('sensu_rabbitmq_password')}"
-sensu::rabbitmq_host: "%{hiera('rabbit_host')}"
-sensu::rabbitmq_vhost: "%{hiera('sensu_rabbitmq_vhost')}"
-sensu::install_repo: "%{hiera('sensu_install_repo')}"
 
 # Experimental
 # cloud::database::dbaas::trove_db_host: "%{hiera('trove_db_host')}"

@@ -6,7 +6,6 @@ profiles:
     steps:
       1:
         roles:
-          - cloud::database::nosql::redis::server
           - cloud::install::puppetdb::server
     serverspec_config:
       puppetdb_server: puppetdb_server
@@ -18,6 +17,8 @@ profiles:
         roles:
           - cloud::database::sql::mysql
           - cloud::database::nosql::mongodb::mongod
+          - cloud::database::nosql::redis::server
+          - cloud::database::nosql::redis::sentinel
           - cloud::messaging
           - cloud::database::nosql::memcached
       2:
@@ -86,6 +87,7 @@ serverspec:
   cloud::messaging: messaging
   cloud::database::nosql::memcached: cache
   cloud::database::nosql::redis::server: redis_server
+  cloud::database::nosql::redis::sentinel: redis_sentinel
   cloud::identity: identity
   cloud::network::dhcp: network
   cloud::loadbalancer: lb

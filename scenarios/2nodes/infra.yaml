@@ -9,7 +9,6 @@ profiles:
     steps:
       1:
         roles:
-          - cloud::database::nosql::redis::server
           - cloud::install::puppetdb::server
     serverspec_config:
       puppetdb_server: puppetdb_server
@@ -21,6 +20,7 @@ profiles:
         roles:
           - cloud::database::sql::mysql
           - cloud::database::nosql::mongodb::mongod
+          - cloud::database::nosql::redis::server
           - cloud::messaging
           - cloud::database::nosql::memcached
           - cloud::storage::rbd::monitor
