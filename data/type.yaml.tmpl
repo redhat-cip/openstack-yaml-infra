@@ -582,6 +582,20 @@ cloud::spof::cluster_password: "%{hiera('spof_cluster_password')}"
 cloud::spof::firewall_settings: "%{hiera('firewall_common_extras')}"
 
 #
+# cloud::clustering
+#
+cloud::clustering::cluster_members: "%{hiera('cluster_members')}"
+cloud::clustering::cluster_ip: "%{hiera('cluster_ip')}"
+cloud::clustering::cluster_auth: "%{hiera('cluster_auth')}"
+cloud::clustering::cluster_authkey: "%{hiera('cluster_authkey')}"
+cloud::clustering::cluster_recheck_interval: "%{hiera('cluster_recheck_interval')}"
+cloud::clustering::cluster_pe_warn_series_max: "%{hiera('cluster_pe_warn_series_max')}"
+cloud::clustering::cluster_pe_input_series_max: "%{hiera('cluster_pe_input_series_max')}"
+cloud::clustering::cluster_pe_error_series_max: "%{hiera('cluster_pe_error_series_max')}"
+cloud::clustering::cluster_multicast_address: "%{hiera('cluster_multicast_address')}"
+cloud::clustering::firewall_settings: "%{hiera('firewall_common_extras')}"
+
+#
 # cloud::telemetry
 #
 cloud::telemetry::ceilometer_secret: "%{hiera('ceilometer_secret')}"
