@@ -1,0 +1,5 @@
+- name: restart elasticsearch service
+  service: name=elasticsearch-fluentd state=restarted
+  tag: 6
+  when: ansible_distribution == 'RedHat'
+

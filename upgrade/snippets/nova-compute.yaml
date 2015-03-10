@@ -1,5 +1,8 @@
 - name: restart nova-compute
-  service: name={{ nova_compute }} state=restarted
+  service: name={{ item }} state=restarted
+  with_items:
+    - libvirtd
+    - "{{ nova_compute }}"
   tag: 8
   when: ansible_distribution == 'RedHat'
 
