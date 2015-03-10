@@ -21,6 +21,9 @@ sudo::configs:
 # Limits
 limit_rules: {{ config.limit_rules | default({}) }}
 
+# Limits
+sysctl_rules: {{ config.sysctl_rules | default({}) }}
+
 # SELinux
 selinux: {{ config.selinux | default('permissive') }}
 selinux_directory: {{ config.selinux_directory }}
