@@ -211,6 +211,8 @@ galera_clustercheck_dbpassword: {{ config.galera_clustercheck_dbpassword | defau
 galera_gcache: {{ config.galera_gcache | default('1G') }}
 galera_slave: {{ config.galera_slave | default('false') }}
 galera_bind_options: {{ config.galera_bind_options | default('"%{hiera(\'haproxy_default_bind_options\')}"') }}
+mysql_open_files_limit: {{ config.mysql_open_files_limit | default('65535') }}
+mysql_systemd_override_settings: {{ config.mysql_systemd_override_settings | default({}) }}
 
 # Messaging
 # Useful when we need a single Rabbit host (like Sensu needs)
