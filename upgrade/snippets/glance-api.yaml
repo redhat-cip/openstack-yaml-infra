@@ -3,3 +3,8 @@
   tag: 7
   when: ansible_distribution == 'RedHat'
 
+- name: update glance database
+  command: glance-manage db_sync
+  tag: 7
+  when: inventory_hostname == groups['fakehostgroup'][0] and ansible_distribution == 'RedHat'
+
