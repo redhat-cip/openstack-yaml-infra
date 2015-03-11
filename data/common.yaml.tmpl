@@ -805,6 +805,15 @@ sensu_plugins:
 {% else %}
 sensu_plugins: {}
 {% endif %}
+sensu_dashboard: {{ config.sensu_dashboard | default('true') }}
+sensu_api: {{ config.sensu_api | default('true') }}
+
+sensu_dashboard_bind_options: {{ config.sensu_dashboard_bind_options | default('"%{hiera(\'haproxy_default_bind_options\')}"') }}
+sensu_api_bind_options: {{ config.sensu_api_bind_options | default('"%{hiera(\'haproxy_default_bind_options\')}"') }}
+
+sensu_dashboard_port: {{ config.sensu_dashboard_port | default('3000') }}
+sensu_api_port: {{ config.sensu_api_port | default('4567') }}
+
 sensu_rabbitmq_user: {{ config.sensu_rabbitmq_user | default('sensu') }}
 sensu_rabbitmq_password: {{ config.sensu_rabbitmq_password | default('rabbitpassword') }}
 sensu_rabbitmq_vhost: {{ config.sensu_rabbitmq_vhost | default ('/sensu') }}
