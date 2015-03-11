@@ -813,7 +813,7 @@ sensu_api_bind_options: {{ config.sensu_api_bind_options | default('"%{hiera(\'h
 
 sensu_dashboard_port: {{ config.sensu_dashboard_port | default('3000') }}
 sensu_api_port: {{ config.sensu_api_port | default('4567') }}
-sensu_api_ip: {{ config.sensu_api_port | default('"%{hiera(\'internal_netif_ip\')}"') }}
+sensu_api_ip: {{ config.sensu_api_ip | default('"%{hiera(\'internal_netif_ip\')}"') }}
 
 sensu_manage_rabbitmq_resources: {{ config.sensu_manage_rabbitmq_resources | default('false') }}
 sensu_rabbitmq_user: {{ config.sensu_rabbitmq_user | default('sensu') }}
