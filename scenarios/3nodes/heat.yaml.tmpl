@@ -120,7 +120,7 @@ resources:
             profile: {{ profiles[hosts[hname].profile].edeploy }}
             dist: { get_param: dist}
             release: { get_param: release}
-      flavor: {{ config.flavor }}
+{% if hosts[hname].profile == 'install-server' %}      flavor: {{ config.flavor_install_server }}{% else %}      flavor: {{ config.flavor_openstack_full }}{% endif %}
       networks:
         - port: { get_resource: {{ hname }}_port }
       user_data_format: RAW
