@@ -195,9 +195,24 @@ mongodb::server::replset: {{ config.mongodb_replset | default('ceilometer') }}
 mongodb::server::logpath: {{ config.mongodb_logpath | default('/var/log/mongodb/mongod.log') }}
 
 # Redis
+redis: {{ config.redis | default('true') }}
+redis_bind_ip: {{ config.redis_bind_ip | default('"%{hiera(\'internal_netif_ip\')}"') }}
 redis_port: {{ config.redis_port | default('6379') }}
-sentinel_port: {{ config.sentinel_port | default('26379') }}
+redis_bind_options: {{ config.redis_bind_options | default('"%{hiera(\'haproxy_default_bind_options\')}"') }}
+redis_haproxy_port: {{ config.redis_haproxy_port | default('"%{hiera(\'redis_port\')}"') }}
 
+sentinel_port: {{ config.sentinel_port | default('26379') }}
+sentinel_haproxy_monitor_ip: {{ config.sentinel_haproxy_monitor_ip | default('"%{hiera(\'vip_public_ip\')}"') }}
+sentinel_haproxy_monitor_port: {{ config.sentinel_haproxy_monitor_port | default('10300') }}
+
+redis::bind: {{ config.redis_port | default('"%{hiera(\'redis_bind_ip\')}"') }}
+redis::port: {{ config.redis_port | default('"%{hiera(\'redis_port\')}"') }}
+
+redis::sentinel::down_after: {{ config.sentinel_down_ater | default('1000') }}
+redis::sentinel::failover_timeout: {{ config.sentinel_failover_timeout | default('1000') }}
+redis::sentinel::master_name: {{ config.redis_master_name }}
+redis::sentinel::redis_host: {{ config.redis_master_ip | default('"%{hiera(\'redis::sentinel::master_name\')}"')}}
+redis::sentinel::notification_script: {{ config.sentinel_notification_script | default('/bin/redis-notifications.sh') }}
 
 # MySQL
 galera_ip: {{ config.galera_ip | default('"%{hiera(\'vip_internal_ip\')}"') }}
@@ -812,7 +827,7 @@ sensu_dashboard_bind_options: {{ config.sensu_dashboard_bind_options | default('
 sensu_api_bind_options: {{ config.sensu_api_bind_options | default('"%{hiera(\'haproxy_default_bind_options\')}"') }}
 
 sensu_dashboard_port: {{ config.sensu_dashboard_port | default('3000') }}
-sensu_api_port: {{ config.sensu_api_port | default('4567') }}
+sensu_api_port: {{ config.sensu_api_port | default('4568') }}
 sensu_api_ip: {{ config.sensu_api_ip | default('"%{hiera(\'internal_netif_ip\')}"') }}
 
 sensu_manage_rabbitmq_resources: {{ config.sensu_manage_rabbitmq_resources | default('false') }}
@@ -824,6 +839,20 @@ sensu_uchiwa_ip: {{ config.sensu_uchiwa_ip | default('"%{hiera(\'internal_netif_
 sensu_uchiwa_user: {{ config.sensu_uchiwa_user | default('admin') }}
 sensu_uchiwa_password: {{ config.sensu_uchiwa_password | default('password') }}
 sensu_uchiwa_install_repo: {{ config.sensu_uchiwa_install_repo | default('false') }}
+sensu::api_bind: "%{hiera('sensu_api_ip')}"
+sensu::api_port: "%{hiera('sensu_api_port')}"
+sensu::redis_host: {{ config.sensu_redis_host | default('"%{hiera(\'vip_public_ip\')}"') }}
+sensu::redis_port: {{ config.sensu_redis_port | default('"%{hiera(\'redis_port\')}"') }}
+sensu::rabbitmq_password: "%{hiera('sensu_rabbitmq_password')}"
+sensu::rabbitmq_host: "%{hiera('rabbit_host')}"
+sensu::rabbitmq_vhost: "%{hiera('sensu_rabbitmq_vhost')}"
+sensu::install_repo: "%{hiera('sensu_install_repo')}"
+uchiwa::install_repo: "%{hiera('sensu_uchiwa_install_repo')}"
+uchiwa::user: "%{hiera('sensu_uchiwa_user')}"
+uchiwa::pass: "%{hiera('sensu_uchiwa_password')}"
+uchiwa::host: "%{hiera('sensu_uchiwa_ip')}"
+uchiwa::port: "%{hiera('sensu_dashboard_port')}"
+
 
 # Logging
 logging_syslog_enable: {{ config.logging_syslog_enable | default('true') }}
