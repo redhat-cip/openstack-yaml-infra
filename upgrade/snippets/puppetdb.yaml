@@ -3,5 +3,4 @@
   with_items:
     - "{{ webserver }}"
   tag: 6
-  when: ansible_distribution == 'RedHat'
 

@@ -1,5 +1,4 @@
 - name: restart neutron-lbaas-agent
   service: name={{ neutron_lbaas_agent }} state=restarted
   tag: 8
-  when: ansible_distribution == 'RedHat'
 

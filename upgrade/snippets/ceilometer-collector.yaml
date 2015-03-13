@@ -1,5 +1,4 @@
 - name: restart ceilometer-collector
   service: name={{ ceilometer_collector }} state=restarted
   tag: 7
-  when: ansible_distribution == 'RedHat'
 

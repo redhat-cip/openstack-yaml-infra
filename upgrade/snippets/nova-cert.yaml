@@ -1,5 +1,4 @@
 - name: restart nova-cert
   service: name={{ nova_cert }} state=restarted
   tag: 7
-  when: ansible_distribution == 'RedHat'
 

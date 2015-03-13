@@ -1,5 +1,4 @@
 - name: restart glance-registry
   service: name={{ glance_registry }} state=restarted
   tag: 7
-  when: ansible_distribution == 'RedHat'
 

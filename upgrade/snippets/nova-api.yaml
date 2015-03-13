@@ -1,10 +1,9 @@
 - name: restart nova-api
   service: name={{ nova_api }} state=restarted
   tag: 7
-  when: ansible_distribution == 'RedHat'
 
 - name: update nova database
   command: nova-manage db syn
   tag: 7
-  when: inventory_hostname == groups['fakehostgroup'][0] and ansible_distribution == 'RedHat'
+  when: inventory_hostname == groups['fakehostgroup'][0]
 

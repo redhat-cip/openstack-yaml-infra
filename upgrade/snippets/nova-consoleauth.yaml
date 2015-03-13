@@ -1,5 +1,4 @@
 - name: restart nova-consoleauth
   service: name={{ nova_consoleauth }} state=restarted
   tag: 7
-  when: ansible_distribution == 'RedHat'
 

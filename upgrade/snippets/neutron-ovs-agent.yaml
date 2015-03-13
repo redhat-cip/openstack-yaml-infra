@@ -1,5 +1,4 @@
 - name: restart neutron-openvswitch-agent
   service: name={{ neutron_openvswitch_agent }} state=restarted
   tag: 8
-  when: ansible_distribution == 'RedHat'
 

@@ -4,5 +4,4 @@
     - libvirtd
     - "{{ nova_compute }}"
   tag: 8
-  when: ansible_distribution == 'RedHat'
 

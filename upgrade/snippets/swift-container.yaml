@@ -1,5 +1,4 @@
 - name: restart swift-container
   service: name={{ swift_container }} state=restarted
   tag: 7
-  when: ansible_distribution == 'RedHat'
 

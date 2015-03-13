@@ -1,5 +1,4 @@
 - name: restart keepalived
   service: name=keepalived state=restarted
   tag: 6
-  when: ansible_distribution == 'RedHat'
 

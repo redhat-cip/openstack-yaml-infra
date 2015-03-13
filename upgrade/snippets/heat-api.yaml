@@ -1,10 +1,9 @@
 - name: restart heat-api
   service: name={{ heat_api }} state=restarted
   tag: 7
-  when: ansible_distribution == 'RedHat'
 
 - name: update heat database
   command: heat-manage --config-file /etc/heat/heat.conf db_sync
   tag: 7
-  when: inventory_hostname == groups['fakehostgroup'][0] and ansible_distribution == 'RedHat'
+  when: inventory_hostname == groups['fakehostgroup'][0]
 
