@@ -1,0 +1,4 @@
+- name: restart neutron-metering-agent
+  service: name={{ neutron_metering_agent }} state=restarted
+  tag: 8
+
