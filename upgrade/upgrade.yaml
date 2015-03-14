@@ -78,7 +78,7 @@ cloud::volume::scheduler:
 
 cloud::volume::storage:
   snippet:
-    - cinder-storage
+    - cinder-volume
 
 cloud::image::api:
   snippet:
