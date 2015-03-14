@@ -448,7 +448,7 @@ cloud::network::metadata::ks_keystone_admin_proto: "%{hiera('ks_keystone_admin_p
 cloud::network::metadata::ks_keystone_admin_port: "%{hiera('keystone_admin_port')}"
 cloud::network::metadata::ks_keystone_admin_host: "%{hiera('ks_keystone_admin_host')}"
 cloud::network::metadata::auth_region: "%{hiera('region')}"
-cloud::network::metadata::ks_nova_internal_proto: "%{hiera('ks_nova_internal_proto')}"
+cloud::network::metadata::ks_nova_internal_proto: "http"
 
 cloud::network::lbaas::manage_haproxy_pkg: "%{hiera('neutron_manage_haproxy_pkg')}"
 cloud::network::lbaas::debug: "%{hiera('neutron_debug')}"
