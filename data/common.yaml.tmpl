@@ -447,6 +447,7 @@ ceilometer_log_facility: {{ config.ceilometer_log_facility | default('"%{hiera(\
 
 ceilometer_api: {{ config.ceilometer_api | default('true') }}
 ceilometer_centralagent_enabled: {{ config.ceilometer_centralagent_enabled | default('true') }}
+ceilometer::agent::central::enabled: {{ config.ceilometer_centralagent_enabled | default('true') }}
 ceilometer_bind_options: {{ config.ceilometer_bind_options | default('"%{hiera(\'haproxy_default_bind_options\')}"') }}
 ceilometer_endpoint_type: {{ config.ceilometer_endpoint_type | default('"%{hiera(\'endpoint_type\')}"') }}
 
@@ -463,7 +464,7 @@ ks_ceilometer_password: {{ config.ks_ceilometer_password | default('ceilometerpa
 ceilometer_secret: {{ config.ceilometer_secret | default('ceilometersecret') }}
 
 {% if config.ceilometer_coordination_url %}
-ceilometer_coordination_url: {{ config.ceilometer_coordination_url }}
+ceilometer::agent::central::coordination_url: {{ config.ceilometer_coordination_url }}
 {% endif %}
 
 # Ceph

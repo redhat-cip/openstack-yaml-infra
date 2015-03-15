@@ -632,9 +632,6 @@ cloud::telemetry::api::api_eth: "%{hiera('api_eth')}"
 cloud::telemetry::api::mongo_nodes: "%{hiera('mongo_nodes')}"
 cloud::telemetry::api::firewall_settings: "%{hiera('firewall_common_extras')}"
 
-cloud::telemetry::centralagent::enabled: "%{hiera('ceilometer_centralagent_enabled')}"
-cloud::telemetry::centralagent::coordination_url: "%{hiera('ceilometer_coordination_url')}"
-
 cloud::telemetry::collector::mongo_nodes: "%{hiera('mongo_nodes')}"
 cloud::telemetry::collector::replicaset_enabled: "%{hiera('replicatset_enabled')}"
 
