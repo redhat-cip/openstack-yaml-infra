@@ -27,6 +27,9 @@ export OS_PASSWORD=$4
 export OS_AUTH_URL=$5
 EXTRA_MIGRATE=
 
+# number of time we loop to check if there are still servers
+max_limit=10
+
 if [ -z "$COMPUTE" ]; then
   echo "You have to provide the compute FQDN as a parameter."
   exit 1
@@ -71,10 +74,18 @@ migrate_servers() {
 
 # compute_has_servers function loop is here to avoid a race condition between
 # end of scheduling and service disablement.
+start_limit=0
 while ! compute_has_servers; do
+    # Avoid unlimited loop
+    if [ "$start_limit" -gt "$max_limit" ]; then
+        echo "After $max_limit loops, there are still servers scheduled on $COMPUTE node."
+        echo "Fail here to avoid too long loop."
+        exit 1
+    fi
     # Extract all VMs hosted on this compute node
     VMS=$(nova-manage --nodebug vm list | grep $COMPUTE | awk '{print $1}')
     migrate_servers $VMS
+    limit=$((limit + 1))
 done
 
 echo "All the instances have been migrated from $COMPUTE server."
