@@ -32,27 +32,49 @@ if [ -z "$COMPUTE" ]; then
   exit 1
 fi
 
-# Extract all VMs hosted on this compute node
-VMS=$(nova-manage --nodebug vm list | grep $COMPUTE | awk '{print $1}')
-
 # Migrate all VM on another compute node
 if fgrep "images_type=rbd" /etc/nova/nova.conf; then
   EXTRA_MIGRATE="--block-migrate"
 fi
-for VM in $VMS; do
-  echo "Instance $VM is going to be migrated:"
-  nova live-migration $EXTRA_MIGRATE $VM
 
-  # test if the migration worked and the VM is still alive.
-  if ! timeout 20 sh -c "while ! nova show $VM | grep status | grep -q ACTIVE; do sleep 1; done"; then
-    echo "Instance $VM has failed to be migrated and is not active."
-    exit 1
-  fi
-  if ! timeout 20  sh -c "while ! nova-manage --nodebug vm list | grep $COMPUTE | grep $VM; do sleep 1; done"; then
-    echo "Instance $VM has failed to be migrated but is still active."
-  else
-    echo "Instance $VM has been successfully migrated and is active."
-  fi
+# Until compute has no more servers, we keep looping and migrate them,
+# after full evacuation we disable nova-compute service to avoid new server
+# scheduling.
+compute_has_servers() {
+      VMS=nova-manage --nodebug vm list | grep $COMPUTE | awk '{print $1}'
+      if [ -z $VMS ]; then
+          return 1
+      else
+          nova-manage service disable --service nova-compute --host $COMPUTE
+          return 0
+      fi
+}
+
+migrate_servers() {
+    servers=$1
+    for VM in $servers; do
+        echo "Instance $VM is going to be migrated:"
+        nova live-migration $EXTRA_MIGRATE $VM
+
+        # test if the migration worked and the VM is still alive.
+        if ! timeout 20 sh -c "while ! nova show $VM | grep status | grep -q ACTIVE; do sleep 1; done"; then
+            echo "Instance $VM has failed to be migrated and is not active."
+            exit 1
+        fi
+        if ! timeout 20  sh -c "while ! nova-manage --nodebug vm list | grep $COMPUTE | grep $VM; do sleep 1; done"; then
+            echo "Instance $VM has failed to be migrated but is still active."
+        else
+            echo "Instance $VM has been successfully migrated and is active."
+        fi
+    done
+}
+
+# compute_has_servers function loop is here to avoid a race condition between
+# end of scheduling and service disablement.
+while ! compute_has_servers; do
+    # Extract all VMs hosted on this compute node
+    VMS=$(nova-manage --nodebug vm list | grep $COMPUTE | awk '{print $1}')
+    migrate_servers $VMS
 done
 
 echo "All the instances have been migrated from $COMPUTE server."
