@@ -650,6 +650,7 @@ neutron_veth_mtu: {{ config.neutron_veth_mtu | default('1500') }}
 neutron_dnsmasq_dns_servers: {{ config.neutron_dnsmasq_dns_servers | default('false') }}
 
 neutron_metadata_enabled: {{ config.neutron_metadata_enabled | default('true') }}
+nova_metadata_proto: {{ config.neutron_metadata_enabled | default('http') }}
 neutron_external_int: {{ config.neutron_external_int | default('"%{hiera(\'external_netif\')}"') }}
 neutron_external_bridge: {{ config.neutron_external_bridge | default('br-pub') }}
 neutron_manage_external_network: {{ config.neutron_manage_external_network | default('false') }}
