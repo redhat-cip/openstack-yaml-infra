@@ -59,7 +59,6 @@ profiles:
           - cloud::orchestration::engine
           - cloud::object::controller
           - cloud::object::ringbuilder
-          - cloud::spof
           - cloud::telemetry::centralagent
       5:
         roles:

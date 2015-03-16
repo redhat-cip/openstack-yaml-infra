@@ -49,7 +49,6 @@ profiles:
           - cloud::network::controller
           - cloud::orchestration::api
           - cloud::orchestration::engine
-          - cloud::spof
           - cloud::telemetry::centralagent
     serverspec_config:
       ks_user_name: ks_admin_tenant
