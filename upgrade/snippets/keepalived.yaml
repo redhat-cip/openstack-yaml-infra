@@ -1,4 +1,4 @@
 - name: restart keepalived
   service: name=keepalived state=restarted
-  tag: 6
+  tags: 6
 

@@ -1,4 +1,4 @@
 - name: restart haproxy
   service: name=hapoxy state=restarted
-  tag: 6
+  tags: 6
 

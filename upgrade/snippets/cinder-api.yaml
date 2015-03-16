@@ -1,9 +1,9 @@
 - name: restart cinder-api
   service: name={{ cinder_api }} state=restarted
-  tag: 7
+  tags: 7
 
 - name: update cinder database
   command: cinder-manage db sync
-  tag: 7
+  tags: 7
   when: inventory_hostname == groups['fakehostgroup'][0]
 

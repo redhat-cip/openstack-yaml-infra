@@ -2,5 +2,5 @@
   service: name={{ item }} state=restarted
   with_items:
     - "{{ webserver }}"
-  tag: 6
+  tags: 6
 

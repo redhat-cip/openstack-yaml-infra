@@ -1,9 +1,9 @@
 - name: restart keystone
   service: name={{ keystone }} state=restarted
-  tag: 7
+  tags: 7
 
 - name: update keystone database
   command: keystone-manage db_sync
-  tag: 7
+  tags: 7
   when: inventory_hostname == groups['fakehostgroup'][0]
 

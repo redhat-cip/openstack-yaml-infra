@@ -1,4 +1,4 @@
 - name: restart heat-api-cfn
   service: name={{ heat_api_cfn }} state=restarted
-  tag: 7
+  tags: 7
 

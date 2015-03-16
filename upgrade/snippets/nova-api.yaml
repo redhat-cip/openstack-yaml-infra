@@ -1,9 +1,9 @@
 - name: restart nova-api
   service: name={{ nova_api }} state=restarted
-  tag: 7
+  tags: 7
 
 - name: update nova database
   command: nova-manage db syn
-  tag: 7
+  tags: 7
   when: inventory_hostname == groups['fakehostgroup'][0]
 

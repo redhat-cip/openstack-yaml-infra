@@ -1,4 +1,4 @@
 - name: restart heat-engine
   service: name={{ heat_engine }} state=restarted
-  tag: 7
+  tags: 7
 

@@ -1,4 +1,4 @@
 - name: restart ceilometer-api
   service: name={{ ceilometer_api }} state=restarted
-  tag: 7
+  tags: 7
 

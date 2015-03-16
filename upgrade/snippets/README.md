@@ -3,7 +3,7 @@
 ## Best practices
 
 * The snippet title should match a snippet in upgrade.yaml.
-* Each task should contain a tag.
+* Each task should contain a tags.
 * If you need to run a task only on a specific hostgroup member use this syntax:
   groups['fakehostgroup'][-1] for example. The "fakehostgroup" will be replaced
 by the right profile name during the generate step.

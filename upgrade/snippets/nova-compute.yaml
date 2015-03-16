@@ -3,5 +3,5 @@
   with_items:
     - libvirtd
     - "{{ nova_compute }}"
-  tag: 8
+  tags: 8
 
