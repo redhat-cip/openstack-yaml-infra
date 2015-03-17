@@ -20,11 +20,7 @@
 set -e
 set -x
 
-COMPUTE=$1
-export OS_USERNAME=$2
-export OS_TENANT_NAME=$3
-export OS_PASSWORD=$4
-export OS_AUTH_URL=$5
+COMPUTE=$(cat /etc/hostname)
 EXTRA_MIGRATE=
 
 # number of time we loop to check if there are still servers
