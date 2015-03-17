@@ -1,4 +1,0 @@
-- name: restart elasticsearch service
-  service: name=elasticsearch-fluentd state=restarted
-  tags: 6
-
