@@ -5,12 +5,6 @@
 - debug: msg="Step 1 of upgrade"
   tags: 1
 
-# Ensure chroot is labelized with new contexts
-- name: SELinux labelized chroot
-  shell: setfiles -r /var/lib/debootstrap/install/{{ distro }}-{{ version }}/openstack-full/ /var/lib/debootstrap/install/{{ distro }}-{{ version }}/openstack-full/etc/selinux/targeted/contexts/files/file_contexts /var/lib/debootstrap/install/{{ distro }}-{{ version }}/openstack-full/
-  when: inventory_hostname == groups['install-server'][0]
-  tags: 1
-
 - debug: msg="Step 2 of upgrade"
   tags: 2
 
