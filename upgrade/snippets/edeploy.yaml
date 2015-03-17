@@ -22,6 +22,12 @@
   edeploy: command=upgrade version={{ distro }}-{{ version }}
   tags: 5
 
+# Ensure chroot is labelized
+- name: SELinux labelized chroot
+  shell: setfiles -r /var/lib/debootstrap/install/{{ distro }}-{{ version }}/openstack-full/ /etc/selinux/targeted/contexts/files/file_contexts /var/lib/debootstrap/install/{{ distro }}-{{ version }}/openstack-full/
+  when: inventory_hostname == groups['install-server'][0]
+  tags: 5
+
 - debug: msg="Step 6 of upgrade"
   tags: 6
 
