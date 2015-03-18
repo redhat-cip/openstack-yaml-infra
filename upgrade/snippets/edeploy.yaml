@@ -10,7 +10,7 @@
   with_items:
     - install-server
     - openstack-full
-  when: inventory_hostname == groups['fakehostgroup'][0]
+  when: inventory_hostname == groups['install-server'][0]
   tags: 1
 
 - name: upgrade edeploy script
