@@ -156,7 +156,7 @@ spof_cluster_password: {{ config.spof_cluster_password | default('secrete') }}
 
 # Clustering (new way replacing SPOF)
 cluster_members: {{ config.spof_cluster_members | default ('false') }}
-cluster_ip: {{ config.spof_cluster_ip | default('"%{hiera(\'internal_netif_ip\')}"'    ) }}
+cluster_ip: {{ config.spof_cluster_ip | default('"%{hiera(\'internal_netif_ip\')}"') }}
 cluster_auth: {{ config.cluster_auth | default ('false') }}
 cluster_authkey: {{ config.cluster_authkey | default ('/var/lib/puppet/ssl/certs/ca.pem') }}
 cluster_recheck_interval: {{ config.cluster_recheck_interval | default ('5min') }}
@@ -164,6 +164,7 @@ cluster_pe_warn_series_max: {{ config.cluster_pe_warn_series_max | default ('100
 cluster_pe_input_series_max: {{ config.cluster_pe_input_series_max | default ('1000') }}
 cluster_pe_error_series_max: {{ config.cluster_pe_error_series_max | default ('1000') }}
 cluster_multicast_address: {{ config.spof_multicast_address | default('239.1.1.2') }}
+cluster_pacemaker_enabled: {{ config.cluster_pacemaker_enabled | default ('false') }}
 
 # MongoDB
 mongod_enable: {{ config.mongod_enable | default('true') }}

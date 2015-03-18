@@ -123,6 +123,7 @@ cloud::compute::api::ks_nova_public_port: "%{hiera('nova_port')}"
 cloud::compute::api::ks_ec2_public_port: "%{hiera('nova_ec2_port')}"
 cloud::compute::api::ks_metadata_public_port: "%{hiera('nova_metadata_port')}"
 cloud::compute::api::firewall_settings: "%{hiera('firewall_common_extras')}"
+cloud::compute::api::pacemaker_enabled: "%{hiera('cluster_pacemaker_enabled')}"
 
 cloud::compute::consoleproxy::api_eth: "%{hiera('api_eth')}"
 cloud::compute::consoleproxy::console: "%{hiera('nova_console')}"
