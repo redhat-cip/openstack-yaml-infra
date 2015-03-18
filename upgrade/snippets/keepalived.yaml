@@ -2,6 +2,10 @@
   service: name=keepalived state=restarted
   tags: 6
 
+- name: wait some time the VIP failovers to another node
+  command: /bin/sleep 10
+  tags: 6
+
 - name: clear the ARP cache
   command: ip -s -s neigh flush all
   tags: 6
