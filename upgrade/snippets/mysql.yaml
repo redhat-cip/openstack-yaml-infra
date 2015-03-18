@@ -1,7 +1,7 @@
 - name: restart mysql
   shell: service mysqld restart
   register: result
-  until: result.stdout.rc == 0
+  until: result.rc == 0
   retries: 2
   delay: 2
   tags: 6
