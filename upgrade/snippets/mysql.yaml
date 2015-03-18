@@ -1,4 +1,8 @@
 - name: restart mysql
-  service: name=mysqld state=restarted
+  shell: service mysqld restart
+  register: result
+  until: result.stdout.rc == 0
+  retries: 2
+  delay: 2
   tags: 6
 
