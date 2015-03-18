@@ -5,6 +5,18 @@
 - debug: msg="Step 1 of upgrade"
   tags: 1
 
+- name: upgrade edeploy script on eDeploy server
+  copy: src=edeploy dest=/var/lib/debootstrap/install/{{ distro }}-{{ version }}/{{ item }}/usr/sbin/edeploy mode=0755
+  with_items:
+    - install-server
+    - openstack-full
+  when: inventory_hostname == groups['fakehostgroup'][0]
+  tags: 1
+
+- name: upgrade edeploy script
+  copy: src=edeploy dest=/usr/sbin/edeploy mode=0755
+  tags: 1
+
 - debug: msg="Step 2 of upgrade"
   tags: 2
 
@@ -22,7 +34,7 @@
   tags: 5
 
 - name: Reload systemctl scripts
-  shell: systemctl daemon-reload
+  command: systemctl daemon-reload
   tags: 5
 
 - debug: msg="Step 6 of upgrade"

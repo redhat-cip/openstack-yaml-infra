@@ -2,3 +2,7 @@
   service: name=keepalived state=restarted
   tags: 6
 
+- name: clear the ARP cache
+  command: ip -s -s neigh flush all
+  tags: 6
+

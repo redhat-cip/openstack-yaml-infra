@@ -1,4 +1,4 @@
 - name: restart swift-account
-  service: name={{ swift_acount }} state=restarted
+  service: name={{ swift_account }} state=restarted
   tags: 7
 

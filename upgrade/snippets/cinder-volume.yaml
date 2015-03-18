@@ -1,4 +1,4 @@
-- name: restart cinder-storage
-  service: name={{ cinder_storage }} state=restarted
+- name: restart cinder-volume
+  service: name={{ cinder_volume }} state=restarted
   tags: 7
 

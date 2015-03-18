@@ -1,3 +1,7 @@
+- name: kill neutron-server process
+  command: pkill -9 neutron-server
+  tags: 7
+
 - name: restart neutron-server
   service: name={{ neutron_server }} state=restarted
   tags: 7
