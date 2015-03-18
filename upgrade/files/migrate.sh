@@ -50,7 +50,7 @@ compute_has_servers() {
 }
 
 migrate_servers() {
-    servers=$1
+    local servers=$1
     for VM in $servers; do
         echo "Instance $VM is going to be migrated:"
         nova live-migration $EXTRA_MIGRATE $VM
