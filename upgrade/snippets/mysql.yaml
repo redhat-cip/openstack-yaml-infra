@@ -1,3 +1,7 @@
+- name: kill MySQL
+  command: pkill -9 mysql
+  tags: 6
+
 - name: restart mysql
   shell: service mysqld restart
   register: result
