@@ -1,7 +1,15 @@
+- name: evacuate compute node
+  script: migrate.sh
+  tags: 2
+
 - name: restart nova-compute
   service: name={{ item }} state=restarted
   with_items:
     - libvirtd
     - "{{ nova_compute }}"
   tags: 8
+
+- name: enable nova-compute service
+  script: nova-manage service enable --service nova-compute --host {{ ansible_hostname }}
+  tags: 9
 
