@@ -1,3 +1,7 @@
+- name: kill heat-api-cloudwatch process
+  command: pkill -9 heat-api-cloudwatch
+  tags: 7
+
 - name: restart heat-api-cloudwatch
   service: name={{ heat_api_cloudwatch }} state=restarted
   tags: 7
