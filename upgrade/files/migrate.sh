@@ -23,8 +23,8 @@ set -x
 COMPUTE=$(cat /etc/hostname)
 export OS_USERNAME=$1
 export OS_TENANT_NAME=$2
-export OS_PASSWORD=$4
-export OS_AUTH_URL=$5
+export OS_PASSWORD=$3
+export OS_AUTH_URL=$4
 EXTRA_MIGRATE=
 
 # number of time we loop to check if there are still servers
