@@ -36,7 +36,7 @@ if [ -z "$COMPUTE" ]; then
 fi
 
 # Migrate all VM on another compute node
-if fgrep "images_type=rbd" /etc/nova/nova.conf; then
+if ! fgrep "images_type=rbd" /etc/nova/nova.conf; then
   EXTRA_MIGRATE="--block-migrate"
 fi
 
