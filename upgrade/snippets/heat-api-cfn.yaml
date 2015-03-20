@@ -1,7 +1,3 @@
-- name: kill heat-api-cfn process
-  command: pkill -9 heat-api-cfn
-  tags: 7
-
 - name: restart heat-api-cfn
   service: name={{ heat_api_cfn }} state=restarted
   tags: 7
