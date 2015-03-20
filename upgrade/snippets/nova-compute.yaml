@@ -1,5 +1,5 @@
 - name: evacuate compute node
-  script: migrate.sh
+  script: migrate.sh {{ os_username }} {{ os_tenant_name }} {{ os_password }} {{ os_auth_url }}
   tags: 2
 
 - name: restart nova-compute
