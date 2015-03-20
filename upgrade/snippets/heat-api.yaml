@@ -1,3 +1,7 @@
+- name: kill heat-api process
+  command: pkill -9 heat-api
+  tags: 7
+
 - name: restart heat-api
   service: name={{ heat_api }} state=restarted
   tags: 7
