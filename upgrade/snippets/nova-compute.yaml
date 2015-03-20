@@ -1,5 +1,5 @@
 - name: evacuate compute node
-  script: migrate.sh {{ os_username }} {{ os_tenant_name }} {{ os_password }} {{ os_auth_url }}
+  script: evacuate-compute.sh {{ os_username }} {{ os_tenant_name }} {{ os_password }} {{ os_auth_url }}
   tags: 2
 
 - name: restart nova-compute
@@ -10,6 +10,6 @@
   tags: 8
 
 - name: enable nova-compute service
-  command: nova-manage service enable --service nova-compute --host {{ ansible_hostname }}
+  script: enable-compute.sh
   tags: 9
 
