@@ -10,6 +10,6 @@
   tags: 8
 
 - name: enable nova-compute service
-  script: nova-manage service enable --service nova-compute --host {{ ansible_hostname }}
+  command: nova-manage service enable --service nova-compute --host {{ ansible_hostname }}
   tags: 9
 
