@@ -40,8 +40,8 @@ fi
 # after full evacuation we disable nova-compute service to avoid new server
 # scheduling.
 compute_has_servers() {
-      VMS=nova-manage --nodebug vm list | grep $COMPUTE | awk '{print $1}'
-      if [ -z $VMS ]; then
+  VMS=$(nova-manage --nodebug vm list | grep $COMPUTE | awk '{print $1}')
+      if [ ! -z $VMS ]; then
           return 1
       else
           nova-manage service disable --service nova-compute --host $COMPUTE
@@ -70,10 +70,10 @@ migrate_servers() {
 
 # compute_has_servers function loop is here to avoid a race condition between
 # end of scheduling and service disablement.
-start_limit=0
+limit=0
 while ! compute_has_servers; do
     # Avoid unlimited loop
-    if [ "$start_limit" -gt "$max_limit" ]; then
+    if [ "$limit" -gt "$max_limit" ]; then
         echo "After $max_limit loops, there are still servers scheduled on $COMPUTE node."
         echo "Fail here to avoid too long loop."
         exit 1
