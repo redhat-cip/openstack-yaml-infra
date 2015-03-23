@@ -206,8 +206,8 @@ sentinel_port: {{ config.sentinel_port | default('26379') }}
 sentinel_haproxy_monitor_ip: {{ config.sentinel_haproxy_monitor_ip | default('"%{hiera(\'vip_public_ip\')}"') }}
 sentinel_haproxy_monitor_port: {{ config.sentinel_haproxy_monitor_port | default('10300') }}
 
-redis::bind: {{ config.redis_port | default('"%{hiera(\'redis_bind_ip\')}"') }}
-redis::port: {{ config.redis_port | default('"%{hiera(\'redis_port\')}"') }}
+redis::bind: "%{hiera('redis_bind_ip')}"
+redis::port: "%{hiera('redis_port')}"
 
 redis::sentinel::down_after: {{ config.sentinel_down_ater | default('1000') }}
 redis::sentinel::failover_timeout: {{ config.sentinel_failover_timeout | default('1000') }}
