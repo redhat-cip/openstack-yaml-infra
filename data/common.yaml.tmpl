@@ -843,6 +843,7 @@ sensu_dashboard_ip: {{ config.sensu_dashboard_ip | default('"%{hiera(\'internal_
 sensu_dashboard_user: {{ config.sensu_dashboard_user | default('admin') }}
 sensu_dashboard_password: {{ config.sensu_dashboard_password | default('password') }}
 sensu_uchiwa_install_repo: {{ config.sensu_uchiwa_install_repo | default('false') }}
+sensu::api_host: "%{hiera('sensu_api_ip')}"
 sensu::api_bind: "%{hiera('sensu_api_ip')}"
 sensu::api_port: "%{hiera('sensu_api_port')}"
 sensu::redis_host: {{ config.sensu_redis_host | default('"%{hiera(\'vip_public_ip\')}"') }}
