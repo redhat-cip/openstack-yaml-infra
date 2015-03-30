@@ -222,7 +222,7 @@ galera_internal_ips: {{ config.galera_internal_ips | default('"%{hiera(\'mgmt_in
 mysql_root_password: {{ config.mysql_root_password }}
 mysql_sys_maint_password: {{ config.mysql_sys_maint_password | default('sys_maint') }}
 galera_clustercheck_ipaddress: "%{hiera('internal_netif_ip')}"
-galera_clustercheck_dbuser: {{ config.galera_clustercheck_dbuser | default ('clustercheckuser') }}
+galera_clustercheck_dbuser: {{ config.galera_clustercheck_dbuser | default ('clustercheck') }}
 galera_clustercheck_dbpassword: {{ config.galera_clustercheck_dbpassword | default ('clustercheckpassword') }}
 galera_gcache: {{ config.galera_gcache | default('1G') }}
 galera_slave: {{ config.galera_slave | default('false') }}
