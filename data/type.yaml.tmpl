@@ -277,7 +277,7 @@ cloud::image::api::ks_glance_password: "%{hiera('ks_glance_password')}"
 cloud::image::api::rabbit_password: "%{hiera('rabbit_password')}"
 cloud::image::api::rabbit_host: "%{hiera('rabbit_host')}"
 cloud::image::api::api_eth: "%{hiera('internal_netif_ip')}"
-cloud::image::api::openstack_vip: "%{hiera('vip_public_ip')}"
+cloud::image::api::openstack_vip: "%{hiera('vip_internal_ip')}"
 cloud::image::api::glance_rbd_pool: "%{hiera('glance_rbd_pool')}"
 cloud::image::api::glance_rbd_user: "%{hiera('glance_rbd_user')}"
 cloud::image::api::verbose: "%{hiera('glance_api_verbose')}"
@@ -806,7 +806,7 @@ cloud::monitoring::server::sensu::firewall_settings: "%{hiera('firewall_common_e
 # cloud::database::dbaas::trove_db_user:
 # cloud::database::dbaas::nova_admin_username:
 # cloud::database::dbaas::nova_admin_tenant_name:
-# 
+#
 # cloud::database::dbaas::api::ks_trove_password: "%{hiera('ks_trove_password')}"
 # cloud::database::dbaas::api::api_eth: "%{hiera('api_eth')}"
 # cloud::database::dbaas::api::ks_keystone_internal_host: "%{hiera('ks_keystone_internal_host')}"
@@ -816,14 +816,14 @@ cloud::monitoring::server::sensu::firewall_settings: "%{hiera('firewall_common_e
 # cloud::database::dbaas::api::use_syslog:
 # cloud::database::dbaas::api::ks_trove_public_port:
 # cloud::database::dbaas::api::ks_keystone_internal_port:
-# 
+#
 # cloud::database::dbaas::conductor::ks_keystone_internal_host: "%{hiera('ks_keystone_internal_host')}"
 # cloud::database::dbaas::conductor::ks_keystone_internal_proto: "%{hiera('endpoint_proto')}"
 # cloud::database::dbaas::conductor::ks_keystone_internal_port:
 # cloud::database::dbaas::conductor::verbose:
 # cloud::database::dbaas::conductor::debug:
 # cloud::database::dbaas::conductor::use_syslog:
-# 
+#
 # cloud::database::dbaas::taskmanager::ks_keystone_internal_host: "%{hiera('ks_keystone_internal_host')}"
 # cloud::database::dbaas::taskmanager::ks_keystone_internal_proto: "%{hiera('endpoint_proto')}"
 # cloud::database::dbaas::taskmanager::ks_keystone_internal_port:
