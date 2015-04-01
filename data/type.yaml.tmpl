@@ -348,6 +348,8 @@ cloud::loadbalancer::keepalived_public_interface:  "%{hiera('keepalived_public_i
 cloud::loadbalancer::keepalived_public_ipvs:  "%{hiera('keepalived_public_ipvs')}"
 cloud::loadbalancer::keepalived_internal_interface:  "%{hiera('keepalived_internal_interface')}"
 cloud::loadbalancer::keepalived_internal_ipvs:  "%{hiera('keepalived_internal_ipvs')}"
+cloud::loadbalancer::keepalived_public_id:  "%{hiera('keepalived_public_id')}"
+cloud::loadbalancer::keepalived_private_id:  "%{hiera('keepalived_private_id')}"
 cloud::loadbalancer::ceilometer_bind_options: "%{hiera('ceilometer_bind_options')}"
 cloud::loadbalancer::cinder_bind_options: "%{hiera('cinder_bind_options')}"
 cloud::loadbalancer::ec2_bind_options: "%{hiera('nova_ec2_bind_options')}"
