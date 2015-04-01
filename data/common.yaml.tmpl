@@ -125,7 +125,7 @@ keepalived_internal_interface: {{ config.keepalived_internal_interface | default
 keepalived_public_ipvs: {{ config.keepalived_public_ipvs | default('"%{hiera(\'vip_public_ip\')}"') }}
 keepalived_internal_ipvs: {{ config.keepalived_internal_ipvs | default('"%{hiera(\'vip_internal_ip\')}"') }}
 keepalived_public_id: {{ config.keepalived_public_id | default('1') }}
-keepalived_private_id: {{ config.keepalived_private_id | default('2') }}
+keepalived_internal_id: {{ config.keepalived_internal_id | default('2') }}
 
 {% if config.mgmt_names %}
 mgmt_names:
