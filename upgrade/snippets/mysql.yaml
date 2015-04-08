@@ -2,12 +2,18 @@
   shell: service xinetd stop
   tags: 4
 
-- name: stop mysql
-  shell: service mysqld stop
+# ensure bootstrap script is not run anymore
+# so after upgrade only mariadb systemd script is run everywhere
+- name: stop mysql-bootstrap
+  shell: service mysql-bootstrap stop
+  tags: 4
+
+- name: stop mariadb
+  shell: service mariadb stop
   tags: 4
 
 - name: start mysql
-  shell: service mysqld start
+  shell: service mariadb start
   register: result
   until: result.rc == 0
   retries: 2
