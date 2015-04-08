@@ -1,12 +1,19 @@
-- name: kill MySQL
-  command: pkill -9 mysql
-  tags: 6
+- name: stop xinet
+  shell: service xinetd stop
+  tags: 4
 
-- name: restart mysql
-  shell: service mysqld restart
+- name: stop mysql
+  shell: service mysqld stop
+  tags: 4
+
+- name: start mysql
+  shell: service mysqld start
   register: result
   until: result.rc == 0
   retries: 2
   delay: 2
   tags: 6
 
+- name: start xinet
+  shell: service xinetd start
+  tags: 6
