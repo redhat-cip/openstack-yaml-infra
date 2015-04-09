@@ -326,6 +326,7 @@ cinder_db_allowed_hosts: {{ config.cinder_db_allowed_hosts | default('"%{hiera(\
 cinder_db_host: {{ config.cinder_db_host | default('"%{hiera(\'galera_ip\')}"') }}
 cinder_db_user: {{ config.cinder_db_user | default('cinder') }}
 cinder_db_password: {{ config.cinder_db_password | default('cinderpassword') }}
+cinder_db_idle_timeout: {{ config.cinder_db_idle_timeout | default('5000') }}
 
 cinder_endpoint_type: {{ config.cinder_endpoint_type | default('"%{hiera(\'endpoint_type\')}"') }}
 cinder_multi_backend: {{ config.cinder_multi_backend | default('true') }}
@@ -373,6 +374,7 @@ heat_db_allowed_hosts: {{ config.heat_db_allowed_hosts | default('"%{hiera(\'db_
 heat_db_host: {{ config.heat_db_host | default('"%{hiera(\'galera_ip\')}"') }}
 heat_db_user: {{ config.heat_db_user | default('heat') }}
 heat_db_password: {{ config.heat_db_password | default('heatpassword') }}
+heat_db_idle_timeout: {{ config.heat_db_idle_timeout | default('5000') }}
 
 heat_endpoint_type: {{ config.heat_endpoint_type | default('"%{hiera(\'endpoint_type\')}"') }}
 
@@ -441,6 +443,7 @@ glance_db_allowed_hosts: {{ config.glance_db_allowed_hosts | default('"%{hiera(\
 glance_db_host: {{ config.glance_db_host | default('"%{hiera(\'galera_ip\')}"') }}
 glance_db_user: {{ config.glance_db_user | default('glance') }}
 glance_db_password: {{ config.glance_db_password | default('glancepassword') }}
+glance_db_idle_timeout: {{ config.glance_db_idle_timeout | default('5000') }}
 
 # Ceilometer
 ceilometer_verbose: {{ config.ceilometer_verbose | default('"%{hiera(\'verbose\')}"') }}
@@ -515,6 +518,7 @@ keystone_db_allowed_hosts: {{ config.keystone_db_allowed_hosts | default('"%{hie
 keystone_db_host: {{ config.keystone_db_host | default('"%{hiera(\'galera_ip\')}"') }}
 keystone_db_user: {{ config.keystone_db_user | default('keystone') }}
 keystone_db_password: {{ config.keystone_db_password | default('keystonepassword') }}
+keystone_db_idle_timeout: {{ config.keystone_db_idle_timeout | default('5000') }}
 
 ks_admin_email: {{ config.ks_admin_email | default('no-reply@keystone.openstack') }}
 ks_admin_password: {{ config.ks_admin_password | default('adminpassword') }}
@@ -577,6 +581,7 @@ nova_db_host: {{ config.nova_db_host | default('"%{hiera(\'galera_ip\')}"') }}
 nova_db_user: {{ config.nova_db_user | default('nova') }}
 nova_db_password: {{ config.nova_db_password | default('novapassword') }}
 nova_db_use_slave: {{ config.nova_db_use_slave | default('false') }}
+nova_db_idle_timeout: {{ config.nova_db_idle_timeout | default('5000') }}
 
 nova_rbd_pool: {{ config.nova_rbd_pool | default('vms') }}
 nova_rbd_secret_uuid: {{ config.nova_rbd_secret_uuid | default('') }}
@@ -630,6 +635,7 @@ neutron_db_allowed_hosts: {{ config.neutron_db_allowed_hosts | default('"%{hiera
 neutron_db_host: {{ config.neutron_db_host | default('"%{hiera(\'galera_ip\')}"') }}
 neutron_db_user: {{ config.neutron_db_user | default('neutron') }}
 neutron_db_password: {{ config.neutron_db_password | default('neutronpassword') }}
+neutron_db_idle_timeout: {{ config.neutron_db_idle_timeout | default('5000') }}
 
 neutron_metadata_proxy_shared_secret: {{ config.neutron_metadata_proxy_shared_secret | default('asecreteaboutneutron') }}
 neutron_region: {{ config.neutron_region | default('"%{hiera(\'region\')}"') }}
@@ -738,6 +744,7 @@ trove_db_allowed_hosts: {{ config.trove_db_allowed_hosts | default('"%{hiera(\'d
 trove_db_host: {{ config.trove_db_host | default('"%{hiera(\'galera_ip\')}"') }}
 trove_db_user: {{ config.trove_db_user | default('trove') }}
 trove_db_password: {{ config.trove_db_password | default('trovepassword') }}
+trove_db_idle_timeout: {{ config.trove_db_idle_timeout | default('5000') }}
 
 trove_metadata_proxy_shared_secret: {{ config.trove_metadata_proxy_shared_secret | default('asecreteabouttrove') }}
 trove_region: {{ config.trove_region | default('"%{hiera(\'region\')}"') }}
