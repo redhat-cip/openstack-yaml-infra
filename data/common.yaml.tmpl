@@ -56,6 +56,7 @@ haproxy_default_bind_options:
 {% else %}
 haproxy_default_bind_options: []
 {% endif %}
+api_timeout: {{ config.api_timeout | default('90m') }}
 
 # Logging options
 verbose: {{ config.verbose | default('false') }}
