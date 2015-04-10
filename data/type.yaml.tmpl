@@ -379,6 +379,7 @@ cloud::loadbalancer::elasticsearch_bind_options: "%{hiera('elasticsearch_bind_op
 cloud::loadbalancer::horizon_bind_options: "%{hiera('horizon_bind_options')}"
 cloud::loadbalancer::horizon_ssl_bind_options: "%{hiera('horizon_ssl_bind_options')}"
 cloud::loadbalancer::galera_bind_options: "%{hiera('galera_bind_options')}"
+cloud::loadbalancer::galera_timeout: "%{hiera('galera_timeout')}"
 cloud::loadbalancer::ks_ceilometer_public_port: "%{hiera('ceilometer_port')}"
 cloud::loadbalancer::ks_cinder_public_port: "%{hiera('cinder_port')}"
 cloud::loadbalancer::ks_ec2_public_port: "%{hiera('nova_ec2_port')}"
