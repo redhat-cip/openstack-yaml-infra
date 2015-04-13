@@ -6,11 +6,16 @@ profiles:
     steps:
       1:
         roles:
-          - cloud::install::puppetdb::server
+          - cloud
+          - cloud::install::puppetdb
+          - cloud::install::puppetmaster
   load-balancer:
     arity: 2+n
     edeploy: openstack-full
     steps:
+      1:
+        roles:
+          - cloud
       2:
         roles:
           - cloud::loadbalancer
@@ -36,12 +41,11 @@ profiles:
     steps:
       1:
         roles:
-          - cloud::database::sql::mysql
-          - cloud::database::nosql::mongodb::mongod
-          - cloud::database::nosql::redis::server
-          - cloud::database::nosql::redis::sentinel
+          - cloud
+          - cloud::database::sql
+          - cloud::database::nosql
           - cloud::messaging
-          - cloud::database::nosql::memcached
+          - cloud::cache
           - cloud::storage::rbd::monitor
           - cloud::storage::rbd::key
       2:
@@ -59,6 +63,7 @@ profiles:
           - cloud::compute::consoleproxy
           - cloud::compute::scheduler
           - cloud::volume::api
+          - cloud::volume::backup
           - cloud::volume::scheduler
           - cloud::volume::storage
           - cloud::image::api
@@ -73,8 +78,10 @@ profiles:
           - cloud::orchestration::engine
           - cloud::object::controller
           - cloud::object::ringbuilder
-          - cloud::telemetry::centralagent
           - cloud::spof
+          - cloud::database::dbaas::api
+          - cloud::database::dbaas::conductor
+          - cloud::database::dbaas::taskmanager
       5:
         roles:
           - cloud::network::dhcp
@@ -97,11 +104,13 @@ profiles:
       neutron_firewall_driver: neutron_firewall_driver
       syslog_server: syslog_server
       syslog_port: syslog_port
-      puppetdb_server: puppetdb_server
   compute:
     arity: 1+n
     edeploy: openstack-full
     steps:
+      1:
+        roles:
+          - cloud
       4:
         roles:
           - cloud::compute::hypervisor
@@ -121,11 +130,13 @@ profiles:
       neutron_firewall_driver: neutron_firewall_driver
       syslog_server: syslog_server
       syslog_port: syslog_port
-      puppetdb_server: puppetdb_server
   storage:
-    arity: 3+1n
+    arity: 3+2n
     edeploy: openstack-full
     steps:
+      1:
+        roles:
+          - cloud
       2:
         roles:
           - cloud::object::storage
@@ -145,17 +156,35 @@ profiles:
       neutron_firewall_driver: neutron_firewall_driver
       syslog_server: syslog_server
       syslog_port: syslog_port
-      puppetdb_server: puppetdb_server
   ceph:
     arity: 3+2n
     edeploy: openstack-full
     steps:
+      1:
+        roles:
+          - cloud
       2:
         roles:
           - cloud::storage::rbd::osd
       3:
         roles:
           - cloud::storage::rbd::pools
+    serverspec_config:
+      ks_user_name: ks_admin_tenant
+      ks_user_password: ks_admin_password
+      ks_tenant_name: ks_admin_tenant
+      vip_public: vip_public_fqdn
+      endpoint_protocol: endpoint_protocol
+      virt_type: libvirt_type
+      neutron_password: ks_neutron_password
+      neutron_endpoint: vip_public_fqdn
+      neutron_protocol: ks_neutron_admin_proto
+      neutron_type_drivers: neutron_type_drivers
+      neutron_mechanism_drivers: neutron_mechanism_drivers
+      neutron_tunnel_id_ranges: neutron_tunnel_id_ranges
+      neutron_firewall_driver: neutron_firewall_driver
+      syslog_server: syslog_server
+      syslog_port: syslog_port
 
 ordered_profiles:
   - install-server
@@ -166,11 +195,9 @@ ordered_profiles:
   - ceph
 
 serverspec:
-  cloud::database::sql::mysql: database
+  cloud::database::sql: database
   cloud::messaging: messaging
-  cloud::database::nosql::memcached: cache
-  cloud::database::nosql::redis::server: redis_server
-  cloud::database::nosql::redis::sentinel: redis_sentinel
+  cloud::cache: cache
   cloud::storage::rbd::monitor: storage_controller
   cloud::identity: identity
   cloud::network::dhcp: network
@@ -181,6 +208,6 @@ serverspec:
   cloud::dashboard: dashboard
   cloud::object::controller: object_proxy
   cloud::object::storage: object_storage
-  cloud::install::puppetdb::server: puppetdb_server
-  cloud::install::puppetdb::config: puppetdb_config
   cloud::spof: spof
+  cloud::install::puppetdb: puppetdb
+  cloud::install::puppetmaster: puppetmaster
