@@ -50,6 +50,7 @@ profiles:
       3:
         roles:
           - cloud::identity
+          - cloud::storage::rbd::pools
       4:
         roles:
           - cloud::compute::api
@@ -153,9 +154,22 @@ profiles:
       2:
         roles:
           - cloud::storage::rbd::osd
-      3:
-        roles:
-          - cloud::storage::rbd::pools
+    serverspec_config:
+      ks_user_name: ks_admin_tenant
+      ks_user_password: ks_admin_password
+      ks_tenant_name: ks_admin_tenant
+      vip_public: vip_public_fqdn
+      endpoint_protocol: endpoint_protocol
+      virt_type: libvirt_type
+      neutron_password: ks_neutron_password
+      neutron_endpoint: vip_public_fqdn
+      neutron_protocol: ks_neutron_admin_proto
+      neutron_type_drivers: neutron_type_drivers
+      neutron_mechanism_drivers: neutron_mechanism_drivers
+      neutron_tunnel_id_ranges: neutron_tunnel_id_ranges
+      neutron_firewall_driver: neutron_firewall_driver
+      syslog_server: syslog_server
+      syslog_port: syslog_port
 
 ordered_profiles:
   - install-server
