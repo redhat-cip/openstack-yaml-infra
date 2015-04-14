@@ -44,11 +44,11 @@ fi
 # after full evacuation we disable nova-compute service to avoid new server
 # scheduling.
 compute_has_servers() {
-  VMS=$(nova-manage --nodebug vm list | grep $COMPUTE | awk '{print $1}')
+  VMS=$(nova hypervisor-servers $COMPUTE | grep $COMPUTE | awk '{print $1}')
       if [ ! -z $VMS ]; then
           return 1
       else
-          nova-manage service disable --service nova-compute --host $COMPUTE
+          nova service-disable --reason upgrade $COMPUTE nova-compute
           return 0
       fi
 }
@@ -64,7 +64,7 @@ migrate_servers() {
             echo "Instance $VM has failed to be migrated and is not active."
             exit 1
         fi
-        if ! timeout 20  sh -c "while ! nova-manage --nodebug vm list | grep $COMPUTE | grep $VM; do sleep 1; done"; then
+        if ! timeout 20  sh -c "while ! nova hypervisor-servers $COMPUTE | grep $COMPUTE | grep $VM; do sleep 1; done"; then
             echo "Instance $VM has failed to be migrated but is still active."
         else
             echo "Instance $VM has been successfully migrated and is active."
@@ -83,7 +83,7 @@ while ! compute_has_servers; do
         exit 1
     fi
     # Extract all VMs hosted on this compute node
-    VMS=$(nova-manage --nodebug vm list | grep $COMPUTE | awk '{print $1}')
+    VMS=$(nova hypervisor-servers $COMPUTE | grep $COMPUTE | awk '{print $1}')
     migrate_servers $VMS
     limit=$((limit + 1))
 done

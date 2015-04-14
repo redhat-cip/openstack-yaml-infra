@@ -21,5 +21,5 @@ set -e
 set -x
 
 COMPUTE=$(cat /etc/hostname)
-nova-manage service enable --service nova-compute --host $COMPUTE
+nova service-enable $COMPUTE nova-compute
 exit 0
