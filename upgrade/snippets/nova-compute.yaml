@@ -10,6 +10,6 @@
   tags: 8
 
 - name: enable nova-compute service
-  script: enable-compute.sh
+  script: enable-compute.sh {{ os_username }} {{ os_tenant_name }} {{ os_password }} {{ os_auth_url }}
   tags: 9
 

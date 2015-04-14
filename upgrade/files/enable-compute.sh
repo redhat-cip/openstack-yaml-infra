@@ -21,5 +21,10 @@ set -e
 set -x
 
 COMPUTE=$(cat /etc/hostname)
+export OS_USERNAME=$1
+export OS_TENANT_NAME=$2
+export OS_PASSWORD=$3
+export OS_AUTH_URL=$4
+
 nova service-enable $COMPUTE nova-compute
 exit 0
