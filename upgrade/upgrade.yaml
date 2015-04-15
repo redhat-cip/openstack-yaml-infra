@@ -7,3 +7,7 @@ cloud::orchestration::api:
     - heat-api
     - heat-api-cfn
     - heat-api-cloudwatch
+
+cloud::database::nosql::mongodb::mongod:
+  snippet:
+    - mongodb
