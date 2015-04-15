@@ -46,7 +46,7 @@ endpoint_public_protocol: {{ config.endpoint_public_protocol | default('"%{hiera
 endpoint_internal_protocol: {{ config.endpoint_internal_protocol | default('"%{hiera(\'endpoint_protocol\')}"') }}
 endpoint_admin_protocol: {{ config.endpoint_admin_protocol | default('"%{hiera(\'endpoint_protocol\')}"') }}
 
-endpoint_type: {{ config.endpoint_type | default('publicURL') }}
+endpoint_type: {{ config.endpoint_type | default('internalURL') }}
 
 # HAProxy default bind options
 {% if config.haproxy_default_bind_options %}
