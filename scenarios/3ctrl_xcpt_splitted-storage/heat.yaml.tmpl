@@ -1,0 +1,202 @@
+heat_template_version: 2013-05-23
+
+description: >
+  Full setup of an OpenStack reference architecture from eNovance
+
+parameters:
+  dist:
+    type: string
+    description: Linux distribution codename
+
+  release:
+    type: string
+    description: Release codename
+
+resources:
+  mysecgroup:
+    type: OS::Neutron::SecurityGroup
+    properties:
+      rules: [
+        {remote_ip_prefix: 0.0.0.0/0,
+        protocol: tcp,
+        port_range_min: 22,
+        port_range_max: 22},
+        {remote_ip_prefix: 0.0.0.0/0,
+        protocol: tcp,
+        port_range_min: 8282,
+        port_range_max: 8282},
+        {remote_ip_prefix: 0.0.0.0/0,
+        protocol: tcp,
+        port_range_min: 3000,
+        port_range_max: 3000},
+        {remote_ip_prefix: 0.0.0.0/0,
+        protocol: tcp,
+        port_range_min: 8300,
+        port_range_max: 8300},
+        {remote_ip_prefix: {{ config.internal_network }},
+        protocol: tcp,
+        port_range_min: 1,
+        port_range_max: 65535},
+        {remote_ip_prefix: {{ config.internal_network }},
+        protocol: udp,
+        port_range_min: 1,
+        port_range_max: 65535},
+        {remote_ip_prefix: 0.0.0.0/0,
+        protocol: icmp},
+        {remote_ip_prefix: 0.0.0.0/0,
+        protocol: "112"}]
+
+  {{ config.private_net_name }}:
+    type: OS::Neutron::Net
+
+  private_subnet:
+    type: OS::Neutron::Subnet
+    properties:
+      network_id: { get_resource: {{ config.private_net_name }} }
+      cidr: {{ config.internal_network }}
+      dns_nameservers:{% for dnsip in config.dns_ips %}
+        - {{ dnsip }}{% endfor %}
+      enable_dhcp: true
+      allocation_pools: [{"start": {{ config.internal_network_start_ip }}, "end": {{ config.internal_network_end_ip }}}]
+
+  vip_port:
+    type: OS::Neutron::Port
+    properties:
+      network_id: { get_resource: {{ config.private_net_name }} }
+      fixed_ips:
+        - subnet_id: { get_resource: private_subnet }
+          ip_address: {{ config.vip_admin_ip }}
+      security_groups: [{ get_resource: mysecgroup }]
+
+{% if floating_network_id %}
+  router:
+    type: OS::Neutron::Router
+
+  router_gateway:
+    type: OS::Neutron::RouterGateway
+    properties:
+      router_id: { get_resource: router }
+      network_id: {{ floating_network_id }}
+
+  router_interface:
+    type: OS::Neutron::RouterInterface
+    properties:
+      router_id: { get_resource: router }
+      subnet_id: { get_resource: private_subnet }
+
+  install_server_public_ip:
+    type: OS::Neutron::FloatingIP
+    properties:{% for hname in hosts -%}{% if hosts[hname].profile == 'install-server' %}
+      port_id: { get_resource: {{ hname }}_port }
+      floating_network_id: {{ floating_network_id }}
+
+  vip_public_ip:
+    type: OS::Neutron::FloatingIP
+    properties:
+      port_id: { get_resource: vip_port }
+      floating_network_id: {{ floating_network_id }}
+{% endif -%}
+{% endfor -%}
+{% endif -%}
+{% for hname in hosts %}
+  {{ hname }}_port:
+    type: OS::Neutron::Port
+    properties:
+      network_id: { get_resource: {{ config.private_net_name }} }
+{% if hosts[hname].profile == 'load-balancer' %}      allowed_address_pairs:
+        - ip_address: {{ config.vip_admin_ip }}{% endif %}
+      fixed_ips:
+        - subnet_id: { get_resource: private_subnet }
+          ip_address: {{ hosts[hname].ip }}
+      security_groups: [{ get_resource: mysecgroup }]
+
+  {{ hname }}:
+    type: OS::Nova::Server
+    properties:
+      image:
+        str_replace:
+          template: profile-dist-release
+          params:
+            profile: {{ profiles[hosts[hname].profile].edeploy }}
+            dist: { get_param: dist}
+            release: { get_param: release}
+{% if hosts[hname].profile == 'install-server' %}      flavor: {{ config.flavor_install_server }}{% else %}      flavor: {{ config.flavor_openstack_full }}{% endif %}
+      networks:
+        - port: { get_resource: {{ hname }}_port }
+      user_data_format: RAW
+      user_data: |
+        #cloud-config
+
+        hostname: {{ hname }}
+        fqdn: {{ hname }}.{{ config.domain}}
+        manage_etc_hosts: false
+
+        groups:
+          - {{ config.remote_user }}
+
+        users:
+          - default
+          - name: {{ config.remote_user }}
+            primary-group: {{ config.remote_user }}
+            sudo: ALL=(ALL) NOPASSWD:ALL
+            shell: /bin/bash
+            ssh_keys:
+              rsa_private: |
+                {{ config.jenkins_private_key|indent(16)}}
+            ssh-authorized-keys:{% for key in config.ssh_authorized_keys %}
+              - {{ key }}{% endfor %}
+
+        write_files:
+          - path: /etc/sudoers.d/999-jenkins-cloud-init-requiretty
+            permissions: 0440
+            content: |
+              Defaults:jenkins !requiretty
+{% if config.puppetdb_pem and hosts[hname].profile == 'install-server' %}          - path: /etc/ssl/certs/puppetdb.pem
+            permissions: 0400
+            owner: root:root
+            content: |
+              {{ config.puppetdb_pem|indent(14) }}{% endif -%}
+
+{% if hosts[hname].profile == 'storage' -%}
+{% for dev in config.ceph_osd_devices %}
+  {{ hname }}_{{ dev }}:
+    type: OS::Cinder::Volume
+    properties:
+      size: {{ config.volume_size }}
+
+  {{ hname }}_{{ dev }}_attachment:
+    type: OS::Cinder::VolumeAttachment
+    properties:
+      volume_id: { get_resource: {{ hname }}_{{ dev }} }
+      instance_uuid: { get_resource: {{ hname }} }
+      mountpoint: /dev/{{ dev }}
+{% endfor -%}
+{% for dev in config.swift_storage_devices %}
+  {{ hname }}_{{ dev }}:
+    type: OS::Cinder::Volume
+    properties:
+      size: {{ config.volume_size }}
+
+  {{ hname }}_{{ dev }}_attachment:
+    type: OS::Cinder::VolumeAttachment
+    properties:
+      volume_id: { get_resource: {{ hname }}_{{ dev }} }
+      instance_uuid: { get_resource: {{ hname }} }
+      mountpoint: /dev/{{ dev }}
+{% endfor -%}
+{% endif -%}
+{% endfor %}
+
+{% if floating_network_id %}
+outputs:
+  output_install_server_public_ip:
+    description: Floating IP address of the install server in the public network
+    value: { get_attr: [ install_server_public_ip, floating_ip_address ] }
+  output_vip_public_ip:
+    description: Floating IP address of the VIP in the public network
+    value: { get_attr: [ vip_public_ip, floating_ip_address ] }
+{% endif %}
+
+# Local variables:
+# mode: yaml
+# End:
