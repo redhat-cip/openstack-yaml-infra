@@ -11,3 +11,7 @@ cloud::orchestration::api:
 cloud::database::nosql::mongodb::mongod:
   snippet:
     - mongodb
+
+cloud::database::sql::mysql:
+  snippet:
+    - mysql
