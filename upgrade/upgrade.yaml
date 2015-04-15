@@ -1,1 +1,9 @@
-# nothing yet
+cloud::telemetry::api:
+  snippet:
+    - ceilometer-api
+
+cloud::orchestration::api:
+  snippet:
+    - heat-api
+    - heat-api-cfn
+    - heat-api-cloudwatch
