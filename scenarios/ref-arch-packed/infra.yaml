@@ -30,6 +30,7 @@ profiles:
       3:
         roles:
           - cloud::identity
+          - cloud::storage::rbd::pools
       4:
         roles:
           - cloud::compute::api
@@ -92,9 +93,6 @@ profiles:
         roles:
           - cloud::storage::rbd::osd
           - cloud::object::storage
-      3:
-        roles:
-          - cloud::storage::rbd::pools
       4:
         roles:
           - cloud::compute::hypervisor
