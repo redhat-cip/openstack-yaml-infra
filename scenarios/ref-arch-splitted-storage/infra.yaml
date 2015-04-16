@@ -3,10 +3,6 @@ profiles:
   install-server:
     arity: 1
     edeploy: install-server
-    steps:
-      1:
-        roles:
-          - cloud::install::puppetdb::server
   load-balancer:
     arity: 2+n
     edeploy: openstack-full
@@ -36,12 +32,9 @@ profiles:
     steps:
       1:
         roles:
-          - cloud::database::sql::mysql
-          - cloud::database::nosql::mongodb::mongod
-          - cloud::database::nosql::redis::server
-          - cloud::database::nosql::redis::sentinel
+          - cloud::database::sql
           - cloud::messaging
-          - cloud::database::nosql::memcached
+          - cloud::cache
           - cloud::storage::rbd::monitor
           - cloud::storage::rbd::key
       2:
@@ -60,6 +53,7 @@ profiles:
           - cloud::compute::consoleproxy
           - cloud::compute::scheduler
           - cloud::volume::api
+          - cloud::volume::backup
           - cloud::volume::scheduler
           - cloud::volume::storage
           - cloud::image::api
@@ -74,8 +68,10 @@ profiles:
           - cloud::orchestration::engine
           - cloud::object::controller
           - cloud::object::ringbuilder
-          - cloud::telemetry::centralagent
           - cloud::spof
+          - cloud::database::dbaas::api
+          - cloud::database::dbaas::conductor
+          - cloud::database::dbaas::taskmanager
       5:
         roles:
           - cloud::network::dhcp
@@ -180,11 +176,9 @@ ordered_profiles:
   - ceph
 
 serverspec:
-  cloud::database::sql::mysql: database
+  cloud::database::sql: database
   cloud::messaging: messaging
-  cloud::database::nosql::memcached: cache
-  cloud::database::nosql::redis::server: redis_server
-  cloud::database::nosql::redis::sentinel: redis_sentinel
+  cloud::cache: cache
   cloud::storage::rbd::monitor: storage_controller
   cloud::identity: identity
   cloud::network::dhcp: network
@@ -195,6 +189,4 @@ serverspec:
   cloud::dashboard: dashboard
   cloud::object::controller: object_proxy
   cloud::object::storage: object_storage
-  cloud::install::puppetdb::server: puppetdb_server
-  cloud::install::puppetdb::config: puppetdb_config
   cloud::spof: spof
