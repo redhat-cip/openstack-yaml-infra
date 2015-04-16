@@ -197,6 +197,7 @@ mongodb::server::bind_ip: {{ config.mongod_bindip | default('"%{hiera(\'internal
 mongodb::server::nojournal: {{ config.mongo_nojournal | default('false') }}
 mongodb::server::replset: {{ config.mongodb_replset | default('ceilometer') }}
 mongodb::server::logpath: {{ config.mongodb_logpath | default('/var/log/mongodb/mongod.log') }}
+mongodb::server::config: '/etc/mongod.conf'
 
 # Redis
 redis: {{ config.redis | default('true') }}
