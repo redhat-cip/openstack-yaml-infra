@@ -3,19 +3,12 @@ profiles:
   install-server:
     arity: 1
     edeploy: install-server
-    steps:
-      1:
-        roles:
-          - cloud
-          - cloud::install::puppetdb
-          - cloud::install::puppetmaster
   controller:
-    arity: 3+2n
+    arity: 3
     edeploy: openstack-full
     steps:
       1:
         roles:
-          - cloud
           - cloud::database::sql
           - cloud::database::nosql
           - cloud::messaging
@@ -84,9 +77,6 @@ profiles:
     arity: 1+n
     edeploy: openstack-full
     steps:
-      1:
-        roles:
-          - cloud
       4:
         roles:
           - cloud::compute::hypervisor
@@ -136,9 +126,6 @@ profiles:
     arity: 3+2n
     edeploy: openstack-full
     steps:
-      1:
-        roles:
-          - cloud
       2:
         roles:
           - cloud::storage::rbd::osd
@@ -161,7 +148,6 @@ profiles:
 
 ordered_profiles:
   - install-server
-  - load-balancer
   - controller
   - compute
   - storage
