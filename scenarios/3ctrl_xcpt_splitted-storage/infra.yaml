@@ -10,7 +10,7 @@ profiles:
           - cloud::install::puppetdb
           - cloud::install::puppetmaster
   controller:
-    arity: 3+2n
+    arity: 3
     edeploy: openstack-full
     steps:
       1:
