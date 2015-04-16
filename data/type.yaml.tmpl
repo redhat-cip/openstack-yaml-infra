@@ -1,6 +1,11 @@
 # {{ profile }}
 {% for prof in profiles %}
 {% if prof == profile %}
+{% if profiles[prof].config %}
+{% for conf in profiles[prof].config %}
+{{ conf }}: {% if profiles[prof].config[conf] is string %}"{% endif %}{{ profiles[prof].config[conf] }}{% if profiles[prof].config[conf] is string %}"{% endif %}
+{% endfor %}
+{% endif %}
 {% if profiles[profile]['steps'] %}
 classes:
   - cloud
