@@ -1,4 +1,4 @@
-name: ref-arch-packed
+name: ref-arch-splitted-storage
 profiles:
   install-server:
     arity: 1
@@ -9,7 +9,32 @@ profiles:
           - cloud
           - cloud::install::puppetdb
           - cloud::install::puppetmaster
+  load-balancer:
+    arity: 2+n
+    edeploy: openstack-full
+    steps:
+      1:
+        roles:
+          - cloud
+      2:
+        roles:
+          - cloud::loadbalancer
     serverspec_config:
+      ks_user_name: ks_admin_tenant
+      ks_user_password: ks_admin_password
+      ks_tenant_name: ks_admin_tenant
+      vip_public: vip_public_fqdn
+      endpoint_protocol: endpoint_protocol
+      virt_type: libvirt_type
+      neutron_password: ks_neutron_password
+      neutron_endpoint: vip_public_fqdn
+      neutron_protocol: ks_neutron_admin_proto
+      neutron_type_drivers: neutron_type_drivers
+      neutron_mechanism_drivers: neutron_mechanism_drivers
+      neutron_tunnel_id_ranges: neutron_tunnel_id_ranges
+      neutron_firewall_driver: neutron_firewall_driver
+      syslog_server: syslog_server
+      syslog_port: syslog_port
   controller:
     arity: 3+2n
     edeploy: openstack-full
@@ -25,7 +50,6 @@ profiles:
           - cloud::storage::rbd::key
       2:
         roles:
-          - cloud::loadbalancer
           - cloud::dashboard
       3:
         roles:
@@ -81,18 +105,13 @@ profiles:
       neutron_firewall_driver: neutron_firewall_driver
       syslog_server: syslog_server
       syslog_port: syslog_port
-        --------------------------------
-  storage-compute:
-    arity: 3+n
+  compute:
+    arity: 1+n
     edeploy: openstack-full
     steps:
       1:
         roles:
           - cloud
-      2:
-        roles:
-          - cloud::storage::rbd::osd
-          - cloud::object::storage
       4:
         roles:
           - cloud::compute::hypervisor
@@ -112,11 +131,66 @@ profiles:
       neutron_firewall_driver: neutron_firewall_driver
       syslog_server: syslog_server
       syslog_port: syslog_port
+  storage:
+    arity: 3+2n
+    edeploy: openstack-full
+    steps:
+      1:
+        roles:
+          - cloud
+      2:
+        roles:
+          - cloud::object::storage
+    serverspec_config:
+      ks_user_name: ks_admin_tenant
+      ks_user_password: ks_admin_password
+      ks_tenant_name: ks_admin_tenant
+      vip_public: vip_public_fqdn
+      endpoint_protocol: endpoint_protocol
+      virt_type: libvirt_type
+      neutron_password: ks_neutron_password
+      neutron_endpoint: vip_public_fqdn
+      neutron_protocol: ks_neutron_admin_proto
+      neutron_type_drivers: neutron_type_drivers
+      neutron_mechanism_drivers: neutron_mechanism_drivers
+      neutron_tunnel_id_ranges: neutron_tunnel_id_ranges
+      neutron_firewall_driver: neutron_firewall_driver
+      syslog_server: syslog_server
+      syslog_port: syslog_port
+  ceph:
+    arity: 3+2n
+    edeploy: openstack-full
+    steps:
+      1:
+        roles:
+          - cloud
+      2:
+        roles:
+          - cloud::storage::rbd::osd
+    serverspec_config:
+      ks_user_name: ks_admin_tenant
+      ks_user_password: ks_admin_password
+      ks_tenant_name: ks_admin_tenant
+      vip_public: vip_public_fqdn
+      endpoint_protocol: endpoint_protocol
+      virt_type: libvirt_type
+      neutron_password: ks_neutron_password
+      neutron_endpoint: vip_public_fqdn
+      neutron_protocol: ks_neutron_admin_proto
+      neutron_type_drivers: neutron_type_drivers
+      neutron_mechanism_drivers: neutron_mechanism_drivers
+      neutron_tunnel_id_ranges: neutron_tunnel_id_ranges
+      neutron_firewall_driver: neutron_firewall_driver
+      syslog_server: syslog_server
+      syslog_port: syslog_port
 
 ordered_profiles:
   - install-server
-  - lb-controller
-  - compute-storage
+  - load-balancer
+  - controller
+  - compute
+  - storage
+  - ceph
 
 serverspec:
   cloud::database::sql: database
