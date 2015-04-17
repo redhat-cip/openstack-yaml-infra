@@ -78,7 +78,7 @@ profiles:
       syslog_port: syslog_port
       puppetdb_server: puppetdb_server
         --------------------------------
-  storage-compute:
+  compute-storage:
     arity: 3+n
     edeploy: openstack-full
     steps:
