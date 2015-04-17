@@ -9,7 +9,7 @@ profiles:
           - cloud::install::puppetdb::server
     serverspec_config:
       puppetdb_server: puppetdb_server
-  controller:
+  lb-controller:
     arity: 3+2n
     edeploy: openstack-full
     steps:
@@ -78,7 +78,7 @@ profiles:
       syslog_port: syslog_port
       puppetdb_server: puppetdb_server
         --------------------------------
-  storage-compute:
+  compute-storage:
     arity: 3+n
     edeploy: openstack-full
     steps:
