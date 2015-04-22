@@ -7,6 +7,8 @@ profiles:
       1:
         roles:
           - cloud::install::puppetdb::server
+    serverspec_config:
+      vip_public: vip_public_fqdn
   load-balancer:
     arity: 2+n
     edeploy: openstack-full
