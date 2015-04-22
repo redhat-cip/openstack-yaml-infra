@@ -9,6 +9,7 @@ profiles:
           - cloud::install::puppetdb::server
     serverspec_config:
       puppetdb_server: puppetdb_server
+      vip_public: vip_public_fqdn
   lb-controller:
     arity: 3+2n
     edeploy: openstack-full
