@@ -1,4 +1,4 @@
-name: 3ctrl-xcpt-splitted-storage
+name: 3ctrl_xcpt_splitted-storage
 profiles:
   install-server:
     arity: 1
@@ -17,8 +17,8 @@ profiles:
           - cloud::storage::rbd::key
       2:
         roles:
-          - cloud::dashboard
           - cloud::loadbalancer
+          - cloud::dashboard
       3:
         roles:
           - cloud::identity
