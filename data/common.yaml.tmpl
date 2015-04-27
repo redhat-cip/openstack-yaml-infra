@@ -255,6 +255,7 @@ rabbit_ip: '{{ config.rabbit_ip | default('"%{::ipaddress}"') }}'
 rabbit: {{ config.rabbit | default('false') }}
 rabbit_bind_options: {{ config.rabbit_bind_options | default('"%{hiera(\'haproxy_default_bind_options\')}"') }}
 erlang_cookie: {{ config.erlang_cookie }}
+rabbit_cluster_count: {{ config.rabbit_cluster_count | default('false') }}
 
 # Memcache
 {% if config.memcache_servers %}
