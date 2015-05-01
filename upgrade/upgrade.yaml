@@ -1,17 +1,1 @@
-cloud::telemetry::api:
-  snippet:
-    - ceilometer-api
-
-cloud::orchestration::api:
-  snippet:
-    - heat-api
-    - heat-api-cfn
-    - heat-api-cloudwatch
-
-cloud::database::nosql::mongodb::mongod:
-  snippet:
-    - mongodb
-
-cloud::database::sql::mysql:
-  snippet:
-    - mysql
+---
