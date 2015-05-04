@@ -1,1 +1,5 @@
----
+cloud::orchestration::api:
+  snippet:
+    - heat-api
+    - heat-api-cfn
+    - heat-api-cloudwatch
