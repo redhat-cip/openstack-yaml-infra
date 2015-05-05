@@ -3,3 +3,7 @@ cloud::orchestration::api:
     - heat-api
     - heat-api-cfn
     - heat-api-cloudwatch
+
+cloud::telemetry::api:
+  snippet:
+    - ceilometer-api
