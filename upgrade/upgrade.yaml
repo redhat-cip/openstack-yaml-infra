@@ -2,6 +2,14 @@ cloud::database::sql::mysql:
   snippet:
     - mysql
 
+cloud::monitoring::agent::sensu:
+  snippet:
+    - sensu-agent
+
+cloud::monitoring::server::sensu:
+  snippet:
+    - sensu-server
+
 cloud::dashboard:
   snippet:
     - apache

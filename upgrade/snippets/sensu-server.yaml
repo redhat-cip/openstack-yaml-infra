@@ -1,0 +1,12 @@
+- name: restart sensu-server
+  service: name=sensu-server state=restarted
+  tags: 7
+
+- name: restart sensu-api
+  service: name=sensu-api state=restarted
+  tags: 7
+
+- name: restart sensu dashboard
+  service: name={{ webserver}} state=restarted
+  tags: 7
+
