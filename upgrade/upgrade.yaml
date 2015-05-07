@@ -1,9 +1,121 @@
+cloud::database::sql::mysql:
+  snippet:
+    - mysql
+
+cloud::dashboard:
+  snippet:
+    - apache
+
+cloud::identity:
+  snippet:
+    - keystone
+
+cloud::compute::api:
+  snippet:
+    - nova-api
+
+cloud::compute::cert:
+  snippet:
+    - nova-cert
+
+cloud::compute::conductor:
+  snippet:
+    - nova-conductor
+
+cloud::compute::consoleauth:
+  snippet:
+    - nova-consoleauth
+
+cloud::compute::scheduler:
+  snippet:
+    - nova-scheduler
+
+cloud::volume::api:
+  snippet:
+    - cinder-api
+
+cloud::volume::scheduler:
+  snippet:
+    - cinder-scheduler
+
+cloud::volume::storage:
+  snippet:
+    - cinder-volume
+
+cloud::image::api:
+  snippet:
+    - glance-api
+
+cloud::image::registry:
+  snippet:
+    - glance-registry
+
+cloud::telemetry::api:
+  snippet:
+    - ceilometer-api
+
+cloud::telemetry::collector:
+  snippet:
+    - ceilometer-collector
+
+cloud::telemetry::alarmevaluator:
+  snippet:
+    - ceilometer-alarm-evaluator
+
+cloud::telemetry::alarmnotifier:
+  snippet:
+    - ceilometer-alarm-notifier
+
+cloud::telemetry::notification:
+  snippet:
+    - ceilometer-notification
+
+cloud::network::controller:
+  snippet:
+    - neutron-server
+
 cloud::orchestration::api:
   snippet:
     - heat-api
     - heat-api-cfn
     - heat-api-cloudwatch
 
-cloud::telemetry::api:
+cloud::orchestration::engine:
   snippet:
-    - ceilometer-api
+    - heat-engine
+
+cloud::object::controller:
+  snippet:
+    - swift-proxy
+
+cloud::network::dhcp:
+  snippet:
+    - neutron-dhcp-agent
+    - neutron-ovs-agent
+
+cloud::network::metadata:
+  snippet:
+    - neutron-metadata-agent
+    - neutron-ovs-agent
+
+cloud::network::lbaas:
+  snippet:
+    - neutron-lbaas-agent
+    - neutron-ovs-agent
+
+cloud::network::l3:
+  snippet:
+    - neutron-l3-agent
+    - neutron-ovs-agent
+
+cloud::compute::hypervisor:
+  snippet:
+    - nova-compute
+    - neutron-ovs-agent
+    - ceilometer-compute-agent
+
+cloud::object::storage:
+  snippet:
+    - swift-account
+    - swift-container
+    - swift-object
