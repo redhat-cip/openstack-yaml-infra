@@ -485,9 +485,11 @@ ceph_mon_secret: {{ config.ceph_mon_secret }}
 {% if config.ceph_osd_devices %}
 ceph_osd_devices:
 {% if config.ceph_osd_devices is mapping %}
-{% for disk in config.ceph_osd_devices %} {{ disk }}:{% if disk.journal is defined %}
-    {{ disk.journal }}
-{% endif %}
+{% for disk, values in config.ceph_osd_devices.iteritems() %}
+  {{ disk }}:
+{% for key, value in values.iteritems() %}
+    {{ key }}: {{ value }}
+{% endfor %}
 {% endfor %}
 {% else %}
 {% for disk in config.ceph_osd_devices %} - {{ disk }}
