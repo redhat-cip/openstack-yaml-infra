@@ -44,7 +44,7 @@ fi
 # after full evacuation we disable nova-compute service to avoid new server
 # scheduling.
 compute_has_servers() {
-  VMS=$(nova hypervisor-servers $COMPUTE | grep $COMPUTE | awk '{print $1}')
+  VMS=$(nova hypervisor-servers $COMPUTE | grep $COMPUTE | awk '{print $2}')
       if [ ! -z $VMS ]; then
           return 1
       else
