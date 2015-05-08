@@ -95,6 +95,7 @@ serverspec:
   cloud::compute::hypervisor: compute
   cloud::compute::api: controller
   cloud::dashboard: dashboard
+  cloud::volume::api: volume_controller
   cloud::object::controller: object_proxy
   cloud::object::storage: object_storage
   cloud::install::puppetdb::server: puppetdb_server
