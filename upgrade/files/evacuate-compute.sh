@@ -83,7 +83,7 @@ while ! compute_has_servers; do
         exit 1
     fi
     # Extract all VMs hosted on this compute node
-    VMS=$(nova hypervisor-servers $COMPUTE | grep $COMPUTE | awk '{print $1}')
+    VMS=$(nova hypervisor-servers $COMPUTE | grep $COMPUTE | awk '{print $2}')
     migrate_servers $VMS
     limit=$((limit + 1))
 done
