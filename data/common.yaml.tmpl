@@ -478,7 +478,7 @@ ceilometer::agent::central::coordination_url: {{ config.ceilometer_coordination_
 {% endif %}
 
 # Ceph
-ceph_public_network: "%{hiera('public_network')}"
+ceph_public_network: {{ config.ceph_public_network | default('"%{hiera(\'storage_network\')}"') }}
 ceph_cluster_network: "%{hiera('storage_network')}"
 ceph_fsid: {{ config.ceph_fsid | default('') }}
 ceph_mon_secret: {{ config.ceph_mon_secret }}
