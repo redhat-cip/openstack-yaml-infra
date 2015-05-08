@@ -679,6 +679,8 @@ neutron_l3_ha_vrrp_auth_password: {{ config.neutron_l3_ha_vrrp_auth_password | d
 neutron_l3_allow_automatic_l3agent_failover: {{ config.neutron_l3_allow_automatic_l3agent_failover | default('false') }}
 neutron_l3_agent_mode: {{ config.neutron_l3_agent_mode | default('legacy') }}
 enable_distributed_routing: {{ config.enable_distributed_routing | default('false') }}
+enable_tunneling: {{ config.enable_tunneling | default('true') }}
+neutron_l2_population: {{ config.neutron_l2_population | default('true') }}
 
 {% if config.neutron_mechanism_drivers %}
 neutron_mechanism_drivers: {{ config.neutron_mechanism_drivers }}
