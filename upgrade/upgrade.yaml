@@ -1,3 +1,7 @@
+cloud::install::puppetdb::server:
+  snippet:
+    - puppetdb
+
 cloud::database::sql::mysql:
   snippet:
     - mysql
