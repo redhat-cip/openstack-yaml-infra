@@ -342,7 +342,11 @@ volume_cinder_backends:
   {% for type, spec in desc.iteritems() %}
     {{ type }}:
     {% for key, value in spec.iteritems() %}
+      {% if value is string %}
       {{ key }}: '{{ value }}'
+      {% else %}
+      {{ key }}: {{ value }}
+      {% endif %}
     {% endfor %}
   {% endfor %}
 {% endfor %}
