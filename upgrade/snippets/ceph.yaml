@@ -1,4 +1,0 @@
-- name: restart ceph
-  service: name=ceph state=restarted
-  tags: 7
-

@@ -1,0 +1,47 @@
+---
+
+- name: compress the store as much as possible
+  command: ceph tell mon.{{ ansible_hostname }} compact
+  tags: 1
+
+- name: stop the monitor
+  command: service ceph stop mon
+  tags: 7
+
+- name: wait for the monitor to be down
+  local_action: >
+    wait_for
+    host={{ ansible_ssh_host | default(inventory_hostname) }}
+    port=6789
+    timeout=10
+    state=stopped
+  tags: 7
+
+- name: start the monitor
+  command: service ceph start mon
+  tags: 7
+
+- name: wait for the Monitor to be up again
+  local_action: >
+    wait_for
+    host={{ ansible_ssh_host | default(inventory_hostname) }}
+    port=6789
+    timeout=10
+  tags: 7
+
+- name: select a running monitor
+  set_fact: mon_host={{ item }}
+  with_items: groups.mons
+  when: item != inventory_hostname
+  tags: 7
+
+- name: waiting for the monitor to join the quorum...
+  shell: >
+    ceph -s | grep monmap | sed 's/.*quorum//' | egrep -q {{ ansible_hostname }}
+  register: result
+  until: result.rc == 0
+  retries: 5
+  delay: 10
+  delegate_to: "{{ groups.backup[0] }}"
+  when: migration_completed.stat.exists == False
+  tags: 7
