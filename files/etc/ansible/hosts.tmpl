@@ -1,7 +1,17 @@
 # file: hosts
 
+{% set master = [False] %}
 {% for prof in profiles %}
 [{{ prof }}]
-{% for hname in hosts %}{% if hosts[hname].profile == prof %}
-{{ hname }}.{{ config.domain  }}{% endif %}{% endfor %}
+{% for hname in hosts %}
+{% if hosts[hname].profile == prof and hname != config.galera_master_name %}
+{{ hname }}.{{ config.domain  }}
+{% else %}
+{% set _ = master.append(not master.pop()) %}
+{% endif %}
+{% endfor %}
+{% if master[0] %}
+{{ config.galera_master_name }}.{{ config.domain }}
+{% set _ = master.append(not master.pop()) %}
+{% endif %}
 {% endfor %}
