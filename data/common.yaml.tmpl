@@ -249,6 +249,8 @@ rabbit_hosts:
 {% for host in config.mgmt_internal_ips %} - '{{ host }}:5672'
 {% endfor %}
 {% endif %}
+rabbit_conn_string: {{ config.rabbit_hosts|join(',') }}
+rabbit_conn_string_no_port: {{ config.mgmt_internal_ips|join(',') }}
 rabbit_password: {{ config.rabbit_password | default('rabbitpassword') }}
 rabbit_cluster_node_type: {{ config.cluster_node_type | default('disc') }}
 rabbit_port: {{ config.rabbit_port | default('5672') }}
@@ -487,18 +489,7 @@ ceph_public_network: {{ config.ceph_public_network | default('"%{hiera(\'storage
 ceph_cluster_network: "%{hiera('storage_network')}"
 ceph_fsid: {{ config.ceph_fsid | default('') }}
 ceph_mon_secret: {{ config.ceph_mon_secret }}
-{% if config.ceph_osd_devices %}
-ceph_osd_devices:
-{% if config.ceph_osd_devices is mapping %}
-{% for disk in config.ceph_osd_devices %} {{ disk }}:{% if disk.journal is defined %}
-    {{ disk.journal }}
-{% endif %}
-{% endfor %}
-{% else %}
-{% for disk in config.ceph_osd_devices %} - {{ disk }}
-{% endfor %}
-{% endif %}
-{% endif %}
+ceph_osd_devices: {{ config.ceph_osd_devices }}
 ceph_names:
 {% for hname in hosts %}{% if hosts[hname].profile != 'install-server' %}  - {{ hname }}{% endif %}
 {% endfor %}
@@ -538,6 +529,8 @@ ks_admin_tenant: {{ config.ks_admin_tenant | default('admin') }}
 keystone_port: {{ config.keystone_port | default('5000') }}
 keystone_admin_port: {{ config.keystone_admin_port | default('35357') }}
 
+ks_keystone_port: {{ config.keystone_port | default('5000') }}
+ks_keystone_admin_port: {{ config.keystone_admin_port | default('35357') }}
 ks_keystone_admin_host: {{ config.keystone_admin_host | default('"%{hiera(\'vip_admin_fqdn\')}"') }}
 ks_keystone_admin_proto: {{ config.keystone_admin_proto | default('"%{hiera(\'endpoint_admin_protocol\')}"') }}
 ks_keystone_internal_host: {{ config.keystone_internal_host | default('"%{hiera(\'vip_internal_fqdn\')}"') }}
@@ -978,3 +971,428 @@ haproxy_auth: {{ config.haproxy_auth | default('admin:changeme') }}
 
 # Apache Httpd
 apache::default_vhost: false
+
+
+# Support for OpenContrail as the Network Manager
+{% if config.neutron_plugin == 'opencontrail'  %}
+
+contrail_control_ip: {{ config.contrail_control_ip  | default('"%{hiera(\'internal_netif_ip\')}"') }}
+contrail_control_vip: {{ config.contrail_control_vip  | default('"%{hiera(\'vip_public_ip\')}"') }}
+contrail_mgmt_ip: {{ config.contrail_mgmt_ip  | default('"%{hiera(\'internal_netif_ip\')}"') }}
+contrail_mgmt_vip: {{ config.contrail_mgmt_vip  | default('"%{hiera(\'vip_public_ip\')}"') }}
+contrail_api_server_port: {{ config.contrail_api_server_port  | default('8082') }}
+contrail_webui_http_port: {{ config.contrail_webui_http_port | default('8079') }}
+contrail_webui_https_port: {{ config.contrail_webui_https_port | default('8143') }}
+contrail_nodes:
+{% for node in config.contrail_nodes %}  - {{ node }}
+{% endfor %}
+
+contrail::vnc_api::vnc_api_config:
+  'global/WEB_SERVER':
+    value: "%{hiera('contrail_mgmt_vip')}"
+  'auth/AUTHN_SERVER':
+    value: "%{hiera('contrail_mgmt_vip')}"
+contrail::service_token::keystone_service_token: "%{hiera('ks_admin_token')}"
+contrail::ctrl_details::keystone_service_token: "%{hiera('ks_admin_token')}"
+contrail::ctrl_details::openstack_public_vip: "%{hiera('contrail_mgmt_vip')}"
+contrail::ctrl_details::openstack_external_vip: "%{hiera('contrail_mgmt_vip')}"
+contrail::ctrl_details::amqp_ip: "%{hiera('rabbit_conn_string')}"
+
+# HAProxy
+cloud::network::contrail::haproxy::contrail_analytics_api: true
+cloud::network::contrail::haproxy::contrail_config_api: true
+cloud::network::contrail::haproxy::contrail_config_discovery: true
+cloud::network::contrail::haproxy::contrail_webui_http: true
+cloud::network::contrail::haproxy::contrail_webui_https: true
+
+# Neutron Server
+neutron::quota::quota_driver: neutron_plugin_contrail.plugins.opencontrail.quota.driver.QuotaDriver
+neutron::api_extensions_path: extensions:/usr/lib/python2.7/site-packages/neutron_plugin_contrail/extensions
+{% if config.neutron_service_plugins %}
+cloud::network::service_plugins:
+{% for service_plugin in config.service_plugins %} - {{ service_plugin }}
+{% endfor %}
+{% else %}
+cloud::network::service_plugins:
+  - neutron_plugin_contrail.plugins.opencontrail.loadbalancer.plugin.LoadBalancerPlugin
+{% endif %}
+
+# Contrail Plugin
+cloud::network::controller::ks_keystone_admin_token: "%{hiera('ks_admin_token')}"
+cloud::network::controller::contrail_api_server_ip: "%{hiera('contrail_mgmt_vip')}"
+cloud::network::controller::contrail_api_server_port: "%{hiera('contrail_api_server_port')}"
+cloud::network::controller::contrail_multi_tenancy: {{ config.contrail_multi_tenancy  | default('true') }}
+{% if config.contrail_extensions %}
+cloud::network::controller::contrail_extensions:
+{% for extension in config.contrail_extensions %} - {{ extension }}
+{% endfor %}
+{% else %}
+cloud::network::controller::contrail_extensions:
+  - ipam:neutron_plugin_contrail.plugins.opencontrail.contrail_plugin_ipam.NeutronPluginContrailIpam
+  - policy:neutron_plugin_contrail.plugins.opencontrail.contrail_plugin_policy.NeutronPluginContrailPolicy
+  - route-table:neutron_plugin_contrail.plugins.opencontrail.contrail_plugin_vpc.NeutronPluginContrailVpc
+{% endif %}
+
+# Nova (vrouter-agent)
+nova::compute::neutron::libvirt_vif_driver: contrail_vif.contrailvif.VRouterVIFDriver
+nova::network::neutron::network_api_class: nova_contrail_vif.contrailvif.ContrailNetworkAPI
+cloud::compute::hypervisor::libvirt_type: qemu
+cloud::compute::hypervisor::include_vswitch: false
+contrail::vrouter::config::vhost_ip:  {{ config.contrail_vhost_ip | default('"%{hiera(\'contrail_control_ip\')}"') }}
+contrail::vrouter::config::discovery_ip: "%{hiera('contrail_control_vip')}"
+contrail::vrouter::config::device: "%{hiera('contrail_physical_interface')}"
+contrail::vrouter::config::macaddr: "%{hiera('contrail_physical_interface_mac')}"
+contrail::vrouter::config::gateway: "%{hiera('contrail_compute_gateway')}"
+contrail::vrouter::config::vrouter_agent_config:
+  'DISCOVERY/server':
+    value: "%{hiera('contrail_control_vip')}"
+  'DISCOVERY/max_control_nodes':
+    value: 2
+  'HYPERVISOR/type':
+    value: 'kvm'
+  'NETWORKS/control_network_ip':
+    value: {{ config.contrail_vhost_ip | default('"%{hiera(\'contrail_control_ip\')}"') }}
+  'VIRTUAL-HOST-INTERFACE/name':
+    value: '{{ config.contrail_vhost_interface | default('vhost0') }}'
+  'VIRTUAL-HOST-INTERFACE/compute_node_address':
+    ensure: absent
+  'VIRTUAL-HOST-INTERFACE/ip':
+    value: "%{hiera('contrail_mgmt_ip')}/{{ config.contrail_network_mask | default('24') }}"
+  'VIRTUAL-HOST-INTERFACE/gateway':
+    value: "%{hiera('contrail_compute_gateway')}"
+  'VIRTUAL-HOST-INTERFACE/physical_interface':
+    value: "%{hiera('contrail_physical_interface')}"
+contrail::vrouter::config::vrouter_nodemgr_config:
+  'DISCOVERY/server':
+    value: "%{hiera('contrail_control_vip')}"
+contrail::vrouter::provision_vrouter::api_address: "%{hiera('contrail_mgmt_vip')}"
+contrail::vrouter::provision_vrouter::api_port: "%{hiera('contrail_api_server_port')}"
+contrail::vrouter::provision_vrouter::node_address: "%{hiera('contrail_control_ip')}"
+contrail::vrouter::provision_vrouter::node_name: "%{::fqdn}"
+contrail::vrouter::provision_vrouter::keystone_admin_user: 'admin'
+contrail::vrouter::provision_vrouter::keystone_admin_password: "%{hiera('ks_admin_password')}"
+contrail::vrouter::provision_vrouter::keystone_admin_tenant_name: "%{hiera('ks_admin_tenant')}"
+contrail::vrouter::provision_vrouter::oper: add
+
+cloud::network::contrail::webui::http_port: "%{hiera('contrail_webui_http_port')}"
+cloud::network::contrail::webui::https_port: "%{hiera('contrail_webui_https_port')}"
+cloud::network::contrail::webui::http_bind_ip: "%{hiera('contrail_mgmt_ip')}"
+cloud::network::contrail::webui::https_bind_ip: "%{hiera('contrail_mgmt_ip')}"
+cloud::network::contrail::analytics::bind_ip: "%{hiera('contrail_mgmt_ip')}"
+cloud::network::contrail::config::api_bind_ip: "%{hiera('contrail_mgmt_ip')}"
+cloud::network::contrail::config::discovery_bind_ip: "%{hiera('contrail_mgmt_ip')}"
+
+# Database parameters
+cassandra_port: {{ config.cassandra_port | default('9160') }}
+cassandra_conn_string: {{ config.contrail_nodes|join(":9160,") }}:9160
+cassandra_conn_string_space: {{ config.contrail_nodes|join(":9160 ") }}:9160
+zookeeper_port: {{ config.zookeeper_port | default('2181') }}
+zookeeper_conn_string: {{ config.contrail_nodes|join(":2181,") }}:2181
+zookeeper_conn_string_space: {{ config.contrail_nodes|join(":2181 ") }}:2181
+kafka_port: {{ config.kafka_port | default('9092') }}
+kafka_conn_string: {{ config.contrail_nodes|join(":9092,") }}:9092
+kafka_conn_string_space: {{ config.contrail_nodes|join(":9092 ") }}:9092
+
+cassandra::cluster_name: 'contrail'
+cassandra::listen_address: {{ config.cassandra_listen_address | default('"%{hiera(\'contrail_mgmt_ip\')}"') }}
+cassandra::seeds: {{ config.cassandra_seeds }}
+cassandra::cassandra_package_name: cassandra12
+cassandra::java_package_name: java-1.7.0-openjdk
+cassandra::java_package_ensure: installed
+cassandra::manage_dsc_repo: false
+cassandra::manage_service: false
+cassandra::cassandra_yaml_tmpl: 'cassandra/cassandra1.yaml.erb'
+cassandra::rpc_address: {{ config.cassandra_rpc_address | default('"%{hiera(\'contrail_mgmt_ip\')}"') }}
+
+zookeeper::servers: {{ config.contrail_nodes }}
+
+kafka::broker::install_dir: '/usr/share/kafka'
+kafka::broker::install_manage: false
+kafka::broker::install_java: false
+kafka::broker::config:
+  port: {{ config.kakfa_port | default ('9092') }}
+  'broker.id': "%{hiera('zookeeper::id')}"
+  'host.name': "%{::hostname}"
+  'zookeeper.connect': "%{hiera('zookeeper_conn_string')}"
+contrail::database::config::database_nodemgr_config:
+    'DEFAULT/hostip':
+      value: {{ config.contrail_host_ip | default('"%{hiera(\'contrail_mgmt_ip\')}"') }}
+    'DISCOVERY/server':
+      value: "%{hiera('contrail_control_vip')}" 
+
+# WebUI
+contrail::webui::config::openstack_vip: "%{hiera('contrail_mgmt_vip')}"
+contrail::webui::config::contrail_vip: "%{hiera('contrail_mgmt_vip')}"
+contrail::webui::config::cassandra_ip: "%{hiera('contrail_nodes')}"
+contrail::webui::config::redis_vip: 127.0.0.1
+contrail::webui::config::contrail_webui_http_port: "%{hiera('contrail_webui_http_port')}"
+contrail::webui::config::contrail_webui_https_port: "%{hiera('contrail_webui_https_port')}"
+
+# Analytics Node
+contrail::analytics::config::analytics_api_config:
+   'DEFAULTS/host_ip':
+     value: {{ config.contrail_host_ip | default('"%{hiera(\'contrail_mgmt_ip\')}"') }}
+   'DEFAULTS/cassandra_server_list':
+     value: "%{hiera('cassandra_conn_string_space')}"
+   'DEFAULTS/collectors':
+     value: "%{::hostname}:8086"
+   'DISCOVERY/disc_server_ip':
+     value: "%{hiera('contrail_control_vip')}" 
+contrail::analytics::config::collector_config:
+    'DEFAULT/cassandra_server_list':
+      value: "%{hiera('cassandra_conn_string_space')}"
+    'DEFAULT/kafka_broker_list':
+      value: "%{hiera('kafka_conn_string_space')}"
+    'DEFAULT/syslog_port':
+      value: -1
+    'DISCOVERY/server':
+      value: "%{hiera('contrail_control_vip')}"
+contrail::analytics::config::query_engine_config:
+    'DEFAULT/hostip':
+      value: {{ config.contrail_host_ip | default('"%{hiera(\'contrail_mgmt_ip\')}"') }}
+    'DEFAULT/cassandra_server_list':
+      value: "%{hiera('cassandra_conn_string_space')}"
+contrail::analytics::config::snmp_collector_config:
+    'DEFAULTS/api_server':
+      value: "%{hiera('contrail_control_vip')}:%{hiera('contrail_api_server_port')}"
+    'DEFAULTS/collectors':
+      value: "%{::hostname}:8086"
+    'DISCOVERY/disc_server_ip':
+      value: "%{hiera('contrail_control_vip')}" 
+    'DEFAULTS/zookeeper':
+      value: "%{hiera('zookeeper_conn_string')}"
+    'KEYSTONE/auth_host':
+      value: "%{hiera('contrail_control_vip')}"
+    'KEYSTONE/auth_protocol':
+      value: http
+    'KEYSTONE/auth_port':
+      value: 35357
+    'KEYSTONE/admin_user':
+      value: admin
+    'KEYSTONE/admin_password':
+      value: "%{hiera('ks_admin_password')}"
+    'KEYSTONE/admin_tenant_name':
+      value: "%{hiera('ks_admin_tenant')}"
+    'KEYSTONE/insecure':
+      value: true
+contrail::analytics::config::topology_config:
+    'DEFAULTS/analytics_api':
+      value: "%{hiera('contrail_control_vip')}:8081"
+    'DEFAULTS/collectors':
+      value: "%{::hostname}:8086"
+    'DEFAULTS/zookeeper':
+      value: "%{hiera('zookeeper_conn_string')}"
+contrail::analytics::config::analytics_nodemgr_config:
+    'DISCOVERY/server':
+      value: "%{hiera('contrail_control_vip')}"
+
+# Control Node
+contrail::control::config::secret: {{ config.rndc_secret | default('secret123') }}
+contrail::control::config::dns_config:
+    'DEFAULT/hostip':
+      value: {{ config.contrail_host_ip | default('"%{hiera(\'contrail_mgmt_ip\')}"') }}
+    'DISCOVERY/server':
+      value: "%{hiera('contrail_control_vip')}"
+    'DEFAULT/rndc_secret':
+      value: "%{hiera('contrail::control::config::secret')}"
+    'IFMAP/password':
+      value: "%{hiera('contrail_mgmt_ip')}.dns"
+    'IFMAP/user':
+      value: "%{hiera('contrail_mgmt_ip')}.dns"
+contrail::control::config::control_config:
+    'DEFAULT/hostip':
+      value: {{ config.contrail_host_ip | default('"%{hiera(\'contrail_mgmt_ip\')}"') }}
+    'DISCOVERY/server':
+      value: "%{hiera('contrail_control_vip')}"
+    'IFMAP/password':
+      value: "%{hiera('contrail_mgmt_ip')}.dns"
+    'IFMAP/user':
+      value: "%{hiera('contrail_mgmt_ip')}.dns"
+contrail::control::config::control_nodemgr_config:
+    'DISCOVERY/server':
+      value: "%{hiera('contrail_control_vip')}"
+contrail::control::provision_control::api_address: "%{hiera('contrail_mgmt_vip')}"
+contrail::control::provision_control::api_port: "%{hiera('contrail_api_server_port')}"
+contrail::control::provision_control::router_asn: 64512
+contrail::control::provision_control::control_node_address: "%{hiera('contrail_mgmt_ip')}"
+contrail::control::provision_control::control_node_name: "%{::hostname}"
+contrail::control::provision_control::keystone_admin_user: 'admin'
+contrail::control::provision_control::keystone_admin_password: "%{hiera('ks_admin_password')}"
+contrail::control::provision_control::keystone_admin_tenant_name: "%{hiera('ks_admin_tenant')}"
+contrail::control::provision_control::ibgp_auto_mesh: {{ config.contrail_ibgp_auto_mesh | default('true') }}
+contrail::control::provision_control::oper: add
+
+contrail::control::provision_encap::api_address: "%{hiera('contrail_mgmt_vip')}"
+contrail::control::provision_encap::api_port: "%{hiera('contrail_api_server_port')}"
+contrail::control::provision_encap::encap_priority: {{ config.contrail_encap_priority | default('MPLSoUDP,MPLSoGRE,VXLAN') }}
+contrail::control::provision_encap::vxlan_vn_id_mode: {{ config.contrail_vxlan_vn_id_mode | default('automatic') }}
+contrail::control::provision_encap::keystone_admin_user: 'admin'
+contrail::control::provision_encap::keystone_admin_password: "%{hiera('ks_admin_password')}"
+contrail::control::provision_encap::keystone_admin_tenant_name: "%{hiera('ks_admin_tenant')}"
+contrail::control::provision_encap::oper: add
+
+contrail::control::provision_linklocal::api_address: "%{hiera('contrail_mgmt_vip')}"
+contrail::control::provision_linklocal::api_port: "%{hiera('contrail_api_server_port')}"
+contrail::control::provision_linklocal::linklocal_service_name: {{ config.contrail_linklocal_service_name | default('metadata') }}
+contrail::control::provision_linklocal::linklocal_service_port: {{ config.contrail_linklocal_service_port | default('80') }}
+contrail::control::provision_linklocal::ipfabric_service_ip: "%{hiera('contrail_mgmt_vip')}"
+contrail::control::provision_linklocal::ipfabric_service_port: {{ config.contrail_ipfabric_service_port | default('8775') }}
+contrail::control::provision_linklocal::keystone_admin_user: 'admin'
+contrail::control::provision_linklocal::keystone_admin_password: "%{hiera('ks_admin_password')}"
+contrail::control::provision_linklocal::keystone_admin_tenant_name: "%{hiera('ks_admin_tenant')}"
+contrail::control::provision_linklocal::ibgp_auto_mesh: {{ config.contrail_ibgp_auto_mesh | default('true') }}
+contrail::control::provision_linklocal::oper: add
+
+# Configuration Node
+contrail::config::config::basicauthusers_property:
+{% for host in config.contrail_nodes %}  - {{ host }}.dns:{{ host }}.dns
+{% endfor %}
+contrail::config::config::schema_config:
+  'DEFAULTS/api_server_ip':
+    value: "%{hiera('contrail_mgmt_vip')}"
+  'DEFAULTS/zk_server_ip':
+    value: "%{hiera('zookeeper_conn_string')}"
+  'DEFAULTS/cassandra_server_list':
+    value: "%{hiera('cassandra_conn_string_space')}"
+  'DEFAULTS/disc_server_ip':
+    value: "%{hiera('contrail_control_vip')}"
+  'KEYSTONE/auth_host':
+    value: "%{hiera('contrail_control_vip')}"
+  'KEYSTONE/auth_protocol':
+    value: http
+  'KEYSTONE/auth_port':
+    value: 35357
+  'KEYSTONE/admin_user':
+    value: admin
+  'KEYSTONE/admin_password':
+    value: "%{hiera('ks_admin_password')}"
+  'KEYSTONE/admin_tenant_name':
+    value: "%{hiera('ks_admin_tenant')}"
+  'KEYSTONE/insecure':
+    value: true
+contrail::config::config::alarm_gen_config:
+  'DEFAULTS/zk_list':
+    value: {{ config.contrail_nodes|join(',') }}
+  'DEFAULTS/kafka_broker_list':
+    value: "%{hiera('kafka_conn_string_space')}"
+contrail::config::config::device_manager_config:
+  'DEFAULTS/disc_server_ip':
+    value: "%{hiera('contrail_control_vip')}"
+  'DEFAULTS/api_server_ip':
+    value: "%{hiera('contrail_mgmt_vip')}"
+  'DEFAULTS/api_server_port':
+    value: "%{hiera('contrail_api_server_port')}"
+  'DEFAULTS/rabbit_server':
+    value: "%{hiera('rabbit_conn_string_no_port')}"
+  'DEFAULTS/zk_server_ip':
+    value: {{ config.contrail_nodes|join(',') }}
+  'DEFAULTS/cassandra_server_list':
+    value: "%{hiera('cassandra_conn_string_space')}"
+  'DEFAULTS/rabbit_user':
+    value: {{ config.contrail_rabbit_user | default('contrail') }}
+  'DEFAULTS/rabbit_password':
+    value: {{ config.contrail_rabbit_password | default('contrailpassword') }}
+contrail::config::config::discovery_config:
+  'DEFAULTS/zk_server_ip':
+    value: {{ config.contrail_nodes|join(',') }}
+  'DEFAULTS/cassandra_server_list':
+    value: "%{hiera('cassandra_conn_string_space')}"
+  'DNS-SERVER/policy':
+    value: fixed
+contrail::config::config::api_config:
+  'DEFAULTS/ifmap_server_ip':
+    value: {{ config.contrail_host_ip | default('"%{hiera(\'contrail_control_ip\')}"') }}
+  'DEFAULTS/ifmap_server_port':
+    value: 8443
+  'DEFAULTS/cassandra_server_list':
+    value: "%{hiera('cassandra_conn_string_space')}"
+  'DEFAULTS/multi_tenancy':
+    value: true
+  'DEFAULTS/disc_server_ip':
+    value: "%{hiera('contrail_control_vip')}"
+  'DEFAULTS/zk_server_ip':
+    value: "%{hiera('zookeeper_conn_string')}"
+  'DEFAULTS/rabbit_server':
+    value: "%{hiera('rabbit_conn_string')}"
+  'DEFAULTS/rabbit_user':
+    value: {{ config.contrail_rabbit_user | default('contrail') }}   
+  'DEFAULTS/rabbit_password':
+    value: {{ config.contrail_rabbit_password | default('contrailpassword') }}
+  'DEFAULTS/rabbit_port':
+    value: 5672
+  'KEYSTONE/auth_host':
+    value: "%{hiera('contrail_control_vip')}"
+  'KEYSTONE/auth_protocol':
+    value: http
+  'KEYSTONE/auth_port':
+    value: 35357
+  'KEYSTONE/admin_user':
+    value: admin
+  'KEYSTONE/admin_password':
+    value: "%{hiera('ks_admin_password')}"
+  'KEYSTONE/admin_tenant_name':
+    value: "%{hiera('ks_admin_tenant')}"
+  'KEYSTONE/insecure':
+    value: true
+contrail::config::config::svc_monitor_config:
+  'DEFAULTS/ifmap_server_ip':
+    value: {{ config.contrail_host_ip | default('"%{hiera(\'contrail_mgmt_ip\')}"') }}
+  'DEFAULTS/ifmap_server_port':
+    value: 8443
+  'DEFAULTS/api_server_ip':
+    value: "%{hiera('contrail_control_vip')}"
+  'DEFAULTS/api_server_port':
+    value: "%{hiera('contrail_api_server_port')}"
+  'DEFAULTS/cassandra_server_list':
+    value: "%{hiera('cassandra_conn_string_space')}"
+  'DEFAULTS/disc_server_ip':
+    value: "%{hiera('contrail_control_vip')}"
+  'DEFAULTS/disc_server_port':
+    value: 5998
+  'DEFAULTS/region_name':
+    value: "%{hiera('region')}"
+  'DEFAULTS/zk_server_ip':
+    value: "%{hiera('zookeeper_conn_string')}"
+  'DEFAULTS/rabbit_server':
+    value: "%{hiera('rabbit_conn_string')}"
+  'DEFAULTS/rabbit_user':
+    value: {{ config.contrail_rabbit_user | default('contrail') }}   
+  'DEFAULTS/rabbit_password':
+    value: {{ config.contrail_rabbit_password | default('contrailpassword') }}
+  'DEFAULTS/rabbit_port':
+    value: 5672
+  'KEYSTONE/auth_host':
+    value: "%{hiera('contrail_control_vip')}"
+  'KEYSTONE/auth_protocol':
+    value: http
+  'KEYSTONE/auth_port':
+    value: 35357
+  'KEYSTONE/admin_user':
+    value: admin
+  'KEYSTONE/admin_password':
+    value: "%{hiera('ks_admin_password')}"
+  'KEYSTONE/admin_tenant_name':
+    value: "%{hiera('ks_admin_tenant')}"
+  'KEYSTONE/insecure':
+    value: true
+  'SCHEDULER/analytics_server_ip':
+    value: "%{hiera('contrail_mgmt_vip')}"
+contrail::config::config::config_nodemgr_config:
+  'DISCOVERY/server':
+    value: "%{hiera('contrail_control_vip')}"
+contrail::keystone::keystone_config:
+  'KEYSTONE/auth_host':
+    value: "%{hiera('contrail_control_vip')}"
+  'KEYSTONE/auth_protocol':
+    value: http
+  'KEYSTONE/auth_port':
+    value: 35357
+  'KEYSTONE/admin_user':
+    value: admin
+  'KEYSTONE/admin_password':
+    value: "%{hiera('ks_admin_password')}"
+  'KEYSTONE/admin_tenant_name':
+    value: "%{hiera('ks_admin_tenant')}"
+  'KEYSTONE/insecure':
+    value: true
+{% endif %}
