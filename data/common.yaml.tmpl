@@ -192,7 +192,7 @@ mongos_shards: {{ config.mongos_shards | default({}) }}
 mongo_nodes: {{ config.mongo_nodes | default('"%{hiera(\'mgmt_internal_ips\')}"') }}
 replicatset_enabled: {{ config.replicatset_enabled | default('true') }}
 
-mongodb::globals::version: {{ config.mongodb_version | default('2.6.5-2.el7ost') }}
+mongodb::globals::version: {{ config.mongodb_version | default('2.6.9-1.el7') }}
 mongodb::globals::manage_package_repo: {{ config.mongodb_manage_repo | default('false') }}
 mongodb::server::bind_ip: {{ config.mongod_bindip | default('"%{hiera(\'internal_netif_ip\')}"') }}
 mongodb::server::nojournal: {{ config.mongo_nojournal | default('false') }}
