@@ -235,6 +235,7 @@ galera_bind_options: {{ config.galera_bind_options | default('"%{hiera(\'haproxy
 mysql_open_files_limit: {{ config.mysql_open_files_limit | default('65535') }}
 mysql_systemd_override_settings: {{ config.mysql_systemd_override_settings | default({}) }}
 galera_timeout: {{ config.galera_timeout | default('90m') }}
+galera_maxconn: {{ config.galera_maxconn | default('4096') }}
 
 # Messaging
 # Useful when we need a single Rabbit host (like Sensu needs)
