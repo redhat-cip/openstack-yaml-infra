@@ -133,6 +133,7 @@ cloud::compute::api::pacemaker_enabled: "%{hiera('cluster_pacemaker_enabled')}"
 
 cloud::compute::consoleproxy::api_eth: "%{hiera('api_eth')}"
 cloud::compute::consoleproxy::console: "%{hiera('nova_console')}"
+cloud::compute::consoleproxy::protocol: "%{hiera('ks_console_public_proto')}"
 cloud::compute::consoleproxy::spice_port: "%{hiera('spice_port')}"
 cloud::compute::consoleproxy::novnc_port: "%{hiera('novnc_port')}"
 cloud::compute::consoleproxy::secure: "%{hiera('spice_secure')}"
