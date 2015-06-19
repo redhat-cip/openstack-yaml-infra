@@ -13,3 +13,11 @@ cloud::compute::hypervisor:
 cloud::compute::api:
   snippet:
     - nova-api
+
+cloud::compute::conductor:
+  snippet:
+    - nova-conductor
+
+cloud::compute::scheduler:
+  snippet:
+    - nova-scheduler
