@@ -9,3 +9,7 @@ cloud::monitoring::server::sensu:
 cloud::compute::hypervisor:
   snippet:
     - nova-compute
+
+cloud::compute::api:
+  snippet:
+    - nova-api
