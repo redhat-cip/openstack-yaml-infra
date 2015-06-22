@@ -141,6 +141,10 @@ cloud::compute::consoleproxy::firewall_settings: "%{hiera('firewall_common_extra
 
 cloud::compute::scheduler::scheduler_default_filters: "%{hiera('nova_scheduler_default_filters')}"
 
+nova::vncproxy::common::vncproxy_host: "%{hiera('ks_console_public_host')}"
+nova::vncproxy::common::vncproxy_protocol: "%{hiera('ks_console_public_proto')}"
+nova::vncproxy::common::vncproxy_port: "%{hiera('novnc_port')}"
+
 #
 # cloud::dashboard
 #
