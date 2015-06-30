@@ -68,6 +68,21 @@ cloud::database::nosql::redis::sentinel::haproxy_monitor_port: "%{hiera('sentine
 cloud::database::nosql::redis::sentinel::firewall_settings: "%{hiera('firewall_common_extras')}"
 
 #
+# cloud::database::nosql::cassandra
+#
+cloud::database::nosql::cassandra::firewall_settings: "%{hiera('firewall_common_extras')}"
+
+#
+# cloud::database::nosql::zookeeper
+#
+cloud::database::nosql::zookeeper::firewall_settings: "%{hiera('firewall_common_extras')}"
+
+#
+# cloud::database::nosql::kafka
+#
+cloud::database::nosql::kafka::firewall_settings: "%{hiera('firewall_common_extras')}"
+
+#
 # cloud::database::nosql::elasticsearch
 #
 cloud::database::nosql::elasticsearch::listen_port: "%{hiera('elasticsearch_port')}"
@@ -825,6 +840,56 @@ cloud::monitoring::server::sensu::sensu_api_port: "%{hiera('sensu_api_port')}"
 cloud::monitoring::server::sensu::firewall_settings: "%{hiera('firewall_common_extras')}"
 
 # Experimental
+
+#cloud::network::controller::ks_keystone_admin_user:
+#cloud::network::controller::ks_keystone_admin_password:
+#cloud::network::controller::ks_keystone_admin_token:
+#cloud::network::controller::contrail_api_server_ip:
+#cloud::network::controller::contrail_api_server_port:
+#cloud::network::controller::contrail_multi_tenancy:
+#cloud::network::controller::contrail_extensions:
+#cloud::network::contrail::control::firewall_settings:
+#cloud::network::contrail::rabbitmq::user:
+#cloud::network::contrail::rabbitmq::password:
+#cloud::network::contrail::rabbitmq::vhost:
+#cloud::network::contrail::rabbitmq::is_admin:
+#cloud::network::contrail::rabbitmq::configure_permission:
+#cloud::network::contrail::rabbitmq::write_permission:
+#cloud::network::contrail::rabbitmq::read_permission:
+#cloud::network::contrail::analytics::bind_ip:
+#cloud::network::contrail::analytics::port:
+#cloud::network::contrail::analytics::firewall_settings:
+#cloud::network::contrail::haproxy::contrail_analytics_api:
+#cloud::network::contrail::haproxy::contrail_config_api:
+#cloud::network::contrail::haproxy::contrail_config_discovery:
+#cloud::network::contrail::haproxy::contrail_webui_http:
+#cloud::network::contrail::haproxy::contrail_webui_https:
+#cloud::network::contrail::haproxy::contrail_analytics_api_bind_options:
+#cloud::network::contrail::haproxy::contrail_config_api_bind_options:
+#cloud::network::contrail::haproxy::contrail_config_discovery_bind_options:
+#cloud::network::contrail::haproxy::contrail_webui_http_bind_options:
+#cloud::network::contrail::haproxy::contrail_webui_https_bind_options:
+#cloud::network::contrail::haproxy::contrail_analytics_api_port:
+#cloud::network::contrail::haproxy::contrail_config_api_port:
+#cloud::network::contrail::haproxy::contrail_config_discovery_port:
+#cloud::network::contrail::haproxy::contrail_webui_http_port:
+#cloud::network::contrail::haproxy::contrail_webui_https_port:
+#cloud::network::contrail::haproxy::firewall_settings:
+#cloud::network::contrail::database::port:
+#cloud::network::contrail::database::firewall_settings:
+#cloud::network::contrail::webui::http_bind_ip:
+#cloud::network::contrail::webui::https_bind_ip:
+#cloud::network::contrail::webui::http_port:
+#cloud::network::contrail::webui::https_port:
+#cloud::network::contrail::webui::firewall_settings:
+#cloud::network::contrail::webui::firewall_settings:
+#cloud::network::contrail::config::api_bind_ip:
+#cloud::network::contrail::config::discovery_bind_ip:
+#cloud::network::contrail::config::api_port:
+#cloud::network::contrail::config::discovery_port:
+#cloud::network::contrail::config::firewall_settings:
+#cloud::network::service_plugins:
+
 # cloud::database::dbaas::trove_db_host: "%{hiera('trove_db_host')}"
 # cloud::database::dbaas::trove_db_password: "%{hiera('trove_db_password')}"
 # cloud::database::dbaas::rabbit_hosts: "%{hiera('rabbit_hosts')}"
