@@ -1,0 +1,53 @@
+---
+
+- name: set OSD flags
+  command: ceph osd set {{ item }}
+  with_items:
+    - noout
+    - noscrub
+    - nodeep-scrub
+  delegate_to: "{{ groups.mons[0] }}"
+  tags: 1
+
+- name: collect OSD ports
+  shell: netstat -tlpn | awk -F ":" '/ceph-osd/ { sub (" .*", "", $2); print $2 }' | uniq
+  register: osd_ports
+  tags: 7
+
+- name: gracefully stop the OSDs (Sysvinit)
+  command: service ceph stop osd
+  tags: 7
+
+- name: wait for the OSDs to be down
+  local_action: >
+    wait_for
+    host={{ ansible_ssh_host | default(inventory_hostname) }}
+    port={{ item }}
+    timeout=10
+    state=stopped
+  with_items:
+    - "{{ osd_ports.stdout_lines }}"
+  tags: 7
+
+- name: start all the OSDs
+  command: service ceph start osd
+  tags: 7
+
+- name: waiting for clean PGs...
+  shell: >
+    test "$(ceph pg stat | sed 's/^.*pgs://' | sed 's/active+clean.*//' |sed 's/ //')" -eq "$(ceph pg stat | sed 's/pgs.*//' | sed 's/^.*://' | sed 's/ //')" && ceph health | egrep -q "HEALTH_OK|HEALTH_WARN"
+  register: result
+  until: result.rc == 0
+  retries: 20
+  delay: 30
+  delegate_to: "{{ groups.backup[0] }}"
+  tags: 7
+
+- name: unset the noout flag
+  command: ceph osd unset {{ item }}
+  with_items:
+    - noout
+    - noscrub
+    - nodeep-scrub
+  delegate_to: "{{ groups.mons[0] }}"
+  tags: 9
